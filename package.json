@@ -1,12 +1,22 @@
 {
   "name": "portfolio",
   "version": "1.0.0",
-  "description": "",
+  "description": "George Vazquez's Portfolio",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npx vite",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "vite build",
+    "deploy": "gh-pages -d dist"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "author": "George Vazquez",
+  "license": "ISC",
+  "dependencies": {
+    "gh-pages": "^5.0.0",
+    "three": "^0.154.0"
+  },
+  "devDependencies": {
+    "vite": "^4.4.4"
+  }
 }
