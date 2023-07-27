@@ -9,11 +9,18 @@ let camera, scene, renderer, light, controls;
 let raycaster, pointer;
 let loader, fontLoader;
 
+// Colors
+const black = 0x000000;
+const white = 0xffffff;
+const grayDark = 0x666867;
+const gray = 0xB3B3B3;
+const grayLight = 0xDFDFDF;
+
 const init = () => {
   if (WebGL.isWebGLAvailable()) {
     // Set Scene
     scene = new THREE.Scene();
-    scene.background = new THREE.Color('pink');
+    scene.background = new THREE.Color(grayLight);
     
     // Set Camera
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 5000);
@@ -74,12 +81,12 @@ const update = () => {
       //   loadDonut();
       // };
     };
-
+    
     // Reset pointer
     pointer.x = null;
     pointer.y = null;
   }
-
+  
   requestAnimationFrame(update);
   renderer.render(scene, camera);
 };
@@ -95,7 +102,7 @@ const loadFont = () => {
   fontLoader.load('./fonts/Stratos_Regular.json', function (font) {
     const geometry = new TextGeometry( "Hi, I'm George", {
       font,
-      size: 1,
+      size: 1 * (window.innerWidth / 3000), // aribtrary for now but this can calculate text size to fit window width
       height: 0.25,
       curveSegments: 12,
       bevelEnabled: true,
@@ -105,9 +112,10 @@ const loadFont = () => {
       bevelSegments: 5
     });
     geometry.center();
-    const material = new THREE.MeshPhongMaterial({ color: 0x000000 });
+    const material = new THREE.MeshPhongMaterial({ color: grayDark });
     const text = new THREE.Mesh(geometry, material);
     text.name = 'donutText';
+    // text.position.y = 1;
     scene.add(text);
   });
 };
