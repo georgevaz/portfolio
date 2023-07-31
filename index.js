@@ -16,6 +16,13 @@ const grayDark = 0x666867;
 const gray = 0xB3B3B3;
 const grayLight = 0xDFDFDF;
 
+// Font Paths
+const stratos = './fonts/Stratos_Regular.json';
+
+// Font Sizes
+const h1 = 0.4;
+const h2 = 0.2;
+
 const init = () => {
   if (WebGL.isWebGLAvailable()) {
     // Set Scene
@@ -24,7 +31,7 @@ const init = () => {
     
     // Set Camera
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 5000);
-    camera.position.set(0, 0, 10);
+    camera.position.set(0, 0, 10); // TODO accomodate for mobile by zooming out
     camera.lookAt(0, 0, 0);
     
     // Set Lighting
@@ -99,11 +106,18 @@ const onWindowResize = (e) => {
 };
 
 const loadFont = () => {
-  fontLoader.load('./fonts/Stratos_Regular.json', function (font) {
-    const geometry = new TextGeometry( "Hi, I'm George", {
+  createText(stratos, h1, -3.5, 3.5, "Hi, I'm George");
+  createText(stratos, h2, -3.68, 3, "I’m a software engineer");
+  createText(stratos, h1, 3, -3, "... and this is Ollie!");
+  createText(stratos, h2, 1.95, -3.5, "he’s a dog");
+};
+
+const createText = (fontType, fontSize, xPos, yPos, textCopy) => {
+  fontLoader.load(fontType, (font) => {
+    const geometry = new TextGeometry( textCopy, {
       font,
-      size: 1 * (window.innerWidth / 3000), // aribtrary for now but this can calculate text size to fit window width
-      height: 0.25,
+      size: fontSize,
+      height: 0.1,
       curveSegments: 12,
       bevelEnabled: true,
       bevelThickness: .01,
@@ -111,11 +125,15 @@ const loadFont = () => {
       bevelOffset: 0,
       bevelSegments: 5
     });
-    geometry.center();
     const material = new THREE.MeshPhongMaterial({ color: grayDark });
     const text = new THREE.Mesh(geometry, material);
-    text.name = 'donutText';
-    // text.position.y = 1;
+    text.name = textCopy;
+
+    // center the text, and then move it
+    geometry.center(); 
+    text.position.x = xPos;
+    text.position.y = yPos;
+    
     scene.add(text);
   });
 };
