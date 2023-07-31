@@ -48,6 +48,14 @@ const init = () => {
     // Set Controls
     controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
+    controls.enableZoom = false;
+    controls.enablePan = false;
+    const rangeHor = Math.PI * 0.1;
+    controls.minAzimuthAngle = -rangeHor;
+    controls.maxAzimuthAngle = rangeHor;
+    const rangeVer = Math.PI / 2;
+    controls.minPolarAngle = rangeVer - .1;
+    controls.maxPolarAngle = rangeVer + .1;
   
     // Set Raycasting
     raycaster = new THREE.Raycaster();
