@@ -23,6 +23,11 @@ const stratos = './fonts/Stratos_Regular.json';
 const h1 = 0.4;
 const h2 = 0.2;
 
+// Text Group
+const textGroup = new THREE.Group();
+let textGroupIndex = 0;
+let textAnimationFinish = false;
+
 const init = () => {
   if (WebGL.isWebGLAvailable()) {
     // Set Scene
@@ -50,9 +55,11 @@ const init = () => {
     controls.enableDamping = true;
     controls.enableZoom = false;
     controls.enablePan = false;
+
     const rangeHor = Math.PI * 0.1;
     controls.minAzimuthAngle = -rangeHor;
     controls.maxAzimuthAngle = rangeHor;
+
     const rangeVer = Math.PI / 2;
     controls.minPolarAngle = rangeVer - .1;
     controls.maxPolarAngle = rangeVer + .1;
@@ -69,11 +76,11 @@ const init = () => {
 
     // Shoot a raycast
     // window.addEventListener('click', onClick);
-    // window.addEventListener('touchstart', onClick);
-  
+    // window.addEventListener('touchstart', onClick); // mobile
+
     // Handles resizing of window
     window.addEventListener('resize', onWindowResize);
-
+    
   } else {
     const warning = WebGL.getWebGLErrorMessage();
     document.getElementById('container').appendChild(warning);
@@ -81,12 +88,17 @@ const init = () => {
   };
 };
 
+// Renders scene
+const render = () => renderer.render(scene, camera);
+
 // Update frames
 const update = () => {
+  requestAnimationFrame(update);
   controls.update()
-
   // Update the picking ray with the camera and pointer position
   raycaster.setFromCamera(pointer, camera);
+
+  if(!textAnimationFinish && textGroup.children[0]) textAnimation(); // this checks to see if the text is properly loaded before animating.
 
   // Calculate objects intersecting the picking ray
   const intersects = raycaster.intersectObjects(scene.children);
@@ -95,15 +107,13 @@ const update = () => {
       // if(intersects[i].object.name === 'donutText') {
       //   loadDonut();
       // };
+      
     };
-    
     // Reset pointer
     pointer.x = null;
     pointer.y = null;
   }
-  
-  requestAnimationFrame(update);
-  renderer.render(scene, camera);
+  render()
 };
 
 const onWindowResize = (e) => {
@@ -118,6 +128,8 @@ const loadFont = () => {
   createText(stratos, h2, -3.68, 3, "I’m a software engineer");
   createText(stratos, h1, 3, -3, "... and this is Ollie!");
   createText(stratos, h2, 1.95, -3.5, "he’s a dog");
+
+  scene.add(textGroup)
 };
 
 const createText = (fontType, fontSize, xPos, yPos, textCopy) => {
@@ -141,10 +153,21 @@ const createText = (fontType, fontSize, xPos, yPos, textCopy) => {
     geometry.center(); 
     text.position.x = xPos;
     text.position.y = yPos;
+    text.material.transparent = true;
+    text.material.opacity = 0.0;
+
+    textGroup.add(text);
     
-    scene.add(text);
   });
 };
 
-init();
-update();
+const textAnimation = () => {
+  if(textGroup.children[textGroupIndex].material.opacity < 1) textGroup.children[textGroupIndex].material.opacity += .01;
+  else textGroupIndex++;
+  
+  if(textGroupIndex >= textGroup.children.length) textAnimationFinish = true;
+};
+
+init(); // Initialize
+render(); // Render first frame
+update(); // Start update loop
