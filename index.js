@@ -4,6 +4,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import WebGL from 'three/addons/capabilities/WebGL.js';
+import { MathUtils } from 'three';
 
 let camera, scene, renderer, light, controls;
 let raycaster, pointer;
@@ -73,7 +74,7 @@ const init = () => {
     fontLoader = new FontLoader();
 
     loadFont();
-
+    loadOllie();
     // Shoot a raycast
     // window.addEventListener('click', onClick);
     // window.addEventListener('touchstart', onClick); // mobile
@@ -157,14 +158,29 @@ const createText = (fontType, fontSize, xPos, yPos, textCopy) => {
     text.material.opacity = 0.0;
 
     textGroup.add(text);
-    
   });
 };
+
+const loadOllie = () => {
+  loader.load('./src/ollie.glb', (gltf) => {
+    const ollie = gltf.scene;
+    ollie.scale.set(.5, .5, .5);
+    ollie.position.x = 0;
+    ollie.position.y = 0;
+    ollie.position.z = -0.5;
+    ollie.rotation.x = THREE.MathUtils.degToRad( 90 );
+
+    scene.add(ollie);
+  }, undefined, (error) => {
+    console.error(error);
+  });
+};
+
 
 const textAnimation = () => {
   if(textGroup.children[textGroupIndex].material.opacity < 1) textGroup.children[textGroupIndex].material.opacity += .01;
   else textGroupIndex++;
-  
+
   if(textGroupIndex >= textGroup.children.length) textAnimationFinish = true;
 };
 
