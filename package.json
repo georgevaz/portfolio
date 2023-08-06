@@ -13,6 +13,7 @@
   "author": "George Vazquez",
   "license": "ISC",
   "dependencies": {
+    "@tweenjs/tween.js": "^21.0.0",
     "gh-pages": "^5.0.0",
     "three": "^0.154.0"
   },

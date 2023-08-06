@@ -5,10 +5,13 @@ import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import WebGL from 'three/addons/capabilities/WebGL.js';
 import { MathUtils } from 'three';
+import TWEEN from '@tweenjs/tween.js'
 
 let camera, scene, renderer, light, controls;
 let raycaster, pointer;
 let loader, fontLoader;
+
+let sceneCube;
 
 // Colors
 const black = 0x000000;
@@ -29,6 +32,8 @@ const textGroup = new THREE.Group();
 let textGroupIndex = 0;
 let textAnimationFinish = false;
 
+// Ollie Group
+// const ollieGroup;
 const init = () => {
   if (WebGL.isWebGLAvailable()) {
     // Set Scene
@@ -42,7 +47,7 @@ const init = () => {
     
     // Set Lighting
     light = new THREE.DirectionalLight(0xffffff, 1);
-    light.position.set(1, 1, 1).normalize();
+    light.position.set(0, 1, 1).normalize();
     scene.add(light);
     
     // Set Renderer
@@ -56,7 +61,7 @@ const init = () => {
     controls.enableDamping = true;
     controls.enableZoom = false;
     controls.enablePan = false;
-
+    // clamping controls
     const rangeHor = Math.PI * 0.1;
     controls.minAzimuthAngle = -rangeHor;
     controls.maxAzimuthAngle = rangeHor;
@@ -74,7 +79,10 @@ const init = () => {
     fontLoader = new FontLoader();
 
     loadFont();
-    loadOllie();
+    // loadOllie();
+
+    sceneCube = createCube();
+
     // Shoot a raycast
     // window.addEventListener('click', onClick);
     // window.addEventListener('touchstart', onClick); // mobile
@@ -114,6 +122,8 @@ const update = () => {
     pointer.x = null;
     pointer.y = null;
   }
+  TWEEN.update();
+
   render()
 };
 
@@ -166,16 +176,21 @@ const loadOllie = () => {
     const ollie = gltf.scene;
     ollie.scale.set(.5, .5, .5);
     ollie.position.x = 0;
-    ollie.position.y = 0;
+    ollie.position.y = -2.5;
     ollie.position.z = -0.5;
     ollie.rotation.x = THREE.MathUtils.degToRad( 90 );
-
+    ollie.children.forEach((child) => {
+      console.log(child.name)
+      if(child.name === "Left_Ear"){
+        child.position.y = 0
+      }
+    })
+    console.log(ollie.children)
     scene.add(ollie);
   }, undefined, (error) => {
     console.error(error);
   });
 };
-
 
 const textAnimation = () => {
   if(textGroup.children[textGroupIndex].material.opacity < 1) textGroup.children[textGroupIndex].material.opacity += .01;
@@ -184,6 +199,38 @@ const textAnimation = () => {
   if(textGroupIndex >= textGroup.children.length) textAnimationFinish = true;
 };
 
+const createCube = () => {
+  const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+  const material = new THREE.MeshPhongMaterial( { color: grayDark } );
+  const cube = new THREE.Mesh( geometry, material );
+  geometry.center()
+  scene.add(cube);
+  return cube;
+}
+
+const tween = () => {
+  new TWEEN.Tween(sceneCube.position)
+  .to(
+    {
+    y:1,
+    }, 5000
+  )
+  .delay(1000)
+  .easing(TWEEN.Easing.Cubic.Out)
+  .start()
+  .onComplete(() => {
+    new TWEEN.Tween(sceneCube.position)
+      .to(
+        {
+          y:0
+        }, 1000
+      )
+      .easing(TWEEN.Easing.Bounce.Out)
+      .start()
+  })
+}
+
 init(); // Initialize
 render(); // Render first frame
+tween();
 update(); // Start update loop
