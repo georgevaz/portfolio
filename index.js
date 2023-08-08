@@ -36,23 +36,23 @@ const init = () => {
     // Set Scene
     scene = new THREE.Scene();
     scene.background = new THREE.Color(grayLight);
-    
+
     // Set Camera
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 5000);
     camera.position.set(0, 0, 10); // TODO accomodate for mobile by zooming out
     camera.lookAt(0, 0, 0);
-    
+
     // Set Lighting
     light = new THREE.DirectionalLight(0xffffff, 1);
     light.position.set(0, 1, 1).normalize();
     scene.add(light);
-    
+
     // Set Renderer
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     document.body.appendChild(renderer.domElement);
-  
+
     // Set Controls
     controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
@@ -66,11 +66,11 @@ const init = () => {
     const rangeVer = Math.PI / 2;
     controls.minPolarAngle = rangeVer - .1;
     controls.maxPolarAngle = rangeVer + .1;
-  
+
     // Set Raycasting
     raycaster = new THREE.Raycaster();
     pointer = new THREE.Vector2();
-  
+
     // Set Loaders
     loader = new GLTFLoader();
     fontLoader = new FontLoader();
@@ -84,11 +84,11 @@ const init = () => {
 
     // Handles resizing of window
     window.addEventListener('resize', onWindowResize);
-    
+
   } else {
     const warning = WebGL.getWebGLErrorMessage();
     document.getElementById('container').appendChild(warning);
-  
+
   };
 };
 
@@ -104,12 +104,12 @@ const update = () => {
 
   // Calculate objects intersecting the picking ray
   const intersects = raycaster.intersectObjects(scene.children);
-  if(intersects.length > 0) {
-    for (let i = 0; i < intersects.length; i ++) {
+  if (intersects.length > 0) {
+    for (let i = 0; i < intersects.length; i++) {
       // if(intersects[i].object.name === 'donutText') {
       //   loadDonut();
       // };
-      
+
     };
     // Reset pointer
     pointer.x = null;
@@ -141,7 +141,7 @@ const createText = (fontType, fontSize, xPos, yPos, textCopy) => {
   fontLoader.load(fontType, // url
     //on load
     (font) => {
-      const geometry = new TextGeometry( textCopy, {
+      const geometry = new TextGeometry(textCopy, {
         font,
         size: fontSize,
         height: 0.1,
@@ -157,7 +157,7 @@ const createText = (fontType, fontSize, xPos, yPos, textCopy) => {
       text.name = textCopy;
 
       // center the text, and then move it
-      geometry.center(); 
+      geometry.center();
       text.position.x = xPos;
       text.position.y = yPos;
       text.material.transparent = true;
@@ -183,18 +183,18 @@ const loadOllie = () => {
       ollie.position.x = 0;
       ollie.position.y = -2.5;
       ollie.position.z = -0.5;
-      ollie.rotation.x = THREE.MathUtils.degToRad( 90 );
+      ollie.rotation.x = THREE.MathUtils.degToRad(90);
       ollie.children.forEach((child) => {
         console.log(child.name)
-        if(child.name === "Left_Ear"){
+        if (child.name === "Left_Ear") {
           child.position.y = 0
         }
       })
       console.log(ollie.children)
       scene.add(ollie);
-    }, 
+    },
     // on progress
-    undefined, 
+    undefined,
     // on error
     (error) => {
       console.error(error);
@@ -203,42 +203,8 @@ const loadOllie = () => {
 };
 
 const textAnimation = () => {
-  // // there is a possible way to do this with reduce but nesting within is a TODO
-  // let tweenObj = (child) =>  
-  //   new TWEEN.Tween(child.material)
-  //   .to(
-  //     {
-  //       opacity: 1
-  //     }, 1000
-  //   )
-  //   .easing(TWEEN.Easing.Linear.None)
-  //   .start()
-
-  // let tweenArr = textGroup.children.reduce((tweenArr, child) => {
-  //   if(!tweenArr)
-  //     return (
-  //       tweenObj(child)
-  //     );
-  //   else
-  //       return (
-  //         tweenArr
-  //         .onComplete(() => {
-  //           tweenObj(child)
-  //         })
-  //     );
-  // }, 0)
-  new TWEEN.Tween(textGroup.children[0].material)
-  .to(
-    {
-      opacity: 1
-    }, 1000
-  )
-  .easing(TWEEN.Easing.Linear.None)
-  .delay(1000)
-  .start()
-  .onComplete(
-    () => {
-      new TWEEN.Tween(textGroup.children[1].material)
+  let easeChild = (child) =>
+    new TWEEN.Tween(child.material)
       .to(
         {
           opacity: 1
@@ -247,34 +213,24 @@ const textAnimation = () => {
       .easing(TWEEN.Easing.Linear.None)
       .delay(1000)
       .start()
-      .onComplete(
-        () => {
-          new TWEEN.Tween(textGroup.children[2].material)
-          .to(
-            {
-              opacity: 1
-            }, 1000
-          )
-          .easing(TWEEN.Easing.Linear.None)
-          .delay(1000)
-          .start()
-          .onComplete(
-            () => {
-              new TWEEN.Tween(textGroup.children[3].material)
-              .to(
-                {
-                  opacity: 1
-                }, 1000
-              )
-              .easing(TWEEN.Easing.Linear.None)
-              .delay(1000)
-              .start()
-            }
-          )
-        }
-      )
-    }
-  );
+
+  const recurse = (children) => {
+    if(children.length === 1) return easeChild(children[0]);
+    if(children.length < 1) return undefined;
+    easeChild(children[0])
+    .onComplete(() => recurse(children.slice(1)));
+  };
+
+  recurse(textGroup.children)
+
+  // easeChild(textGroup.children[0])
+  //   .onComplete(
+  //     () => easeChild(textGroup.children[1])
+  //       .onComplete(
+  //         () => easeChild(textGroup.children[2])
+  //           .onComplete(() => easeChild(textGroup.children[3]))
+  //       )
+  //   )
 };
 
 // const tween = () => {
