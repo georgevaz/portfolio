@@ -203,14 +203,78 @@ const loadOllie = () => {
 };
 
 const textAnimation = () => {
+  // // there is a possible way to do this with reduce but nesting within is a TODO
+  // let tweenObj = (child) =>  
+  //   new TWEEN.Tween(child.material)
+  //   .to(
+  //     {
+  //       opacity: 1
+  //     }, 1000
+  //   )
+  //   .easing(TWEEN.Easing.Linear.None)
+  //   .start()
+
+  // let tweenArr = textGroup.children.reduce((tweenArr, child) => {
+  //   if(!tweenArr)
+  //     return (
+  //       tweenObj(child)
+  //     );
+  //   else
+  //       return (
+  //         tweenArr
+  //         .onComplete(() => {
+  //           tweenObj(child)
+  //         })
+  //     );
+  // }, 0)
   new TWEEN.Tween(textGroup.children[0].material)
   .to(
     {
       opacity: 1
-    }, 5000
+    }, 1000
   )
-  .easing(TWEEN.Easing.Cubic.Out)
+  .easing(TWEEN.Easing.Linear.None)
+  .delay(1000)
   .start()
+  .onComplete(
+    () => {
+      new TWEEN.Tween(textGroup.children[1].material)
+      .to(
+        {
+          opacity: 1
+        }, 1000
+      )
+      .easing(TWEEN.Easing.Linear.None)
+      .delay(1000)
+      .start()
+      .onComplete(
+        () => {
+          new TWEEN.Tween(textGroup.children[2].material)
+          .to(
+            {
+              opacity: 1
+            }, 1000
+          )
+          .easing(TWEEN.Easing.Linear.None)
+          .delay(1000)
+          .start()
+          .onComplete(
+            () => {
+              new TWEEN.Tween(textGroup.children[3].material)
+              .to(
+                {
+                  opacity: 1
+                }, 1000
+              )
+              .easing(TWEEN.Easing.Linear.None)
+              .delay(1000)
+              .start()
+            }
+          )
+        }
+      )
+    }
+  );
 };
 
 // const tween = () => {
@@ -237,8 +301,10 @@ const textAnimation = () => {
 
 init(); // Initialize
 render(); // Render first frame
+
 // Needs to wait for fonts to load, 1 second seems to suffice
 setTimeout(() => {
   textAnimation();
 }, 1000);
+
 update(); // Start update loop
