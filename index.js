@@ -11,8 +11,6 @@ let camera, scene, renderer, light, controls;
 let raycaster, pointer;
 let loader, fontLoader;
 
-let sceneCube;
-
 // Colors
 const black = 0x000000;
 const white = 0xffffff;
@@ -29,11 +27,10 @@ const h2 = 0.2;
 
 // Text Group
 const textGroup = new THREE.Group();
-let textGroupIndex = 0;
-let textAnimationFinish = false;
 
 // Ollie Group
 // const ollieGroup;
+
 const init = () => {
   if (WebGL.isWebGLAvailable()) {
     // Set Scene
@@ -81,8 +78,6 @@ const init = () => {
     loadFont();
     // loadOllie();
 
-    sceneCube = createCube();
-
     // Shoot a raycast
     // window.addEventListener('click', onClick);
     // window.addEventListener('touchstart', onClick); // mobile
@@ -107,8 +102,6 @@ const update = () => {
   // Update the picking ray with the camera and pointer position
   raycaster.setFromCamera(pointer, camera);
 
-  if(!textAnimationFinish && textGroup.children[0]) textAnimation(); // this checks to see if the text is properly loaded before animating.
-
   // Calculate objects intersecting the picking ray
   const intersects = raycaster.intersectObjects(scene.children);
   if(intersects.length > 0) {
@@ -122,6 +115,7 @@ const update = () => {
     pointer.x = null;
     pointer.y = null;
   }
+
   TWEEN.update();
 
   render()
@@ -144,93 +138,107 @@ const loadFont = () => {
 };
 
 const createText = (fontType, fontSize, xPos, yPos, textCopy) => {
-  fontLoader.load(fontType, (font) => {
-    const geometry = new TextGeometry( textCopy, {
-      font,
-      size: fontSize,
-      height: 0.1,
-      curveSegments: 12,
-      bevelEnabled: true,
-      bevelThickness: .01,
-      bevelSize: .01,
-      bevelOffset: 0,
-      bevelSegments: 5
-    });
-    const material = new THREE.MeshPhongMaterial({ color: grayDark });
-    const text = new THREE.Mesh(geometry, material);
-    text.name = textCopy;
+  fontLoader.load(fontType, // url
+    //on load
+    (font) => {
+      const geometry = new TextGeometry( textCopy, {
+        font,
+        size: fontSize,
+        height: 0.1,
+        curveSegments: 12,
+        bevelEnabled: true,
+        bevelThickness: .01,
+        bevelSize: .01,
+        bevelOffset: 0,
+        bevelSegments: 5
+      });
+      const material = new THREE.MeshPhongMaterial({ color: grayDark });
+      const text = new THREE.Mesh(geometry, material);
+      text.name = textCopy;
 
-    // center the text, and then move it
-    geometry.center(); 
-    text.position.x = xPos;
-    text.position.y = yPos;
-    text.material.transparent = true;
-    text.material.opacity = 0.0;
+      // center the text, and then move it
+      geometry.center(); 
+      text.position.x = xPos;
+      text.position.y = yPos;
+      text.material.transparent = true;
+      text.material.opacity = 0.0;
 
-    textGroup.add(text);
-  });
+      textGroup.add(text);
+    },
+    // on progress
+    undefined,
+    // on error,
+    (error) => {
+      console.log(error)
+    },
+  );
 };
 
 const loadOllie = () => {
-  loader.load('./src/ollie.glb', (gltf) => {
-    const ollie = gltf.scene;
-    ollie.scale.set(.5, .5, .5);
-    ollie.position.x = 0;
-    ollie.position.y = -2.5;
-    ollie.position.z = -0.5;
-    ollie.rotation.x = THREE.MathUtils.degToRad( 90 );
-    ollie.children.forEach((child) => {
-      console.log(child.name)
-      if(child.name === "Left_Ear"){
-        child.position.y = 0
-      }
-    })
-    console.log(ollie.children)
-    scene.add(ollie);
-  }, undefined, (error) => {
-    console.error(error);
-  });
+  loader.load('./src/ollie.glb', // url
+    // on load
+    (gltf) => {
+      const ollie = gltf.scene;
+      ollie.scale.set(.5, .5, .5);
+      ollie.position.x = 0;
+      ollie.position.y = -2.5;
+      ollie.position.z = -0.5;
+      ollie.rotation.x = THREE.MathUtils.degToRad( 90 );
+      ollie.children.forEach((child) => {
+        console.log(child.name)
+        if(child.name === "Left_Ear"){
+          child.position.y = 0
+        }
+      })
+      console.log(ollie.children)
+      scene.add(ollie);
+    }, 
+    // on progress
+    undefined, 
+    // on error
+    (error) => {
+      console.error(error);
+    },
+  );
 };
 
 const textAnimation = () => {
-  if(textGroup.children[textGroupIndex].material.opacity < 1) textGroup.children[textGroupIndex].material.opacity += .01;
-  else textGroupIndex++;
-
-  if(textGroupIndex >= textGroup.children.length) textAnimationFinish = true;
-};
-
-const createCube = () => {
-  const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-  const material = new THREE.MeshPhongMaterial( { color: grayDark } );
-  const cube = new THREE.Mesh( geometry, material );
-  geometry.center()
-  scene.add(cube);
-  return cube;
-}
-
-const tween = () => {
-  new TWEEN.Tween(sceneCube.position)
+  new TWEEN.Tween(textGroup.children[0].material)
   .to(
     {
-    y:1,
+      opacity: 1
     }, 5000
   )
-  .delay(1000)
   .easing(TWEEN.Easing.Cubic.Out)
   .start()
-  .onComplete(() => {
-    new TWEEN.Tween(sceneCube.position)
-      .to(
-        {
-          y:0
-        }, 1000
-      )
-      .easing(TWEEN.Easing.Bounce.Out)
-      .start()
-  })
-}
+};
+
+// const tween = () => {
+//   new TWEEN.Tween(sceneCube.position)
+//   .to(
+//     {
+//     y:1,
+//     }, 5000
+//   )
+//   .delay(1000)
+//   .easing(TWEEN.Easing.Cubic.Out)
+//   .start()
+//   .onComplete(() => {
+//     new TWEEN.Tween(sceneCube.position)
+//       .to(
+//         {
+//           y:0
+//         }, 1000
+//       )
+//       .easing(TWEEN.Easing.Bounce.Out)
+//       .start()
+//   })
+// }
 
 init(); // Initialize
 render(); // Render first frame
-tween();
+// Needs to wait for fonts to load, 1 second seems to suffice
+setTimeout(() => {
+  textAnimation();
+}, 1000);
 update(); // Start update loop
