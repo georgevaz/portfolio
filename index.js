@@ -29,7 +29,11 @@ const h2 = 0.2;
 const textGroup = new THREE.Group();
 
 // Ollie Group
-// const ollieGroup;
+const ollieGroup = new THREE.Group();
+const ollieLeftEar = new THREE.Group();
+const ollieRightEar = new THREE.Group();
+const ollieBody = new THREE.Group();
+const table = new THREE.Group();
 
 const init = () => {
   if (WebGL.isWebGLAvailable()) {
@@ -76,7 +80,7 @@ const init = () => {
     fontLoader = new FontLoader();
 
     loadFont();
-    // loadOllie();
+    loadOllie();
 
     // Shoot a raycast
     // window.addEventListener('click', onClick);
@@ -160,6 +164,7 @@ const createText = (fontType, fontSize, xPos, yPos, textCopy) => {
       geometry.center();
       text.position.x = xPos;
       text.position.y = yPos;
+
       text.material.transparent = true;
       text.material.opacity = 0.0;
 
@@ -179,18 +184,47 @@ const loadOllie = () => {
     // on load
     (gltf) => {
       const ollie = gltf.scene;
-      ollie.scale.set(.5, .5, .5);
-      ollie.position.x = 0;
-      ollie.position.y = -2.5;
-      ollie.position.z = -0.5;
-      ollie.rotation.x = THREE.MathUtils.degToRad(90);
-      ollie.children.forEach((child) => {
-        console.log(child.name)
-        if (child.name === "Left_Ear") {
-          child.position.y = 0
-        }
-      })
-      console.log(ollie.children)
+      // group setup
+      ollieLeftEar.add(ollie.getObjectByName("Left_Ear"));
+      ollieLeftEar.add(ollie.getObjectByName("Left_Ear_Fill"));
+
+      ollieRightEar.add(ollie.getObjectByName("Right_Ear001"));
+      ollieRightEar.add(ollie.getObjectByName("Right_Ear_Fill"));
+
+      ollieBody.add(ollie.getObjectByName("Nose"));
+      ollieBody.add(ollie.getObjectByName("Moustache"));
+      ollieBody.add(ollie.getObjectByName("Left_Eye"));
+      ollieBody.add(ollie.getObjectByName("Left_Eyebrow"));
+      ollieBody.add(ollie.getObjectByName("Left_Eyebrow_Fill"));
+      ollieBody.add(ollie.getObjectByName("Right_Eye"));
+      ollieBody.add(ollie.getObjectByName("Right_Eyebrow"));
+      ollieBody.add(ollie.getObjectByName("Right_Eyebrow_Fill"));
+      ollieBody.add(ollie.getObjectByName("Left_Paw"));
+      ollieBody.add(ollie.getObjectByName("Right_Paw"));
+      ollieBody.add(ollie.getObjectByName("Curve014"));
+      ollieBody.add(ollie.getObjectByName("Curve015"));
+      ollieBody.add(ollie.getObjectByName("Curve016"));
+      ollieBody.add(ollie.getObjectByName("Left_Paw_Fill"));
+      ollieBody.add(ollie.getObjectByName("Right_Paw_Fill"));
+      ollieBody.add(ollie.getObjectByName("Head_Background"));
+      ollieBody.add(ollie.getObjectByName("Body_Background"));
+      ollieBody.add(ollie.getObjectByName("Beard"));
+      ollieBody.add(ollie.getObjectByName("Beard_Fill001"));
+      
+      table.add(ollie.getObjectByName("Table"));
+
+      ollieGroup.add(ollieLeftEar);
+      ollieGroup.add(ollieRightEar);
+      ollieGroup.add(ollieBody);
+      ollieGroup.add(table);
+
+      ollieGroup.scale.set(.5, .5, .5);
+      ollieGroup.position.x = 0;
+      ollieGroup.position.y = -2.5;
+      ollieGroup.position.z = -0.5;
+      ollieGroup.rotation.x = THREE.MathUtils.degToRad(90);
+
+      scene.add(ollieGroup)
       scene.add(ollie);
     },
     // on progress
