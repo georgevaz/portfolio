@@ -135,7 +135,7 @@ const onWindowResize = (e) => {
 const loadFont = () => {
   createText(stratos, h1, -3.5, 3.5, "Hi, I'm George");
   createText(stratos, h2, -3.68, 3, "I’m a software engineer");
-  createText(stratos, h1, 3, -3, "... and this is Ollie!");
+  createText(stratos, h1, 3.23, -3, "and this is Ollie!");
   createText(stratos, h2, 1.95, -3.5, "he’s a dog");
 
   scene.add(textGroup)
@@ -213,19 +213,53 @@ const loadOllie = () => {
       
       table.add(ollie.getObjectByName("Table"));
 
+      const geometry = new THREE.BoxGeometry( 2.8, 3, .3 );
+      const material = new THREE.MeshBasicMaterial( { color: grayLight } );
+      const tableBottom = new THREE.Mesh( geometry, material );
+      tableBottom.position.x = -.35;
+      tableBottom.position.y = -3.97;
+      tableBottom.position.z = -.3;
+      scene.add(tableBottom);
+
       ollieGroup.add(ollieLeftEar);
       ollieGroup.add(ollieRightEar);
       ollieGroup.add(ollieBody);
-      ollieGroup.add(table);
 
+      table.scale.set(.5, .5, .5);
       ollieGroup.scale.set(.5, .5, .5);
-      ollieGroup.position.x = 0;
-      ollieGroup.position.y = -2.5;
-      ollieGroup.position.z = -0.5;
-      ollieGroup.rotation.x = THREE.MathUtils.degToRad(90);
 
+      ollieGroup.position.x = 0;
+      ollieGroup.position.y = -4.9;
+      ollieGroup.position.z = -0.5;
+
+      table.position.x = 0;
+      table.position.y = -2.5;
+      table.position.z = -0.5;
+      
+      ollieGroup.rotation.x = THREE.MathUtils.degToRad(90);
+      table.rotation.x = THREE.MathUtils.degToRad(90);
+
+      scene.add(table)
       scene.add(ollieGroup)
-      scene.add(ollie);
+
+      new TWEEN.Tween(ollieGroup.position)
+      .to(
+        {
+          y: -2.43
+        }, 1000
+      )
+      .easing(TWEEN.Easing.Cubic.Out)
+      .start()
+      .onComplete(() => {
+        new TWEEN.Tween(ollieGroup.position)
+        .to(
+          {
+          y: -2.5
+          }, 500
+        )
+        .easing(TWEEN.Easing.Bounce.Out)
+        .start()
+      });
     },
     // on progress
     undefined,
