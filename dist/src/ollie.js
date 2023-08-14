@@ -5,7 +5,7 @@ import TWEEN from '@tweenjs/tween.js'
 import colors from './_colors.js'
 
 // Colors
-const { white, grayDark, gray, grayLight } = colors
+const { black, white, grayDark, gray, grayLight } = colors
 
 // Loader
 const loader = new GLTFLoader();
@@ -108,44 +108,13 @@ const loadOllie = () => {
     },
   );
 };
-
-const ollieAnimation = () => {
-  new TWEEN.Tween(olliePaws.position)
-  .to(
-    {
-      z: 0.15
-    }, 1000
-  )
-  .easing(TWEEN.Easing.Cubic.Out)
-  .start()
-  .onComplete(() => {
-    new TWEEN.Tween(ollieBody.position)
-    .to(
-      {
-        z: 0.05
-      }, 1000
-    )
-    .delay(500)
-    .easing(TWEEN.Easing.Cubic.Out)
-    .start()
-    .onComplete(() => {
-      new TWEEN.Tween(ollieBody.position)
-      .to(
-        {
-        z: 0.15
-        }, 500
-      )
-      .easing(TWEEN.Easing.Bounce.Out)
-      .start()
-    });  
-  });
-};
   
 loadOllie();
 
 export default {
   ollieGroup,
+  olliePaws,
+  ollieBody,
   table,
-  tableBottom,
-  ollieAnimation
+  tableBottom
 }

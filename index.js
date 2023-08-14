@@ -6,15 +6,19 @@ import TWEEN from '@tweenjs/tween.js'
 import colors from './public/src/_colors.js'
 import text from './public/src/text.js'
 import ollie from './public/src/ollie.js'
+import animations from './public/src/animations.js'
 
 // Colors
-const { white, grayDark, gray, grayLight } = colors
+const { black, white, grayDark, gray, grayLight } = colors
 
 // Text
-const { textGroup, textAnimation } = text;
+const { textGroup } = text;
 
 // Ollie
-const { ollieGroup, table, tableBottom, ollieAnimation } = ollie;
+const { ollieGroup, table, tableBottom } = ollie;
+
+// Animation
+const { animation } = animations;
 
 let camera, scene, renderer, light, controls;
 let raycaster, pointer;
@@ -116,33 +120,7 @@ init(); // Initialize
 // Needs to wait for fonts to load first, 1 second seems to suffice
 // Always errors out unless it starts 5-6 frames after init
 setTimeout(() => {
-  textAnimation();
-  ollieAnimation();
+  animation();
 }, 1000);
 
 update(); // Start update loop
-
-
-// REFERENCES (remove later)
-
-// const tween = () => {
-//   new TWEEN.Tween(sceneCube.position)
-//   .to(
-//     {
-//     y:1,
-//     }, 5000
-//   )
-//   .delay(1000)
-//   .easing(TWEEN.Easing.Cubic.Out)
-//   .start()
-//   .onComplete(() => {
-//     new TWEEN.Tween(sceneCube.position)
-//       .to(
-//         {
-//           y:0
-//         }, 1000
-//       )
-//       .easing(TWEEN.Easing.Bounce.Out)
-//       .start()
-//   })
-// }

@@ -6,7 +6,7 @@ import TWEEN from '@tweenjs/tween.js'
 import colors from './_colors.js'
 
 // Colors
-const { white, grayDark, gray, grayLight } = colors
+const { black, white, grayDark, gray, grayLight } = colors
 
 // Font Loader
 const fontLoader = new FontLoader();
@@ -43,7 +43,7 @@ const createText = (fontType, fontSize, xPos, yPos, textCopy) => {
         bevelOffset: 0,
         bevelSegments: 5
       });
-      const material = new THREE.MeshPhongMaterial({ color: colors.grayDark });
+      const material = new THREE.MeshPhongMaterial({ color: grayDark });
       const text = new THREE.Mesh(geometry, material);
       text.name = textCopy;
 
@@ -66,40 +66,8 @@ const createText = (fontType, fontSize, xPos, yPos, textCopy) => {
   );
 };
 
-const textAnimation = () => {
-  let easeChild = (child) =>
-    new TWEEN.Tween(child.material)
-      .to(
-        {
-          opacity: 1
-        }, 1000
-      )
-      .easing(TWEEN.Easing.Linear.None)
-      .delay(500)
-      .start()
-
-  const recurse = (children) => {
-    if(children.length === 1) return easeChild(children[0]);
-    if(children.length < 1) return undefined;
-    easeChild(children[0])
-    .onComplete(() => recurse(children.slice(1)));
-  };
-
-  recurse(textGroup.children)
-
-  // easeChild(textGroup.children[0])
-  //   .onComplete(
-  //     () => easeChild(textGroup.children[1])
-  //       .onComplete(
-  //         () => easeChild(textGroup.children[2])
-  //           .onComplete(() => easeChild(textGroup.children[3]))
-  //       )
-  //   )
-};
-
 loadFont();
 
 export default {
-  textGroup,
-  textAnimation
+  textGroup
 }
