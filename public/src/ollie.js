@@ -14,11 +14,12 @@ const loader = new GLTFLoader();
 const ollieGroup = new THREE.Group();
 const ollieLeftEar = new THREE.Group();
 const ollieRightEar = new THREE.Group();
+const olliePaws = new THREE.Group();
 const ollieBody = new THREE.Group();
 const table = new THREE.Group();
 
 // This box gives an illusion of Ollie not appearing until animation begins
-const geometry = new THREE.BoxGeometry( 2.8, 3, .3 );
+const geometry = new THREE.BoxGeometry( 2.9, 3, .4 );
 const material = new THREE.MeshBasicMaterial( { color: colors.grayLight } );
 const tableBottom = new THREE.Mesh( geometry, material );
 tableBottom.position.x = -.35;
@@ -42,6 +43,13 @@ const loadOllie = () => {
         ollie.getObjectByName("Right_Ear_Fill")
       );
 
+      olliePaws.add(
+        ollie.getObjectByName("Left_Paw"),
+        ollie.getObjectByName("Right_Paw"),
+        ollie.getObjectByName("Left_Paw_Fill"),
+        ollie.getObjectByName("Right_Paw_Fill")
+      );
+
       ollieBody.add(
         ollie.getObjectByName("Nose"),
         ollie.getObjectByName("Moustache"),
@@ -51,24 +59,21 @@ const loadOllie = () => {
         ollie.getObjectByName("Right_Eye"),
         ollie.getObjectByName("Right_Eyebrow"),
         ollie.getObjectByName("Right_Eyebrow_Fill"),
-        ollie.getObjectByName("Left_Paw"),
-        ollie.getObjectByName("Right_Paw"),
         ollie.getObjectByName("Curve014"),
         ollie.getObjectByName("Curve015"),
         ollie.getObjectByName("Curve016"),
-        ollie.getObjectByName("Left_Paw_Fill"),
-        ollie.getObjectByName("Right_Paw_Fill"),
         ollie.getObjectByName("Head_Background"),
         ollie.getObjectByName("Body_Background"),
         ollie.getObjectByName("Beard"),
-        ollie.getObjectByName("Beard_Fill001")
+        ollie.getObjectByName("Beard_Fill001"),
+        ollieLeftEar,
+        ollieRightEar
       );
       
       table.add(ollie.getObjectByName("Table"));
 
       ollieGroup.add(
-        ollieLeftEar,
-        ollieRightEar,
+        olliePaws,
         ollieBody
       );
 
@@ -76,16 +81,24 @@ const loadOllie = () => {
       ollieGroup.scale.set(.5, .5, .5);
 
       ollieGroup.position.x = 0;
-      ollieGroup.position.y = -4.9;
+      ollieGroup.position.y = -2.43; // original y pos
       ollieGroup.position.z = -0.5;
 
       table.position.x = 0;
       table.position.y = -2.5;
       table.position.z = -0.5;
       
+      // Needs to be rotated because of how the file imported
       ollieGroup.rotation.x = THREE.MathUtils.degToRad(90);
       table.rotation.x = THREE.MathUtils.degToRad(90);
+      
+      // Set the parts lower to appear out of scene
+      // It is z pos and instead of y pos because it's based on local positioning within the main group and not the global (scene) positioning
+      ollieBody.position.z = 5;
+      olliePaws.position.z = 5;
 
+      // ollieBody clips a bit with olliePaws. Setting it back a little bit to mask that happening
+      ollieBody.position.y = -.17;
     },
     // on progress
     undefined,
@@ -97,27 +110,37 @@ const loadOllie = () => {
 };
 
 const ollieAnimation = () => {
-  new TWEEN.Tween(ollieGroup.position)
+  new TWEEN.Tween(olliePaws.position)
   .to(
     {
-      y: -2.43
+      z: 0.15
     }, 1000
   )
-  .delay(2000)
   .easing(TWEEN.Easing.Cubic.Out)
   .start()
   .onComplete(() => {
-    new TWEEN.Tween(ollieGroup.position)
+    new TWEEN.Tween(ollieBody.position)
     .to(
       {
-      y: -2.5
-      }, 500
+        z: 0.05
+      }, 1000
     )
-    .easing(TWEEN.Easing.Bounce.Out)
+    .delay(500)
+    .easing(TWEEN.Easing.Cubic.Out)
     .start()
+    .onComplete(() => {
+      new TWEEN.Tween(ollieBody.position)
+      .to(
+        {
+        z: 0.15
+        }, 500
+      )
+      .easing(TWEEN.Easing.Bounce.Out)
+      .start()
+    });  
   });
 };
-
+  
 loadOllie();
 
 export default {
