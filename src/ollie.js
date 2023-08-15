@@ -20,7 +20,7 @@ const table = new THREE.Group();
 
 // This box gives an illusion of Ollie not appearing until animation begins
 const geometry = new THREE.BoxGeometry( 2.9, 3, .4 );
-const material = new THREE.MeshBasicMaterial( { color: colors.grayLight } );
+const material = new THREE.MeshBasicMaterial( { color: grayLight } );
 const tableBottom = new THREE.Mesh( geometry, material );
 tableBottom.position.x = -.35;
 tableBottom.position.y = -3.97;
@@ -94,11 +94,16 @@ const loadOllie = () => {
       
       // Set the parts lower to appear out of scene
       // It is z pos and instead of y pos because it's based on local positioning within the main group and not the global (scene) positioning
-      ollieBody.position.z = 5;
-      olliePaws.position.z = 5;
+      ollieBody.position.z = 5.15;
+      olliePaws.position.z = 5.15;
 
       // ollieBody clips a bit with olliePaws. Setting it back a little bit to mask that happening
       ollieBody.position.y = -.17;
+      
+      // Resetting the table material in order to add transparency and tween its opacity later
+      table.children[0].material = new THREE.MeshStandardMaterial({ color: black })
+      table.children[0].material.transparent = true
+      table.children[0].material.opacity = 0
     },
     // on progress
     undefined,
