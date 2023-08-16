@@ -31,7 +31,7 @@ const init = () => {
 
     // Set Camera
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 5000);
-    camera.position.set(0, 0, 10); // TODO accomodate for mobile by zooming out
+    camera.position.set(0, 0, 120 / window.innerWidth * 100); // default position for window width of 1200 should be around 10
     camera.lookAt(0, 0, 0);
 
     // Set Lighting
@@ -111,7 +111,7 @@ const update = () => {
 const onWindowResize = (e) => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
-
+  camera.position.z = 120 / window.innerWidth * 100;
   renderer.setSize(window.innerWidth, window.innerHeight);
 };
 

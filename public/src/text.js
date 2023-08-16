@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
-import TWEEN from '@tweenjs/tween.js'
 
 import colors from './_colors.js'
 

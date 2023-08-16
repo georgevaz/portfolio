@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import TWEEN from '@tweenjs/tween.js'
 
 import colors from './_colors.js'
 
@@ -79,7 +78,7 @@ const loadOllie = () => {
 
       table.scale.set(.5, .5, .5);
       ollieGroup.scale.set(.5, .5, .5);
-
+      
       ollieGroup.position.x = 0;
       ollieGroup.position.y = -2.43; // original y pos
       ollieGroup.position.z = -0.5;
