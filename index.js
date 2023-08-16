@@ -6,6 +6,7 @@ import TWEEN from '@tweenjs/tween.js'
 import colors from './public/src/_colors.js'
 import text from './public/src/text.js'
 import ollie from './public/src/ollie.js'
+import bubble from './public/src/bubble.js'
 import animations from './public/src/animations.js'
 
 // Colors
@@ -16,6 +17,9 @@ const { textGroup } = text;
 
 // Ollie
 const { ollieGroup, table, tableBottom } = ollie;
+
+// Bubble
+const { bubbleGroup } = bubble;
 
 // Animation
 const { animation } = animations;
@@ -50,6 +54,7 @@ const init = () => {
     controls.enableDamping = true;
     controls.enableZoom = false;
     controls.enablePan = false;
+
     // clamping controls
     const rangeHor = Math.PI * 0.1;
     controls.minAzimuthAngle = -rangeHor;
@@ -63,7 +68,7 @@ const init = () => {
     raycaster = new THREE.Raycaster();
     pointer = new THREE.Vector2();
 
-    scene.add(textGroup, ollieGroup, table, tableBottom)
+    scene.add(textGroup, ollieGroup, table, tableBottom, bubbleGroup)
 
     // Shoot a raycast
     // window.addEventListener('click', onClick);
@@ -102,7 +107,6 @@ const update = () => {
     pointer.x = null;
     pointer.y = null;
   }
-
   TWEEN.update();
 
   render()
