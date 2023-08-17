@@ -100,9 +100,9 @@ const loadOllie = () => {
       ollieBody.position.y = -.17;
       
       // Resetting the table material in order to add transparency and tween its opacity later
-      table.children[0].material = new THREE.MeshStandardMaterial({ color: black })
-      table.children[0].material.transparent = true
-      table.children[0].material.opacity = 0
+      table.children[0].material = new THREE.MeshStandardMaterial({ color: black });
+      table.children[0].material.transparent = true;
+      table.children[0].material.opacity = 0;
     },
     // on progress
     undefined,
