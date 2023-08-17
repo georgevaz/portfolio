@@ -19,7 +19,7 @@ const { textGroup } = text;
 const { ollieGroup, table, tableBottom } = ollie;
 
 // Bubble
-const { bubbleGroup } = bubble;
+const { bubbles, populateBubbles } = bubble;
 
 // Animation
 const { animation } = animations;
@@ -68,7 +68,8 @@ const init = () => {
     raycaster = new THREE.Raycaster();
     pointer = new THREE.Vector2();
 
-    scene.add(textGroup, ollieGroup, table, tableBottom, bubbleGroup)
+    populateBubbles(1);
+    scene.add(textGroup, ollieGroup, table, tableBottom, ...bubbles)
 
     // Shoot a raycast
     // window.addEventListener('click', onClick);

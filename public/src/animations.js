@@ -11,7 +11,11 @@ const { textGroup } = text;
 const { olliePaws, ollieBody, table } = ollie;
 
 // Bubble
-const { bubbleGroup } = bubble;
+const { bubbles } = bubble;
+  // bubbles[0] = bubbleGroup
+  // bubbles[0].children = bigBubbleGroup, smallBubble1Group, smallBubble2Group
+  // bubbles[0].children[0].children = bigBubble, bigBubbleGroup
+  // bubbles[0].children[0].children[0] = bigBubble
 
 const tweenObject = (property, propChange, timing, easeType, delay=0) => 
   new TWEEN.Tween(property)
@@ -20,18 +24,17 @@ const tweenObject = (property, propChange, timing, easeType, delay=0) =>
     .delay(delay)
     .start()
 
-const recursiveTween = (children) => {
-  if(children.length === 1) return easeChild(children[0]);
-  if(children.length < 1) return undefined;
-  tweenObject(children[0])
-  .onComplete(() => recursiveTween(children.slice(1)));
-};
+// const recursiveTween = (children, ...props) => {
+//   if(children.length === 1) return tweenObject(children[0], ...props);
+//   if(children.length < 1) return undefined;
+//   tweenObject(children[0], ...props)
+//   .onComplete(() => recursiveTween(children.slice(1), ...props));
+// };
 
 const animation = () => {
   const textTweenProp = {
     opacity: 1
   };
-  // tweenObject(bubbleGroup.children[0].children[0].material, textTweenProp, 1000, TWEEN.Easing.Linear.None, 500)
 
   tweenObject(textGroup.children[0].material, textTweenProp, 1000, TWEEN.Easing.Linear.None, 500)
     .onComplete(
@@ -50,8 +53,20 @@ const animation = () => {
                   () => tweenObject(textGroup.children[3].material, textTweenProp, 1000, TWEEN.Easing.Linear.None, 500)
                   .onComplete(
                     () => {
-                    tweenObject(bubbleGroup.children[0].children[0].material, textTweenProp, 1000, TWEEN.Easing.Linear.None, 500)
-                    tweenObject(bubbleGroup.children[0].children[1].material, textTweenProp, 1000, TWEEN.Easing.Linear.None, 500)
+                      tweenObject(bubbles[0].children[1].children[0].material, textTweenProp, 500, TWEEN.Easing.Linear.None, 500)
+                      tweenObject(bubbles[0].children[1].children[1].material, textTweenProp, 500, TWEEN.Easing.Linear.None, 500)
+                      .onComplete(
+                        () => {
+                          tweenObject(bubbles[0].children[2].children[0].material, textTweenProp, 500, TWEEN.Easing.Linear.None, 500)
+                          tweenObject(bubbles[0].children[2].children[1].material, textTweenProp, 500, TWEEN.Easing.Linear.None, 500)
+                          .onComplete(
+                            () => {
+                              tweenObject(bubbles[0].children[0].children[0].material, textTweenProp, 500, TWEEN.Easing.Linear.None, 500)
+                              tweenObject(bubbles[0].children[0].children[1].material, textTweenProp, 500, TWEEN.Easing.Linear.None, 500)
+                            }
+                          )
+                        }
+                      )
                     }
                   )
                 )
