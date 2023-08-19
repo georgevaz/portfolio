@@ -68,7 +68,7 @@ const init = () => {
     raycaster = new THREE.Raycaster();
     pointer = new THREE.Vector2();
 
-    populateBubbles(1);
+    populateBubbles(3);
     scene.add(textGroup, ollieGroup, table, tableBottom, ...bubbles);
 
     // Set event listeners

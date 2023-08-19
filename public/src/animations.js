@@ -52,22 +52,22 @@ const animation = () => {
                 .onComplete(
                   () => tweenObject(textGroup.children[3].material, textTweenProp, 1000, TWEEN.Easing.Linear.None, 500)
                   .onComplete(
-                    () => {
-                      tweenObject(bubbles[0].children[1].children[0].material, textTweenProp, 500, TWEEN.Easing.Linear.None, 500)
-                      tweenObject(bubbles[0].children[1].children[1].material, textTweenProp, 500, TWEEN.Easing.Linear.None, 500)
-                      .onComplete(
-                        () => {
-                          tweenObject(bubbles[0].children[2].children[0].material, textTweenProp, 500, TWEEN.Easing.Linear.None, 500)
-                          tweenObject(bubbles[0].children[2].children[1].material, textTweenProp, 500, TWEEN.Easing.Linear.None, 500)
-                          .onComplete(
-                            () => {
-                              tweenObject(bubbles[0].children[0].children[0].material, textTweenProp, 500, TWEEN.Easing.Linear.None, 500)
-                              tweenObject(bubbles[0].children[0].children[1].material, textTweenProp, 500, TWEEN.Easing.Linear.None, 500)
-                            }
-                          )
-                        }
-                      )
-                    }
+                    // () => {
+                    //   tweenObject(bubbles[0].children[1].children[0].material, textTweenProp, 500, TWEEN.Easing.Linear.None, 500)
+                    //   tweenObject(bubbles[0].children[1].children[1].material, textTweenProp, 500, TWEEN.Easing.Linear.None, 500)
+                    //   .onComplete(
+                    //     () => {
+                    //       tweenObject(bubbles[0].children[2].children[0].material, textTweenProp, 500, TWEEN.Easing.Linear.None, 500)
+                    //       tweenObject(bubbles[0].children[2].children[1].material, textTweenProp, 500, TWEEN.Easing.Linear.None, 500)
+                    //       .onComplete(
+                    //         () => {
+                    //           tweenObject(bubbles[0].children[0].children[0].material, textTweenProp, 500, TWEEN.Easing.Linear.None, 500)
+                    //           tweenObject(bubbles[0].children[0].children[1].material, textTweenProp, 500, TWEEN.Easing.Linear.None, 500)
+                    //         }
+                    //       )
+                    //     }
+                    //   )
+                    // }
                   )
                 )
               )
