@@ -13,6 +13,8 @@ const loader = new GLTFLoader();
 const ollieGroup = new THREE.Group();
 const ollieLeftEar = new THREE.Group();
 const ollieRightEar = new THREE.Group();
+const ollieLeftEye = new THREE.Group();
+const ollieRightEye = new THREE.Group();
 const olliePaws = new THREE.Group();
 const ollieBody = new THREE.Group();
 const table = new THREE.Group();
@@ -24,13 +26,12 @@ const tableBottom = new THREE.Mesh( geometry, material );
 tableBottom.position.x = -.35;
 tableBottom.position.y = -3.97;
 tableBottom.position.z = -.3;
-
 const loadOllie = () => {
   loader.load('./assets/ollie.glb', // url
     // on load
     (gltf) => {
       const ollie = gltf.scene;
-
+      
       // group setup
       ollieLeftEar.add(
         ollie.getObjectByName("Left_Ear"), 
@@ -49,13 +50,19 @@ const loadOllie = () => {
         ollie.getObjectByName("Right_Paw_Fill")
       );
 
+      ollieLeftEye.add(
+        ollie.getObjectByName("Left_Eye")
+      );
+
+      ollieRightEye.add(
+        ollie.getObjectByName("Right_Eye")
+      );
+
       ollieBody.add(
         ollie.getObjectByName("Nose"),
         ollie.getObjectByName("Moustache"),
-        ollie.getObjectByName("Left_Eye"),
         ollie.getObjectByName("Left_Eyebrow"),
         ollie.getObjectByName("Left_Eyebrow_Fill"),
-        ollie.getObjectByName("Right_Eye"),
         ollie.getObjectByName("Right_Eyebrow"),
         ollie.getObjectByName("Right_Eyebrow_Fill"),
         ollie.getObjectByName("Curve014"),
@@ -66,7 +73,9 @@ const loadOllie = () => {
         ollie.getObjectByName("Beard"),
         ollie.getObjectByName("Beard_Fill001"),
         ollieLeftEar,
-        ollieRightEar
+        ollieRightEar,
+        ollieLeftEye,
+        ollieRightEye
       );
       
       table.add(ollie.getObjectByName("Table"));
@@ -112,12 +121,14 @@ const loadOllie = () => {
     },
   );
 };
-  
+
 loadOllie();
 
 export default {
   ollieGroup,
   olliePaws,
+  ollieLeftEye,
+  ollieRightEye,
   ollieBody,
   table,
   tableBottom

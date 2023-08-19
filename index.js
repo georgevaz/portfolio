@@ -16,7 +16,7 @@ const { black, white, grayDark, gray, grayLight } = colors
 const { textGroup } = text;
 
 // Ollie
-const { ollieGroup, table, tableBottom } = ollie;
+const { ollieGroup, ollieLeftEye, ollieRightEye, table, tableBottom } = ollie;
 
 // Bubble
 const { bubbles, populateBubbles } = bubble;
@@ -55,7 +55,7 @@ const init = () => {
     controls.enableZoom = false;
     controls.enablePan = false;
 
-    // clamping controls
+    // Clamp controls
     const rangeHor = Math.PI * 0.1;
     controls.minAzimuthAngle = -rangeHor;
     controls.maxAzimuthAngle = rangeHor;
@@ -69,11 +69,13 @@ const init = () => {
     pointer = new THREE.Vector2();
 
     populateBubbles(1);
-    scene.add(textGroup, ollieGroup, table, tableBottom, ...bubbles)
+    scene.add(textGroup, ollieGroup, table, tableBottom, ...bubbles);
 
-    // Shoot a raycast
-    // window.addEventListener('click', onClick);
-    // window.addEventListener('touchstart', onClick); // mobile
+    // Set event listeners
+    window.addEventListener('click', shootRaycast);
+    window.addEventListener('touchstart', shootRaycast); // mobile
+    
+    // window.addEventListener('mousemove', moveEyes);
 
     // Handles resizing of window
     window.addEventListener('resize', onWindowResize);
@@ -92,33 +94,67 @@ const render = () => renderer.render(scene, camera);
 const update = () => {
   requestAnimationFrame(update);
   controls.update()
-  // Update the picking ray with the camera and pointer position
-  raycaster.setFromCamera(pointer, camera);
-
-  // Calculate objects intersecting the picking ray
-  const intersects = raycaster.intersectObjects(scene.children);
-  if (intersects.length > 0) {
-    for (let i = 0; i < intersects.length; i++) {
-      // if(intersects[i].object.name === 'donutText') {
-      //   loadDonut();
-      // };
-
-    };
-    // Reset pointer
-    pointer.x = null;
-    pointer.y = null;
-  }
   TWEEN.update();
 
   render()
 };
 
-const onWindowResize = (e) => {
+const onWindowResize = e => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   camera.position.z = 120 / window.innerWidth * 100;
   renderer.setSize(window.innerWidth, window.innerHeight);
 };
+
+const updatePointer = e => {
+  // check for click or touches
+  const x = e.touches ? e.touches[0].clientX : e.clientX;
+  const y = e.touches ? e.touches[0].clientY : e.clientY;
+  
+  // calculate pointer position in normalized device coordinates
+  // (-1 to +1) for both components
+  pointer.x = (x / window.innerWidth) * 2 - 1;
+  pointer.y = - (y / window.innerHeight) * 2 + 1;
+};
+
+const shootRaycast = e => {
+  updatePointer(e);
+  // Update the picking ray with the camera and pointer position
+  raycaster.setFromCamera(pointer, camera);
+    // Calculate objects intersecting the picking ray
+    const intersects = raycaster.intersectObjects(scene.children);
+    if (intersects.length > 0) {
+      for (let i = 0; i < intersects.length; i++) {
+        if(intersects[i].object.name === 'donutText') {
+          // loadDonut();
+        };
+      };
+      // Reset pointer
+      pointer.x = null;
+      pointer.y = null;
+    }
+};
+
+// const moveEyes = e => {
+  
+//   let target1 = new THREE.Vector3()
+//   let target2 = new THREE.Vector3()
+//   target1 = ollieLeftEye.getWorldPosition(target1)
+//   target2 = ollieRightEye.getWorldPosition(target2)
+//   console.log(target1)
+//   console.log(target2)
+//   updatePointer(e);
+//   // console.log(ollieLeftEye.position.x)
+//   if(ollieLeftEye && ollieRightEye){
+
+//     ollieLeftEye.position.x = pointer.x;
+//     ollieRightEye.position.x = pointer.x;
+//   //   // The below is on the z axis because of how the original model was set
+//   //   ollieLeftEye.position.z = -pointer.y;
+//   //   ollieRightEye.position.z = -pointer.y;
+
+//   };
+// };
 
 init(); // Initialize
 
