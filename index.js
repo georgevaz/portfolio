@@ -27,6 +27,8 @@ const { animation } = animations;
 let camera, scene, renderer, light, controls;
 let raycaster, pointer;
 
+const numOfProjects = 3;
+
 const init = () => {
   if (WebGL.isWebGLAvailable()) {
     // Set Scene
@@ -68,7 +70,7 @@ const init = () => {
     raycaster = new THREE.Raycaster();
     pointer = new THREE.Vector2();
 
-    populateBubbles(3);
+    populateBubbles(numOfProjects);
     scene.add(textGroup, ollieGroup, table, tableBottom, ...bubbles);
 
     // Set event listeners

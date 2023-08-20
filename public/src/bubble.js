@@ -11,7 +11,7 @@ const loader = new GLTFLoader();
 
 const bubbles = [];
 
-const loadBubble = (xPos, yPos) => {
+const loadBubble = (xPos=0, yPos=0) => {
   
   // Bubble Group
   const bubbleGroup = new THREE.Group();
@@ -28,10 +28,10 @@ const loadBubble = (xPos, yPos) => {
       // Each child is getting a brand new insantiated material because if they share the same instance of it, 
       // when it gets tweened later, it tweens all objects with that instance.
       bubble.children.forEach(child => {
-        if(child.name.slice(-4) === 'Fill') child.material = new THREE.MeshStandardMaterial({ color: grayDark });
+        if(child.name.slice(-4) === 'Fill') child.material = new THREE.MeshStandardMaterial({ color: grayLight });
         else child.material = new THREE.MeshStandardMaterial({ color: black });
         child.material.transparent = true
-        // child.material.opacity = 0
+        child.material.opacity = 0
       });
 
 
@@ -65,6 +65,7 @@ const loadBubble = (xPos, yPos) => {
       bubbleGroup.position.z = -0.6;
 
       // The z axis is used instead of the y here due to the original Blender model's orientation
+      // Offsets the smaller bubbles to be diagonal to big bubble
       smallBubble1Group.position.x = -xPos / 1;
       smallBubble1Group.position.z = yPos / 3;
 
@@ -86,15 +87,21 @@ const loadBubble = (xPos, yPos) => {
 };
 
 const populateBubbles = (numOfBubbles) => {
+  let row = 0;
+  const xConst = 1.5;
+  const yConst = -.5;
+
   for(let i = 0; i < numOfBubbles; i++){
-    console.log(i % 2)
-    // bubbles.push(loadBubble());
+    if(i === 0) {
+      bubbles.push(loadBubble())
+      row++;
+    } else if(i % 2 === 0) {
+      bubbles.push(loadBubble(row + xConst, row * (row * yConst)))
+      row++;
+    } else {
+      bubbles.push(loadBubble(-(row + xConst), row * (row * yConst)))
+    };
   };
-  bubbles.push(loadBubble(0, 0))
-  bubbles.push(loadBubble(-2.2, -.5))
-  bubbles.push(loadBubble(2.2, -.5))
-  bubbles.push(loadBubble(-3.4, -2))
-  bubbles.push(loadBubble(3.4, -2))
 };
 
 export default {
