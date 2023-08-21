@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-import colors from './_colors.js'
+import colors from './_colors.js';
 
 // Colors
 const { black, white, grayDark, gray, grayLight } = colors

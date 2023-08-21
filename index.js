@@ -1,13 +1,13 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import WebGL from 'three/addons/capabilities/WebGL.js';
-import TWEEN from '@tweenjs/tween.js'
+import TWEEN from '@tweenjs/tween.js';
 
-import colors from './public/src/_colors.js'
-import text from './public/src/text.js'
-import ollie from './public/src/ollie.js'
-import bubble from './public/src/bubble.js'
-import animations from './public/src/animations.js'
+import colors from './public/src/_colors.js';
+import text from './public/src/text.js';
+import ollie from './public/src/ollie.js';
+import bubble from './public/src/bubble.js';
+import animations from './public/src/animations.js';
 
 // Colors
 const { black, white, grayDark, gray, grayLight } = colors
@@ -27,7 +27,23 @@ const { animation } = animations;
 let camera, scene, renderer, light, controls;
 let raycaster, pointer;
 
-const numOfProjects = 3;
+const projects = {
+  'zukeeper': {
+    name: 'Zukeeper',
+  },
+  'armoire': {
+    name: 'Amoire',
+  },
+  'pet-friend-finder': {
+    name: 'Pet Friend Finder',
+  },
+  'crop-dust': {
+    name: 'Crop Dust',
+  },
+  'tube-disasters': {
+    name: 'Tube Disasters',
+  },
+};
 
 const init = () => {
   if (WebGL.isWebGLAvailable()) {
@@ -70,7 +86,7 @@ const init = () => {
     raycaster = new THREE.Raycaster();
     pointer = new THREE.Vector2();
 
-    populateBubbles(numOfProjects);
+    populateBubbles(Object.keys(projects).length, projects);
     scene.add(textGroup, ollieGroup, table, tableBottom, ...bubbles);
 
     // Set event listeners
