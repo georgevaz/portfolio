@@ -8,18 +8,18 @@ import text from './text.js';
 const { black, white, grayDark, gray, grayLight } = colors
 
 // Text
-const { stratos, h1, h2, createText } = text;
+const { STRATOS, h1, h2, createText } = text;
 
 // Loader
 const loader = new GLTFLoader();
 
 const bubbles = [];
+const BUBBLESCALE = [.3, .3, .3]
 
 const loadBubble = (xPos, yPos, projectName) => {
   
   // Bubble Group
   const bubbleGroup = new THREE.Group();
-  const bigBubbleGroup = new THREE.Group();
   
   loader.load('./assets/bubble.glb', // url
     // on load
@@ -36,18 +36,13 @@ const loadBubble = (xPos, yPos, projectName) => {
         child.material.opacity = 0
       });
 
-
-      // group setup
-      bigBubbleGroup.add(
+      // group setup   
+      bubbleGroup.add(
         bubble.getObjectByName("Big_Bubble"), 
         bubble.getObjectByName("Big_Bubble_Fill")
       );
-      
-      bubbleGroup.add(
-        bigBubbleGroup,
-      );
 
-      bubbleGroup.scale.set(.5, .5, .5);
+      bubbleGroup.scale.set(...BUBBLESCALE);
       
       // Needs to be offset a bit from center
       bubbleGroup.position.x = xPos -.32;
@@ -55,12 +50,13 @@ const loadBubble = (xPos, yPos, projectName) => {
       bubbleGroup.position.z = -0.6;
 
       // add title
-      createText(stratos, h1, 0, .5, projectName, (text) => {
+      createText(STRATOS, h1, 0, .5, projectName, black, (text) => {
         text.position.z = -3;
-        // text.material.opacity = 1;
         text.rotation.x = THREE.MathUtils.degToRad(270);
         bubbleGroup.add(text)
       });
+      
+      bubbleGroup.name = 'bubble';
       
       // Needs to be rotated because of how the file imported
       bubbleGroup.rotation.x = THREE.MathUtils.degToRad(90);
@@ -96,5 +92,6 @@ const populateBubbles = (numOfBubbles, projects) => {
 
 export default {
   bubbles,
+  BUBBLESCALE,
   populateBubbles
 }

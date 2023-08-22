@@ -1,23 +1,25 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-import colors from './_colors.js'
+import colors from './_colors.js';
+import text from './text.js';
 
 // Colors
 const { black, white, grayDark, gray, grayLight } = colors
+
+// Text
+const { STRATOS, h1, h2, createText } = text;
 
 // Loader
 const loader = new GLTFLoader();
 
 const bubbles = [];
+const BUBBLESCALE = [.3, .3, .3]
 
-const loadBubble = (xPos=0, yPos=0) => {
+const loadBubble = (xPos, yPos, projectName) => {
   
   // Bubble Group
   const bubbleGroup = new THREE.Group();
-  const bigBubbleGroup = new THREE.Group();
-  const smallBubble1Group = new THREE.Group();
-  const smallBubble2Group = new THREE.Group();
   
   loader.load('./assets/bubble.glb', // url
     // on load
@@ -34,43 +36,27 @@ const loadBubble = (xPos=0, yPos=0) => {
         child.material.opacity = 0
       });
 
-
-      // group setup
-      bigBubbleGroup.add(
+      // group setup   
+      bubbleGroup.add(
         bubble.getObjectByName("Big_Bubble"), 
         bubble.getObjectByName("Big_Bubble_Fill")
       );
 
-      smallBubble1Group.add(
-        bubble.getObjectByName("Small_Bubble_1"), 
-        bubble.getObjectByName("Small_Bubble_1_Fill")
-      );
-
-      smallBubble2Group.add(
-        bubble.getObjectByName("Small_Bubble_2"), 
-        bubble.getObjectByName("Small_Bubble_2_Fill")
-      );
-      
-      bubbleGroup.add(
-        bigBubbleGroup,
-        smallBubble1Group,
-        smallBubble2Group
-      );
-
-      bubbleGroup.scale.set(.5, .5, .5);
+      bubbleGroup.scale.set(...BUBBLESCALE);
       
       // Needs to be offset a bit from center
       bubbleGroup.position.x = xPos -.32;
       bubbleGroup.position.y = yPos + 0.5;
       bubbleGroup.position.z = -0.6;
 
-      // The z axis is used instead of the y here due to the original Blender model's orientation
-      // Offsets the smaller bubbles to be diagonal to big bubble
-      smallBubble1Group.position.x = -xPos / 1;
-      smallBubble1Group.position.z = yPos / 3;
-
-      smallBubble2Group.position.x = -xPos / 1.5;
-      smallBubble2Group.position.z = yPos / 3.5;
+      // add title
+      createText(STRATOS, h1, 0, .5, projectName, black, (text) => {
+        text.position.z = -3;
+        text.rotation.x = THREE.MathUtils.degToRad(270);
+        bubbleGroup.add(text)
+      });
+      
+      bubbleGroup.name = 'bubble';
       
       // Needs to be rotated because of how the file imported
       bubbleGroup.rotation.x = THREE.MathUtils.degToRad(90);
@@ -86,25 +72,26 @@ const loadBubble = (xPos=0, yPos=0) => {
   return bubbleGroup;
 };
 
-const populateBubbles = (numOfBubbles) => {
+const populateBubbles = (numOfBubbles, projects) => {
   let row = 0;
   const xConst = 1.5;
-  const yConst = -.5;
+  const yConst = -.55;
 
   for(let i = 0; i < numOfBubbles; i++){
     if(i === 0) {
-      bubbles.push(loadBubble())
+      bubbles.push(loadBubble(0, 0, projects[Object.keys(projects)[i]].name))
       row++;
     } else if(i % 2 === 0) {
-      bubbles.push(loadBubble(row + xConst, row * (row * yConst)))
+      bubbles.push(loadBubble(row + xConst, row * (row * yConst), projects[Object.keys(projects)[i]].name))
       row++;
     } else {
-      bubbles.push(loadBubble(-(row + xConst), row * (row * yConst)))
+      bubbles.push(loadBubble(-(row + xConst), row * (row * yConst), projects[Object.keys(projects)[i]].name))
     };
   };
 };
 
 export default {
   bubbles,
+  BUBBLESCALE,
   populateBubbles
 }

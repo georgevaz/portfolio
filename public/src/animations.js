@@ -24,7 +24,7 @@ const animation = () => {
   const textTweenProp = {
     opacity: 1
   };
-  
+
   tweenObject(textGroup.children[0].material, textTweenProp, 1000, TWEEN.Easing.Linear.None, 500)
     .onComplete(
       () => tweenObject(textGroup.children[1].material, textTweenProp, 1000, TWEEN.Easing.Linear.None, 500)
@@ -43,14 +43,8 @@ const animation = () => {
                   .onComplete(
                     () => {
                       bubbles.forEach(bubble => {
-                        tweenObject(bubble.children[0].children[1].material, textTweenProp, 250, TWEEN.Easing.Linear.None, 500)
-                        tweenObject(bubble.children[0].children[0].material, textTweenProp, 250, TWEEN.Easing.Linear.None, 500)
-                        .onComplete(
-                          () => {
-                            tweenObject(bubble.children[1].material, textTweenProp, 250, TWEEN.Easing.Linear.None, 500)
-                            tweenObject(bubble.children[1].material, textTweenProp, 250, TWEEN.Easing.Linear.None, 500)
-                          }
-                        )
+                        tweenObject(bubble.children[0].material, textTweenProp, 250, TWEEN.Easing.Linear.None, 500)
+                        tweenObject(bubble.children[1].material, textTweenProp, 250, TWEEN.Easing.Linear.None, 500)
                       })
                     }
                   )
@@ -63,4 +57,8 @@ const animation = () => {
     );
 };
 
-export default { animation };
+const bubbleHoverAnimation = (object, tweenProp) => {
+  tweenObject(object.scale, tweenProp, 200, TWEEN.Easing.Back.Out, 200)
+};
+
+export default { bubbleHoverAnimation, animation };

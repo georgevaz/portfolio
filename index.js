@@ -4,6 +4,7 @@ import WebGL from 'three/addons/capabilities/WebGL.js';
 import TWEEN from '@tweenjs/tween.js';
 
 import colors from './public/src/_colors.js';
+import projects from './public/src/_projects.js';
 import text from './public/src/text.js';
 import ollie from './public/src/ollie.js';
 import bubble from './public/src/bubble.js';
@@ -19,31 +20,15 @@ const { textGroup } = text;
 const { ollieGroup, ollieLeftEye, ollieRightEye, table, tableBottom } = ollie;
 
 // Bubble
-const { bubbles, populateBubbles } = bubble;
+const { bubbles, BUBBLESCALE, populateBubbles } = bubble;
 
 // Animation
-const { animation } = animations;
+const { bubbleHoverAnimation, animation } = animations;
 
 let camera, scene, renderer, light, controls;
 let raycaster, pointer;
 
-const projects = {
-  'zukeeper': {
-    name: 'Zukeeper',
-  },
-  'armoire': {
-    name: 'Amoire',
-  },
-  'pet-friend-finder': {
-    name: 'Pet Friend Finder',
-  },
-  'crop-dust': {
-    name: 'Crop Dust',
-  },
-  'tube-disasters': {
-    name: 'Tube Disasters',
-  },
-};
+let previousHover;
 
 const init = () => {
   if (WebGL.isWebGLAvailable()) {
@@ -90,10 +75,10 @@ const init = () => {
     scene.add(textGroup, ollieGroup, table, tableBottom, ...bubbles);
 
     // Set event listeners
-    window.addEventListener('click', shootRaycast);
-    window.addEventListener('touchstart', shootRaycast); // mobile
+    window.addEventListener('click', onClick);
+    window.addEventListener('touchstart', onClick); // mobile
     
-    // window.addEventListener('mousemove', moveEyes);
+    window.addEventListener('mousemove', onHover);
 
     // Handles resizing of window
     window.addEventListener('resize', onWindowResize);
@@ -139,18 +124,54 @@ const shootRaycast = e => {
   updatePointer(e);
   // Update the picking ray with the camera and pointer position
   raycaster.setFromCamera(pointer, camera);
-    // Calculate objects intersecting the picking ray
-    const intersects = raycaster.intersectObjects(scene.children);
-    if (intersects.length > 0) {
-      for (let i = 0; i < intersects.length; i++) {
-        if(intersects[i].object.name === 'donutText') {
-          // loadDonut();
+  // Calculate objects intersecting the picking ray
+  return raycaster.intersectObjects(scene.children);
+
+};
+
+const onHover = e => {
+  const intersects = shootRaycast(e);
+  if (intersects.length > 0) {
+    for (let i = 0; i < intersects.length; i++) {
+      // Find out the parent (group) of object intersecting and also check if it is completely in view (animation completed)
+      if(intersects[i].object.parent.name === 'bubble' && intersects[i].object.material.opacity >= 1) {
+        if(previousHover && previousHover != intersects[i].object.parent){
+          bubbleHoverAnimation(previousHover, {
+            x: BUBBLESCALE[0],
+            y: BUBBLESCALE[1],
+            z: BUBBLESCALE[2],
+          });
         };
+        if(previousHover != intersects[i].object.parent){
+          previousHover = intersects[i].object.parent;
+          bubbleHoverAnimation(intersects[i].object.parent, {
+            x: .8,
+            y: .8,
+            z: .8,
+          });
+        };
+        break;
       };
-      // Reset pointer
-      pointer.x = null;
-      pointer.y = null;
-    }
+    };
+    // Reset pointer
+    pointer.x = null;
+    pointer.y = null;
+  }
+};
+
+const onClick = e => {
+  const intersects = shootRaycast(e);
+  if (intersects.length > 0) {
+    for (let i = 0; i < intersects.length; i++) {
+      console.log(intersects[i].object.name)
+      if(intersects[i].object.name === 'donutText') {
+        // loadDonut();
+      };
+    };
+    // Reset pointer
+    pointer.x = null;
+    pointer.y = null;
+  };
 };
 
 // const moveEyes = e => {
