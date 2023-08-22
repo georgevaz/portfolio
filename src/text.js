@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 
-import colors from './_colors.js'
+import colors from './_colors.js';
 
 // Colors
 const { black, white, grayDark, gray, grayLight } = colors
@@ -11,7 +11,7 @@ const { black, white, grayDark, gray, grayLight } = colors
 const fontLoader = new FontLoader();
 
 // Font Paths
-const stratos = './fonts/Stratos_Regular.json';
+const STRATOS = './fonts/Stratos_Regular.json';
 
 // Font Sizes
 const h1 = 0.4;
@@ -21,13 +21,13 @@ const h2 = 0.2;
 const textGroup = new THREE.Group();
 
 const loadFont = () => {
-  createText(stratos, h1, -3.5, 3.5, "Hi, I'm George");
-  createText(stratos, h2, -3.68, 3, "I’m a software engineer");
-  createText(stratos, h1, 3.23, -3, "and this is Ollie!");
-  createText(stratos, h2, 1.95, -3.5, "he’s a dog");
+  createText(STRATOS, h1, -3.5, 3.5, "Hi, I'm George", grayDark, (text) => textGroup.add(text));
+  createText(STRATOS, h2, -3.68, 3, "I’m a software engineer", grayDark, (text) => textGroup.add(text));
+  createText(STRATOS, h1, 3.23, -3, "and this is Ollie!", grayDark, (text) => textGroup.add(text));
+  createText(STRATOS, h2, 1.95, -3.5, "he’s a dog", grayDark, (text) => textGroup.add(text));
 };
 
-const createText = (fontType, fontSize, xPos, yPos, textCopy) => {
+const createText = (fontType, fontSize, xPos, yPos, textCopy, textColor, callback) => {
   fontLoader.load(fontType, // url
     //on load
     (font) => {
@@ -42,7 +42,7 @@ const createText = (fontType, fontSize, xPos, yPos, textCopy) => {
         bevelOffset: 0,
         bevelSegments: 5
       });
-      const material = new THREE.MeshPhongMaterial({ color: grayDark });
+      const material = new THREE.MeshPhongMaterial({ color: textColor });
       const text = new THREE.Mesh(geometry, material);
       text.name = textCopy;
 
@@ -54,7 +54,7 @@ const createText = (fontType, fontSize, xPos, yPos, textCopy) => {
       text.material.transparent = true;
       text.material.opacity = 0.0;
 
-      textGroup.add(text);
+      callback(text);
     },
     // on progress
     undefined,
@@ -68,5 +68,8 @@ const createText = (fontType, fontSize, xPos, yPos, textCopy) => {
 loadFont();
 
 export default {
-  textGroup
+  STRATOS,
+  h1, h2,
+  textGroup,
+  createText
 }
