@@ -33,7 +33,7 @@ const loadBubble = (xPos, yPos, projectName) => {
         if(child.name.slice(-4) === 'Fill') child.material = new THREE.MeshStandardMaterial({ color: grayLight });
         else child.material = new THREE.MeshStandardMaterial({ color: black });
         child.material.transparent = true
-        child.material.opacity = 0
+        // child.material.opacity = 0
       });
 
       // group setup   
@@ -49,10 +49,18 @@ const loadBubble = (xPos, yPos, projectName) => {
       bubbleGroup.position.y = yPos + 0.5;
       bubbleGroup.position.z = -0.6;
 
+      // Need to keep tabs on the original positioning for tweening
+      bubbleGroup.originalPosition = {
+        x: bubbleGroup.position.x,
+        y: bubbleGroup.position.y,
+        z: bubbleGroup.position.z,
+      }
+
       // add title
       createText(STRATOS, h1, 0, .5, projectName, black, (text) => {
         text.position.z = -3;
         text.rotation.x = THREE.MathUtils.degToRad(270);
+        text.material.opacity = 1
         bubbleGroup.add(text)
       });
       

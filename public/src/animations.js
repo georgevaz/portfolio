@@ -57,8 +57,8 @@ const animation = () => {
     );
 };
 
-const bubbleHoverAnimation = (object, tweenProp) => {
-  tweenObject(object.scale, tweenProp, 200, TWEEN.Easing.Back.Out, 200)
+const bubbleHoverAnimation = (object, prop, tweenProp) => {
+  tweenObject(object[prop], tweenProp, 200, TWEEN.Easing.Back.Out, 200)
 };
 
 export default { bubbleHoverAnimation, animation };
