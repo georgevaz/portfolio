@@ -142,7 +142,6 @@ const onHover = e => {
             z: BUBBLESCALE[2],
           });
           bubbleHoverAnimation(previousHover, 'position', previousHover.originalPosition);
-          
         };
         if(previousHover != intersects[i].object.parent){
           previousHover = intersects[i].object.parent;
@@ -163,7 +162,7 @@ const onHover = e => {
     // Reset pointer
     pointer.x = null;
     pointer.y = null;
-  }
+  };
 };
 
 const onClick = e => {
@@ -171,14 +170,23 @@ const onClick = e => {
   if (intersects.length > 0) {
     for (let i = 0; i < intersects.length; i++) {
       console.log(intersects[i].object.name)
-      if(intersects[i].object.name === 'donutText') {
-        // loadDonut();
+      if(intersects[i].object.name !== 'bubble') {
+
       };
     };
     // Reset pointer
     pointer.x = null;
     pointer.y = null;
   };
+  if(previousHover){
+    bubbleHoverAnimation(previousHover, 'scale', {
+      x: BUBBLESCALE[0],
+      y: BUBBLESCALE[1],
+      z: BUBBLESCALE[2],
+    });
+    bubbleHoverAnimation(previousHover, 'position', previousHover.originalPosition);
+    previousHover = undefined;
+  }
 };
 
 // const moveEyes = e => {
