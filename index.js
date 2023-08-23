@@ -77,8 +77,6 @@ const init = () => {
     // Set event listeners
     window.addEventListener('click', onClick);
     window.addEventListener('touchstart', onClick); // mobile
-    
-    window.addEventListener('mousemove', onHover);
 
     // Handles resizing of window
     window.addEventListener('resize', onWindowResize);
@@ -129,10 +127,11 @@ const shootRaycast = e => {
 
 };
 
-const onHover = e => {
+const onClick = e => {
   const intersects = shootRaycast(e);
   if (intersects.length > 0) {
     for (let i = 0; i < intersects.length; i++) {
+      console.log(i, intersects.length)
       // Find out the parent (group) of object intersecting and also check if it is completely in view (animation completed)
       if(intersects[i].object.parent.name === 'bubble' && intersects[i].object.material.opacity >= 1) {
         if(previousHover && previousHover != intersects[i].object.parent){
@@ -158,27 +157,20 @@ const onHover = e => {
         };
         break;
       };
-    };
-    // Reset pointer
-    pointer.x = null;
-    pointer.y = null;
-  };
-};
-
-const onClick = e => {
-  const intersects = shootRaycast(e);
-  if (intersects.length > 0) {
-    for (let i = 0; i < intersects.length; i++) {
-      console.log(intersects[i].object.name)
-      if(intersects[i].object.name !== 'bubble') {
-
+      if(previousHover && i >= intersects.length - 1){
+        bubbleHoverAnimation(previousHover, 'scale', {
+          x: BUBBLESCALE[0],
+          y: BUBBLESCALE[1],
+          z: BUBBLESCALE[2],
+        });
+        bubbleHoverAnimation(previousHover, 'position', previousHover.originalPosition);
+        previousHover = undefined;
       };
     };
     // Reset pointer
     pointer.x = null;
     pointer.y = null;
-  };
-  if(previousHover){
+  } else if(previousHover) {
     bubbleHoverAnimation(previousHover, 'scale', {
       x: BUBBLESCALE[0],
       y: BUBBLESCALE[1],
@@ -186,7 +178,7 @@ const onClick = e => {
     });
     bubbleHoverAnimation(previousHover, 'position', previousHover.originalPosition);
     previousHover = undefined;
-  }
+  };
 };
 
 // const moveEyes = e => {
