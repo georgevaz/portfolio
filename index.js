@@ -23,12 +23,12 @@ const { ollieGroup, ollieLeftEye, ollieRightEye, table, tableBottom } = ollie;
 const { bubbles, BUBBLESCALE, populateBubbles } = bubble;
 
 // Animation
-const { bubbleHoverAnimation, animation } = animations;
+const { bubbleAnimation, introAnimation } = animations;
 
 let camera, scene, renderer, light, controls;
 let raycaster, pointer;
 
-let previousHover;
+let previousBubble;
 
 const init = () => {
   if (WebGL.isWebGLAvailable()) {
@@ -131,53 +131,31 @@ const onClick = e => {
   const intersects = shootRaycast(e);
   if (intersects.length > 0) {
     for (let i = 0; i < intersects.length; i++) {
-      console.log(i, intersects.length)
-      // Find out the parent (group) of object intersecting and also check if it is completely in view (animation completed)
+      // find out the parent (group) of object intersecting and also check if it is completely in view (animation completed)
       if(intersects[i].object.parent.name === 'bubble' && intersects[i].object.material.opacity >= 1) {
-        if(previousHover && previousHover != intersects[i].object.parent){
-          bubbleHoverAnimation(previousHover, 'scale', {
-            x: BUBBLESCALE[0],
-            y: BUBBLESCALE[1],
-            z: BUBBLESCALE[2],
-          });
-          bubbleHoverAnimation(previousHover, 'position', previousHover.originalPosition);
+        // if the there is an enlarged bubble, and the currently clicked bubble isn't that one
+        if(previousBubble && previousBubble != intersects[i].object.parent){
+          bubbleAnimation(previousBubble, false);
         };
-        if(previousHover != intersects[i].object.parent){
-          previousHover = intersects[i].object.parent;
-          bubbleHoverAnimation(intersects[i].object.parent, 'scale', {
-            x: 1.5,
-            y: 1.5,
-            z: 1.5,
-          });
-          bubbleHoverAnimation(previousHover, 'position', {
-            x: -.28,
-            y: -4,
-            z: 0.25,
-          });
+        // check if the last bubble is not the currently clicked on
+        if(previousBubble != intersects[i].object.parent){
+          previousBubble = intersects[i].object.parent;
+          bubbleAnimation(previousBubble, true);
         };
         break;
       };
-      if(previousHover && i >= intersects.length - 1){
-        bubbleHoverAnimation(previousHover, 'scale', {
-          x: BUBBLESCALE[0],
-          y: BUBBLESCALE[1],
-          z: BUBBLESCALE[2],
-        });
-        bubbleHoverAnimation(previousHover, 'position', previousHover.originalPosition);
-        previousHover = undefined;
+      // if a bubble is enlarged and after we iterate through all objects and none of the intersected objects are bubbles, shrink it
+      if(previousBubble && i >= intersects.length - 1){
+        bubbleAnimation(previousBubble, false);
+        previousBubble = undefined;
       };
     };
     // Reset pointer
     pointer.x = null;
     pointer.y = null;
-  } else if(previousHover) {
-    bubbleHoverAnimation(previousHover, 'scale', {
-      x: BUBBLESCALE[0],
-      y: BUBBLESCALE[1],
-      z: BUBBLESCALE[2],
-    });
-    bubbleHoverAnimation(previousHover, 'position', previousHover.originalPosition);
-    previousHover = undefined;
+  } else if(previousBubble) { // If we click somewhere that doesn't catch an object and we have a bubble enlarged, shrink it
+      bubbleAnimation(previousBubble, false);
+      previousBubble = undefined;
   };
 };
 
@@ -206,8 +184,8 @@ init(); // Initialize
 
 // Needs to wait for fonts to load first, 1 second seems to suffice
 // Always errors out unless it starts 5-6 frames after init
-// setTimeout(() => {
-//   animation();
-// }, 1000);
+setTimeout(() => {
+  introAnimation();
+}, 1000);
 
 update(); // Start update loop
