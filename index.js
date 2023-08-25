@@ -23,7 +23,7 @@ const { ollieGroup, ollieLeftEye, ollieRightEye, table, tableBottom } = ollie;
 const { bubbles, BUBBLESCALE, populateBubbles } = bubble;
 
 // Animation
-const { bubbleAnimation, introAnimation } = animations;
+const { introAnimation, bubbleAnimation, ollieBarkAnimation } = animations;
 
 let camera, scene, renderer, light, controls;
 let raycaster, pointer;
@@ -148,6 +148,10 @@ const onClick = e => {
       if(previousBubble && i >= intersects.length - 1){
         bubbleAnimation(previousBubble, false);
         previousBubble = undefined;
+      };
+      if(intersects[i].object.parent.name === 'ollieBody'){
+        ollieBarkAnimation(scene);
+        break;
       };
     };
     // Reset pointer

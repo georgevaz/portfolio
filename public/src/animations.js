@@ -1,11 +1,15 @@
-import TWEEN from '@tweenjs/tween.js';
+import TWEEN, { Tween } from '@tweenjs/tween.js';
 
+import colors from './_colors.js';
 import text from './text.js';
 import ollie from './ollie.js';
 import bubble from './bubble.js';
 
+// Colors
+const { black, white, grayDark, gray, grayLight } = colors
+
 // Text
-const { textGroup } = text;
+const { STRATOS, h1, h2, textGroup, createText } = text;
 
 // Ollie
 const { olliePaws, ollieBody, table } = ollie;
@@ -86,4 +90,24 @@ const bubbleAnimation = (object, isClicked) => {
   };
 };
 
-export default { bubbleAnimation, introAnimation };
+const ollieBarkAnimation = (scene) => {
+  createText(STRATOS, h2, -.35, 0, "woof", black, (text) => {
+    text.material.opacity = 1;
+    scene.add(text);
+    tweenObject(text.position, {y: 1}, 1000, TWEEN.Easing.Linear.None);
+    tweenObject(text.material, {opacity: 0}, 1000, TWEEN.Easing.Linear.None)
+    .onComplete(
+      () => {
+        text.geometry.dispose();
+        text.material.dispose();
+        scene.remove(text);
+      }
+    );
+  });
+};
+
+export default {
+  introAnimation,
+  bubbleAnimation,
+  ollieBarkAnimation,
+};

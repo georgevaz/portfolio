@@ -33,7 +33,7 @@ const loadBubble = (xPos, yPos, projectName) => {
         if(child.name.slice(-4) === 'Fill') child.material = new THREE.MeshStandardMaterial({ color: grayLight });
         else child.material = new THREE.MeshStandardMaterial({ color: black });
         child.material.transparent = true
-        // child.material.opacity = 0
+        child.material.opacity = 0
       });
 
       // group setup   
@@ -60,7 +60,7 @@ const loadBubble = (xPos, yPos, projectName) => {
       createText(STRATOS, h1, 0, .5, projectName, black, (text) => {
         text.position.z = -3;
         text.rotation.x = THREE.MathUtils.degToRad(270);
-        text.material.opacity = 1
+        text.material.opacity = 1;
         bubbleGroup.add(text)
       });
       
