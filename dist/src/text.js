@@ -24,7 +24,7 @@ const loadFont = () => {
   createText(STRATOS, h1, -3.5, 3.5, "Hi, I'm George", grayDark, (text) => textGroup.add(text));
   createText(STRATOS, h2, -3.68, 3, "I’m a software engineer", grayDark, (text) => textGroup.add(text));
   createText(STRATOS, h1, 3.23, -3, "and this is Ollie!", grayDark, (text) => textGroup.add(text));
-  createText(STRATOS, h2, 1.95, -3.5, "he’s a dog", grayDark, (text) => textGroup.add(text));
+  createText(STRATOS, h2, 2.3, -3.5, "he’s a good boy", grayDark, (text) => textGroup.add(text));
 };
 
 const createText = (fontType, fontSize, xPos, yPos, textCopy, textColor, callback) => {

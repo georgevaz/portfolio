@@ -60,7 +60,6 @@ const loadBubble = (xPos, yPos, projectName) => {
       createText(STRATOS, h1, 0, .5, projectName, black, (text) => {
         text.position.z = -3;
         text.rotation.x = THREE.MathUtils.degToRad(270);
-        text.material.opacity = 1;
         bubbleGroup.add(text)
       });
       

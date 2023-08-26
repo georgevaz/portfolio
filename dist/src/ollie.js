@@ -19,13 +19,24 @@ const olliePaws = new THREE.Group();
 const ollieBody = new THREE.Group();
 const table = new THREE.Group();
 
+ollieGroup.name = 'ollieGroup';
+ollieLeftEar.name = 'ollieLeftEar';
+ollieRightEar.name = 'ollieRightEar';
+ollieLeftEye.name = 'ollieLeftEye';
+ollieRightEye.name = 'ollieRightEye';
+olliePaws.name = 'olliePaw';
+ollieBody.name = 'ollieBody';
+table.name = 'table';
+
 // This box gives an illusion of Ollie not appearing until animation begins
 const geometry = new THREE.BoxGeometry( 2.9, 3, .4 );
 const material = new THREE.MeshBasicMaterial( { color: grayLight } );
 const tableBottom = new THREE.Mesh( geometry, material );
+tableBottom.name = 'tableBottom'
 tableBottom.position.x = -.35;
 tableBottom.position.y = -3.97;
 tableBottom.position.z = -.3;
+
 const loadOllie = () => {
   loader.load('./assets/ollie.glb', // url
     // on load

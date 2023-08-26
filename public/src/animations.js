@@ -66,8 +66,9 @@ const introAnimation = () => {
                   .onComplete(
                     () => {
                       bubbles.forEach(bubble => {
-                        tweenObject(bubble.children[0].material, textTweenOpacityProp, 250, TWEEN.Easing.Linear.None, 500)
-                        tweenObject(bubble.children[1].material, textTweenOpacityProp, 250, TWEEN.Easing.Linear.None, 500)
+                        bubble.children.forEach(child => {
+                          tweenObject(child.material, textTweenOpacityProp, 250, TWEEN.Easing.Linear.None, 500);
+                        })
                       })
                     }
                   )
@@ -91,7 +92,7 @@ const bubbleAnimation = (object, isClicked) => {
 };
 
 const ollieBarkAnimation = (scene) => {
-  createText(STRATOS, h2, -.35, 0, "woof", black, (text) => {
+  createText(STRATOS, h2, Math.random() * (Math.round(Math.random()) ? 1 : -1) - .35, 0, Math.round(Math.random()) ? 'woof' : 'bark', black, (text) => {
     text.material.opacity = 1;
     scene.add(text);
     tweenObject(text.position, {y: 1}, 1000, TWEEN.Easing.Linear.None);
