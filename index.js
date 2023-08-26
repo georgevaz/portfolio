@@ -25,10 +25,13 @@ const { bubbles, BUBBLESCALE, populateBubbles } = bubble;
 // Animation
 const { introAnimation, bubbleAnimation, ollieBarkAnimation } = animations;
 
-let camera, scene, renderer, light, controls;
+let camera, aspectRatio;
+let scene, renderer, light, controls;
 let raycaster, pointer;
 
 let previousBubble;
+
+const CAMFOV = 60;
 
 const init = () => {
   if (WebGL.isWebGLAvailable()) {
@@ -36,9 +39,12 @@ const init = () => {
     scene = new THREE.Scene();
     scene.background = new THREE.Color(grayLight);
 
+    // Set Camera Properties
+    aspectRatio = window.innerWidth / window.innerHeight;
+
     // Set Camera
-    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 5000);
-    camera.position.set(0, 0, 120 / window.innerWidth * 100); // default position for window width of 1200 should be around 10
+    camera = new THREE.PerspectiveCamera(calculateFOV(), aspectRatio, 1, 5000);
+    camera.position.set(0, 0, 10); // default position for window width of 1200 should be around 10
     camera.lookAt(0, 0, 0);
 
     // Set Lighting
@@ -71,6 +77,13 @@ const init = () => {
     raycaster = new THREE.Raycaster();
     pointer = new THREE.Vector2();
 
+    const geometry = new THREE.BoxGeometry(10, 7.5, 1);
+    const material = new THREE.MeshBasicMaterial( { color: black } );
+    const cube = new THREE.Mesh( geometry, material );
+    // scene.add(cube)
+
+
+
     populateBubbles(Object.keys(projects).length, projects);
     scene.add(textGroup, ollieGroup, table, tableBottom, ...bubbles);
 
@@ -101,10 +114,18 @@ const update = () => {
 };
 
 const onWindowResize = e => {
-  camera.aspect = window.innerWidth / window.innerHeight;
+  aspectRatio = window.innerWidth / window.innerHeight
+  camera.aspect = aspectRatio;
+
+  camera.fov = calculateFOV();
   camera.updateProjectionMatrix();
-  camera.position.z = 120 / window.innerWidth * 100;
+
   renderer.setSize(window.innerWidth, window.innerHeight);
+};
+
+const calculateFOV = () => {
+  let camDistance = window.innerWidth / 2 / Math.tan(Math.PI * CAMFOV / 360);
+  return 2 * Math.atan( (window.innerWidth / aspectRatio) / ( 2 * camDistance ) ) * ( 180 / Math.PI );
 };
 
 const updatePointer = e => {
