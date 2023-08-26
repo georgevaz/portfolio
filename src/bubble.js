@@ -49,6 +49,13 @@ const loadBubble = (xPos, yPos, projectName) => {
       bubbleGroup.position.y = yPos + 0.5;
       bubbleGroup.position.z = -0.6;
 
+      // Need to keep tabs on the original positioning for tweening
+      bubbleGroup.originalPosition = {
+        x: bubbleGroup.position.x,
+        y: bubbleGroup.position.y,
+        z: bubbleGroup.position.z,
+      }
+
       // add title
       createText(STRATOS, h1, 0, .5, projectName, black, (text) => {
         text.position.z = -3;
