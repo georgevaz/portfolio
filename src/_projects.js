@@ -3,7 +3,7 @@ const projects = {
     name: 'Zukeeper',
   },
   'armoire': {
-    name: 'Amoire',
+    name: 'Armoire',
   },
   'pet-friend-finder': {
     name: 'Pet Friend Finder',

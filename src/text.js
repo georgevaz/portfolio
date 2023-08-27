@@ -52,7 +52,7 @@ const createText = (fontType, fontSize, xPos, yPos, textCopy, textColor, callbac
       text.position.y = yPos;
 
       text.material.transparent = true;
-      text.material.opacity = 0.0;
+      text.material.opacity = 0;
 
       callback(text);
     },

@@ -81,7 +81,7 @@ const introAnimation = () => {
     );
 };
 
-const bubbleAnimation = (object, isClicked) => {
+const bubbleClickAnimation = (object, isClicked) => {
   if(isClicked){
     tweenObject(object.scale, bubbleTweenOnScaleProp, 200, TWEEN.Easing.Back.Out, 200);
     tweenObject(object.position, bubbleTweenOnPositionProp, 200, TWEEN.Easing.Back.Out, 200);
@@ -89,6 +89,17 @@ const bubbleAnimation = (object, isClicked) => {
     tweenObject(object.scale, bubbleTweenOffScaleProp, 200, TWEEN.Easing.Back.Out, 200);
     tweenObject(object.position, object.originalPosition, 200, TWEEN.Easing.Back.Out, 200);
   };
+};
+
+const bubbleIdleAnimation = (object) => {
+  let randomTiming = Math.floor(Math.random() * (5000 - 3000 + 1) + 3000);
+  tweenObject(object.position, {y: object.position.y - .05}, randomTiming, TWEEN.Easing.Sinusoidal.InOut, 200)
+  .onComplete(
+    () => tweenObject(object.position, {y: object.position.y + .05}, randomTiming, TWEEN.Easing.Sinusoidal.InOut, 200)
+    .onComplete(
+      () => bubbleIdleAnimation(object)
+    )
+  )
 };
 
 const ollieBarkAnimation = (scene) => {
@@ -109,6 +120,7 @@ const ollieBarkAnimation = (scene) => {
 
 export default {
   introAnimation,
-  bubbleAnimation,
+  bubbleClickAnimation,
+  bubbleIdleAnimation,
   ollieBarkAnimation,
 };
