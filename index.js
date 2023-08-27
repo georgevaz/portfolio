@@ -23,7 +23,7 @@ const { ollieGroup, ollieLeftEye, ollieRightEye, table, tableBottom } = ollie;
 const { bubbles, BUBBLESCALE, populateBubbles } = bubble;
 
 // Animation
-const { introAnimation, bubbleAnimation, ollieBarkAnimation } = animations;
+const { introAnimation, bubbleClickAnimation, bubbleIdleAnimation, ollieBarkAnimation } = animations;
 
 let camera, aspectRatio;
 let scene, renderer, light, controls;
@@ -76,13 +76,6 @@ const init = () => {
     // Set Raycasting
     raycaster = new THREE.Raycaster();
     pointer = new THREE.Vector2();
-
-    const geometry = new THREE.BoxGeometry(10, 7.5, 1);
-    const material = new THREE.MeshBasicMaterial( { color: black } );
-    const cube = new THREE.Mesh( geometry, material );
-    // scene.add(cube)
-
-
 
     populateBubbles(Object.keys(projects).length, projects);
     scene.add(textGroup, ollieGroup, table, tableBottom, ...bubbles);
@@ -156,18 +149,18 @@ const onClick = e => {
       if(intersects[i].object.parent.name === 'bubble' && intersects[i].object.material.opacity >= 1) {
         // if the there is an enlarged bubble, and the currently clicked bubble isn't that one
         if(previousBubble && previousBubble != intersects[i].object.parent){
-          bubbleAnimation(previousBubble, false);
+          bubbleClickAnimation(previousBubble, false);
         };
         // check if the last bubble is not the currently clicked on
         if(previousBubble != intersects[i].object.parent){
           previousBubble = intersects[i].object.parent;
-          bubbleAnimation(previousBubble, true);
+          bubbleClickAnimation(previousBubble, true);
         };
         break;
       };
       // if a bubble is enlarged and after we iterate through all objects and none of the intersected objects are bubbles, shrink it
       if(previousBubble && i >= intersects.length - 1){
-        bubbleAnimation(previousBubble, false);
+        bubbleClickAnimation(previousBubble, false);
         previousBubble = undefined;
       };
       if(intersects[i].object.parent.name === 'ollieBody'){
@@ -179,7 +172,7 @@ const onClick = e => {
     pointer.x = null;
     pointer.y = null;
   } else if(previousBubble) { // If we click somewhere that doesn't catch an object and we have a bubble enlarged, shrink it
-      bubbleAnimation(previousBubble, false);
+      bubbleClickAnimation(previousBubble, false);
       previousBubble = undefined;
   };
 };
@@ -211,6 +204,7 @@ init(); // Initialize
 // Always errors out unless it starts 5-6 frames after init
 setTimeout(() => {
   introAnimation();
+  bubbles.forEach(bubble => bubbleIdleAnimation(bubble))
 }, 1000);
 
 update(); // Start update loop
