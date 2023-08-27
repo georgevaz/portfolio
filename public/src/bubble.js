@@ -32,8 +32,8 @@ const loadBubble = (xPos, yPos, projectName) => {
       bubble.children.forEach(child => {
         if(child.name.slice(-4) === 'Fill') child.material = new THREE.MeshStandardMaterial({ color: grayLight });
         else child.material = new THREE.MeshStandardMaterial({ color: black });
-        child.material.transparent = true
-        child.material.opacity = 0
+        child.material.transparent = true;
+        child.material.opacity = 0;
       });
 
       // group setup   
@@ -57,11 +57,32 @@ const loadBubble = (xPos, yPos, projectName) => {
       }
 
       // add title
-      createText(STRATOS, h1, 0, .5, projectName, black, (text) => {
-        text.position.z = -3;
-        text.rotation.x = THREE.MathUtils.degToRad(270);
-        bubbleGroup.add(text)
-      });
+      // ten letters max per line, logic to check if it needs multiple lines
+      if(projectName.length <= 10) {
+        createText(STRATOS, h1, 0, .5, projectName.slice(0, 10), black, (text) => {
+          text.position.z = -3;
+          text.rotation.x = THREE.MathUtils.degToRad(270);
+          bubbleGroup.add(text)
+        });
+      } else {
+        let zPos = -3.35;
+        let currentLine;
+        const projectNameSplit = projectName.split(' ');
+        while(projectNameSplit.length){
+          currentLine = projectNameSplit.shift();
+          while(projectNameSplit.length && currentLine.length + projectNameSplit[0].length <= 10){
+            currentLine += ' ' + projectNameSplit.shift();
+          };
+          createText(STRATOS, h1, 0, .5, currentLine, black, (text) => {
+            text.position.z = zPos;
+            zPos += .75;
+            text.rotation.x = THREE.MathUtils.degToRad(270);
+            bubbleGroup.add(text);
+          });
+          currentLine = '';
+        };
+      };
+
       
       bubbleGroup.name = 'bubble';
       
