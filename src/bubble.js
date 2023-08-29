@@ -83,7 +83,6 @@ const loadBubble = (xPos, yPos, projectName) => {
         };
       };
 
-      
       bubbleGroup.name = 'bubble';
       
       // Needs to be rotated because of how the file imported

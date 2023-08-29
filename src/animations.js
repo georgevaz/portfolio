@@ -1,4 +1,4 @@
-import TWEEN, { Tween } from '@tweenjs/tween.js';
+import TWEEN from '@tweenjs/tween.js';
 
 import colors from './_colors.js';
 import text from './text.js';
@@ -17,12 +17,13 @@ const { olliePaws, ollieBody, table } = ollie;
 // Bubble
 const { BUBBLESCALE, bubbles } = bubble;
 
-const tweenObject = (property, propChange, timing, easeType, delay=0) => 
-  new TWEEN.Tween(property)
+const tweenObject = (property, propChange, timing, easeType, delay=0) => {
+  return new TWEEN.Tween(property)
     .to(propChange, timing)
     .easing(easeType)
     .delay(delay)
     .start()
+};
 
 const textTweenOpacityProp = {
   opacity: 1
@@ -47,7 +48,6 @@ const bubbleTweenOnPositionProp = {
 };
 
 const introAnimation = () => {
-
   tweenObject(textGroup.children[0].material, textTweenOpacityProp, 1000, TWEEN.Easing.Linear.None, 500)
     .onComplete(
       () => tweenObject(textGroup.children[1].material, textTweenOpacityProp, 1000, TWEEN.Easing.Linear.None, 500)
@@ -83,9 +83,11 @@ const introAnimation = () => {
 
 const bubbleClickAnimation = (object, isClicked) => {
   if(isClicked){
+    object.tween.stop();
     tweenObject(object.scale, bubbleTweenOnScaleProp, 200, TWEEN.Easing.Back.Out, 200);
     tweenObject(object.position, bubbleTweenOnPositionProp, 200, TWEEN.Easing.Back.Out, 200);
   } else {
+    object.tween.start();
     tweenObject(object.scale, bubbleTweenOffScaleProp, 200, TWEEN.Easing.Back.Out, 200);
     tweenObject(object.position, object.originalPosition, 200, TWEEN.Easing.Back.Out, 200);
   };
@@ -93,13 +95,9 @@ const bubbleClickAnimation = (object, isClicked) => {
 
 const bubbleIdleAnimation = (object) => {
   let randomTiming = Math.floor(Math.random() * (5000 - 3000 + 1) + 3000);
-  tweenObject(object.position, {y: object.position.y - .05}, randomTiming, TWEEN.Easing.Sinusoidal.InOut, 200)
-  .onComplete(
-    () => tweenObject(object.position, {y: object.position.y + .05}, randomTiming, TWEEN.Easing.Sinusoidal.InOut, 200)
-    .onComplete(
-      () => bubbleIdleAnimation(object)
-    )
-  )
+  object.tween = tweenObject(object.position, {y: object.position.y - .1}, randomTiming, TWEEN.Easing.Sinusoidal.InOut, 200)
+  .repeat(Infinity)
+  .yoyo(true);
 };
 
 const ollieBarkAnimation = (scene) => {
