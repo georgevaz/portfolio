@@ -33,7 +33,7 @@ const loadBubble = (xPos, yPos, projectName) => {
         if(child.name.slice(-4) === 'Fill') child.material = new THREE.MeshStandardMaterial({ color: grayLight });
         else child.material = new THREE.MeshStandardMaterial({ color: black });
         child.material.transparent = true;
-        child.material.opacity = 0;
+        child.material.opacity = 1;
       });
 
       // group setup   
@@ -54,31 +54,61 @@ const loadBubble = (xPos, yPos, projectName) => {
         x: bubbleGroup.position.x,
         y: bubbleGroup.position.y,
         z: bubbleGroup.position.z,
-      }
+      };
 
       // add title
       // ten letters max per line, logic to check if it needs multiple lines
       if(projectName.length <= 10) {
+
         createText(STRATOS, h1, 0, .5, projectName.slice(0, 10), black, (text) => {
           text.position.z = -3;
+          
+          // Need to keep tabs on the original positioning for tweening
+          text.originalPosition = {
+            x: text.position.x,
+            y: text.position.y,
+            z: text.position.z,
+          };
+
           text.rotation.x = THREE.MathUtils.degToRad(270);
           bubbleGroup.add(text)
-        });
+        }, 'title');
+
+        // createText(STRATOS, h1, 0, .5, 'test', black, (text) => {
+        //   text.position.z = -4;
+        //   text.rotation.x = THREE.MathUtils.degToRad(270);
+        //   bubbleGroup.add(text)
+        // }, 'test');
+
       } else {
         let zPos = -3.35;
+        const lineSpace = .75;
         let currentLine;
         const projectNameSplit = projectName.split(' ');
+
         while(projectNameSplit.length){
           currentLine = projectNameSplit.shift();
           while(projectNameSplit.length && currentLine.length + projectNameSplit[0].length <= 10){
             currentLine += ' ' + projectNameSplit.shift();
           };
+
           createText(STRATOS, h1, 0, .5, currentLine, black, (text) => {
             text.position.z = zPos;
-            zPos += .75;
+            zPos += lineSpace;
+            
+            // Need to keep tabs on the original positioning for tweening
+            text.originalPosition = {
+              x: text.position.x,
+              y: text.position.y,
+              z: text.position.z,
+            };
+
+            // Determine line spacing for tweening later
+            text.lineSpace = lineSpace;
+            
             text.rotation.x = THREE.MathUtils.degToRad(270);
             bubbleGroup.add(text);
-          });
+          }, 'title');
           currentLine = '';
         };
       };

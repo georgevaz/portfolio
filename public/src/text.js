@@ -27,7 +27,7 @@ const loadFont = () => {
   createText(STRATOS, h2, 2.3, -3.5, "he’s a good boy", grayDark, (text) => textGroup.add(text));
 };
 
-const createText = (fontType, fontSize, xPos, yPos, textCopy, textColor, callback) => {
+const createText = (fontType, fontSize, xPos, yPos, textCopy, textColor, callback, name='text') => {
   fontLoader.load(fontType, // url
     //on load
     (font) => {
@@ -44,7 +44,8 @@ const createText = (fontType, fontSize, xPos, yPos, textCopy, textColor, callbac
       });
       const material = new THREE.MeshPhongMaterial({ color: textColor });
       const text = new THREE.Mesh(geometry, material);
-      text.name = textCopy;
+      text.name = name;
+      text.textCopy = textCopy;
 
       // center the text, and then move it
       geometry.center();
@@ -52,7 +53,7 @@ const createText = (fontType, fontSize, xPos, yPos, textCopy, textColor, callbac
       text.position.y = yPos;
 
       text.material.transparent = true;
-      text.material.opacity = 0;
+      text.material.opacity = 1;
 
       callback(text);
     },

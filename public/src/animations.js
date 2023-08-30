@@ -1,4 +1,4 @@
-import TWEEN from '@tweenjs/tween.js';
+import TWEEN, { Tween } from '@tweenjs/tween.js';
 
 import colors from './_colors.js';
 import text from './text.js';
@@ -36,14 +36,14 @@ const bubbleTweenOffScaleProp = {
 };
 
 const bubbleTweenOnScaleProp = {
-  x: 1.5,
-  y: 1.5,
-  z: 1.5,
+  x: 2,
+  y: 2,
+  z: 2,
 };
 
 const bubbleTweenOnPositionProp = {
   x: -.28,
-  y: -4,
+  y: -6, // -4
   z: 0.25,
 };
 
@@ -82,19 +82,46 @@ const introAnimation = () => {
 };
 
 const bubbleClickAnimation = (object, isClicked) => {
+  let titles = object.children.filter(child => child.name === 'title');
+
   if(isClicked){
     object.tween.stop();
+
+    titles.forEach((title, i) => {
+      tweenObject(title.scale, {
+        x: .5,
+        y: .5,
+        z: .5,
+      }, 200, TWEEN.Easing.Back.Out, 200)
+      tweenObject(title.position, {
+        z: title.lineSpace ? -3.75 + (i * .38 * title.lineSpace): -3.75,
+      }, 200, TWEEN.Easing.Back.Out, 200)
+    });
+
     tweenObject(object.scale, bubbleTweenOnScaleProp, 200, TWEEN.Easing.Back.Out, 200);
     tweenObject(object.position, bubbleTweenOnPositionProp, 200, TWEEN.Easing.Back.Out, 200);
+
   } else {
     object.tween.start();
+
+    titles.forEach((title) => {
+      tweenObject(title.scale, {
+        x: 1,
+        y: 1,
+        z: 1,
+      }, 200, TWEEN.Easing.Back.Out, 200)
+      tweenObject(title.position, title.originalPosition, 200, TWEEN.Easing.Back.Out, 200)
+    });
+
     tweenObject(object.scale, bubbleTweenOffScaleProp, 200, TWEEN.Easing.Back.Out, 200);
     tweenObject(object.position, object.originalPosition, 200, TWEEN.Easing.Back.Out, 200);
+
   };
 };
 
 const bubbleIdleAnimation = (object) => {
   let randomTiming = Math.floor(Math.random() * (5000 - 3000 + 1) + 3000);
+  // store the tween into the bubble object to access later (start/stop)
   object.tween = tweenObject(object.position, {y: object.position.y - .1}, randomTiming, TWEEN.Easing.Sinusoidal.InOut, 200)
   .repeat(Infinity)
   .yoyo(true);
