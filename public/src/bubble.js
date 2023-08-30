@@ -16,7 +16,7 @@ const loader = new GLTFLoader();
 const bubbles = [];
 const BUBBLESCALE = [.3, .3, .3]
 
-const loadBubble = (xPos, yPos, projectName) => {
+const loadBubble = (xPos, yPos, projectName, projectDescription) => {
   
   // Bubble Group
   const bubbleGroup = new THREE.Group();
@@ -57,33 +57,45 @@ const loadBubble = (xPos, yPos, projectName) => {
       };
 
       // add title
+      let zPos;
+      let lineSpace;
+      let currentLine;
+
+      const setTitle = (text) => {
+        text.position.z = zPos;
+
+        if(lineSpace){
+          zPos += lineSpace
+
+          // Determine line spacing for tweening later
+          text.lineSpace = lineSpace;
+        };
+        
+        // Need to keep tabs on the original positioning for tweening
+        text.originalPosition = {
+          x: text.position.x,
+          y: text.position.y,
+          z: text.position.z,
+        };
+
+        text.rotation.x = THREE.MathUtils.degToRad(270);
+        bubbleGroup.add(text);
+      };
+
       // ten letters max per line, logic to check if it needs multiple lines
       if(projectName.length <= 10) {
+        zPos = -3;
+        createText(STRATOS, h1, 0, .5, projectName, black, setTitle, 'title');
 
-        createText(STRATOS, h1, 0, .5, projectName.slice(0, 10), black, (text) => {
-          text.position.z = -3;
-          
-          // Need to keep tabs on the original positioning for tweening
-          text.originalPosition = {
-            x: text.position.x,
-            y: text.position.y,
-            z: text.position.z,
-          };
-
-          text.rotation.x = THREE.MathUtils.degToRad(270);
-          bubbleGroup.add(text)
-        }, 'title');
-
-        // createText(STRATOS, h1, 0, .5, 'test', black, (text) => {
+        // createText(STRATOS, h2, 0, .5, projectDescription, black, (text) => {
         //   text.position.z = -4;
         //   text.rotation.x = THREE.MathUtils.degToRad(270);
         //   bubbleGroup.add(text)
         // }, 'test');
 
       } else {
-        let zPos = -3.35;
-        const lineSpace = .75;
-        let currentLine;
+        zPos = -3.35;
+        lineSpace = .75;
         const projectNameSplit = projectName.split(' ');
 
         while(projectNameSplit.length){
@@ -92,23 +104,7 @@ const loadBubble = (xPos, yPos, projectName) => {
             currentLine += ' ' + projectNameSplit.shift();
           };
 
-          createText(STRATOS, h1, 0, .5, currentLine, black, (text) => {
-            text.position.z = zPos;
-            zPos += lineSpace;
-            
-            // Need to keep tabs on the original positioning for tweening
-            text.originalPosition = {
-              x: text.position.x,
-              y: text.position.y,
-              z: text.position.z,
-            };
-
-            // Determine line spacing for tweening later
-            text.lineSpace = lineSpace;
-            
-            text.rotation.x = THREE.MathUtils.degToRad(270);
-            bubbleGroup.add(text);
-          }, 'title');
+          createText(STRATOS, h1, 0, .5, currentLine, black, setTitle, 'title');
           currentLine = '';
         };
       };
@@ -135,14 +131,17 @@ const populateBubbles = (numOfBubbles, projects) => {
   const yConst = -.55;
 
   for(let i = 0; i < numOfBubbles; i++){
+    let projectName = projects[Object.keys(projects)[i]].name;
+    let projectDescription = projects[Object.keys(projects)[i]].description;
+
     if(i === 0) {
-      bubbles.push(loadBubble(0, 0, projects[Object.keys(projects)[i]].name))
+      bubbles.push(loadBubble(0, 0, projectName, projectDescription))
       row++;
     } else if(i % 2 === 0) {
-      bubbles.push(loadBubble(row + xConst, row * (row * yConst), projects[Object.keys(projects)[i]].name))
+      bubbles.push(loadBubble(row + xConst, row * (row * yConst), projectName, projectDescription))
       row++;
     } else {
-      bubbles.push(loadBubble(-(row + xConst), row * (row * yConst), projects[Object.keys(projects)[i]].name))
+      bubbles.push(loadBubble(-(row + xConst), row * (row * yConst), projectName, projectDescription))
     };
   };
 };
