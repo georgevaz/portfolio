@@ -9,6 +9,7 @@ import text from './public/src/text.js';
 import ollie from './public/src/ollie.js';
 import bubble from './public/src/bubble.js';
 import animations from './public/src/animations.js';
+import image from './public/src/image.js';
 
 // Colors
 const { black, white, grayDark, gray, grayLight } = colors
@@ -24,6 +25,9 @@ const { bubbles, BUBBLESCALE, populateBubbles } = bubble;
 
 // Animation
 const { introAnimation, bubbleClickAnimation, bubbleIdleAnimation, ollieBarkAnimation } = animations;
+
+// Images
+const { createImage } = image;
 
 let camera, aspectRatio;
 let scene, renderer, light, controls;
@@ -55,6 +59,7 @@ const init = () => {
     // Set Renderer
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio); 
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     document.body.appendChild(renderer.domElement);
 
@@ -89,7 +94,7 @@ const init = () => {
 
   } else {
     const warning = WebGL.getWebGLErrorMessage();
-    document.getElementById('container').appendChild(warning);
+    document.body.appendChild(warning);
 
   };
 };
