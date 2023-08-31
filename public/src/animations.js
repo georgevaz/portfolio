@@ -128,19 +128,29 @@ const bubbleIdleAnimation = (object) => {
 };
 
 const ollieBarkAnimation = (scene) => {
-  createText(STRATOS, h2, Math.random() * (Math.round(Math.random()) ? 1 : -1) - .35, 0, Math.round(Math.random()) ? 'woof' : 'bark', black, (text) => {
-    text.material.opacity = 1;
-    scene.add(text);
-    tweenObject(text.position, {y: 1}, 1000, TWEEN.Easing.Linear.None);
-    tweenObject(text.material, {opacity: 0}, 1000, TWEEN.Easing.Linear.None)
-    .onComplete(
-      () => {
-        text.geometry.dispose();
-        text.material.dispose();
-        scene.remove(text);
-      }
-    );
-  });
+  createText(
+    {
+      fontType: STRATOS, 
+      fontSize: h2, 
+      xPos: Math.random() * (Math.round(Math.random()) ? 1 : -1) - .35, 
+      yPos: 0, 
+      textCopy: Math.round(Math.random()) ? 'woof' : 'bark', 
+      textColor: black,
+    }, 
+    (text) => {
+      text.material.opacity = 1;
+      scene.add(text);
+      tweenObject(text.position, {y: 1}, 1000, TWEEN.Easing.Linear.None);
+      tweenObject(text.material, {opacity: 0}, 1000, TWEEN.Easing.Linear.None)
+      .onComplete(
+        () => {
+          text.geometry.dispose();
+          text.material.dispose();
+          scene.remove(text);
+        }
+      );
+    }
+  );
 };
 
 export default {

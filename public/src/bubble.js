@@ -56,59 +56,117 @@ const loadBubble = (xPos, yPos, projectName, projectDescription) => {
         z: bubbleGroup.position.z,
       };
 
-      // add title
-      let zPos;
-      let lineSpace;
-      let currentLine;
+      // Function to set text
+      const populateBubbleText = (bubbleText, textAttributes, callback, callbackParams) => {
+        let zPos;
+        let lineSpace;
+        let currentLine;
+        const { maxLength, singleLineZPos, multiLineZPos, tracking } = textAttributes;
+        const { fontType, fontSize, xPos, yPos, textColor, name } = callbackParams;
 
-      const setTitle = (text) => {
-        text.position.z = zPos;
-
-        if(lineSpace){
-          zPos += lineSpace
-
-          // Determine line spacing for tweening later
-          text.lineSpace = lineSpace;
-        };
-        
-        // Need to keep tabs on the original positioning for tweening
-        text.originalPosition = {
-          x: text.position.x,
-          y: text.position.y,
-          z: text.position.z,
-        };
-
-        text.rotation.x = THREE.MathUtils.degToRad(270);
-        bubbleGroup.add(text);
-      };
-
-      // ten letters max per line, logic to check if it needs multiple lines
-      if(projectName.length <= 10) {
-        zPos = -3;
-        createText(STRATOS, h1, 0, .5, projectName, black, setTitle, 'title');
-
-        // createText(STRATOS, h2, 0, .5, projectDescription, black, (text) => {
-        //   text.position.z = -4;
-        //   text.rotation.x = THREE.MathUtils.degToRad(270);
-        //   bubbleGroup.add(text)
-        // }, 'test');
-
-      } else {
-        zPos = -3.35;
-        lineSpace = .75;
-        const projectNameSplit = projectName.split(' ');
-
-        while(projectNameSplit.length){
-          currentLine = projectNameSplit.shift();
-          while(projectNameSplit.length && currentLine.length + projectNameSplit[0].length <= 10){
-            currentLine += ' ' + projectNameSplit.shift();
+        const setText = (text) => {
+          text.position.z = zPos;
+  
+          if(lineSpace){
+            zPos += lineSpace
+  
+            // Determine line spacing for tweening later
+            text.lineSpace = lineSpace;
           };
+          
+          // Need to keep tabs on the original positioning for tweening
+          text.originalPosition = {
+            x: text.position.x,
+            y: text.position.y,
+            z: text.position.z,
+          };
+  
+          text.rotation.x = THREE.MathUtils.degToRad(270);
+          bubbleGroup.add(text);
+        };
 
-          createText(STRATOS, h1, 0, .5, currentLine, black, setTitle, 'title');
-          currentLine = '';
+        if(bubbleText.length <= maxLength) {
+          zPos = singleLineZPos;
+          callback(
+            {
+            fontType, 
+            fontSize, 
+            xPos, 
+            yPos, 
+            textCopy: bubbleText, 
+            textColor
+            }, 
+            setText, 
+            name
+          );
+        } else {
+          zPos = multiLineZPos;
+          lineSpace = tracking;
+          const bubbleTextSplit = bubbleText.split(' ');
+  
+          while(bubbleTextSplit.length){
+            currentLine = bubbleTextSplit.shift();
+            while(bubbleTextSplit.length && currentLine.length + bubbleTextSplit[0].length <= 10){
+              currentLine += ' ' + bubbleTextSplit.shift();
+            };
+  
+            callback(
+              {
+              fontType, 
+              fontSize, 
+              xPos, 
+              yPos, 
+              textCopy: currentLine, 
+              textColor
+              }, 
+              setText, 
+              name
+            );
+            currentLine = '';
+          };
         };
       };
 
+      // add title
+      populateBubbleText(
+        projectName, 
+        {
+          maxLength: 10,
+          singleLineZPos: -3, 
+          multiLineZPos: -3.35,
+          tracking: .75
+        }, 
+        createText,
+        {
+          fontType: STRATOS, 
+          fontSize: h1, 
+          xPos: 0, 
+          yPos: .5, 
+          textColor: black,
+          name: 'title'
+        },
+      );
+
+      // add description
+      populateBubbleText(
+        projectDescription, 
+        {
+          maxLength: 30,
+          singleLineZPos: -2, 
+          multiLineZPos: -2,
+          tracking: .3,
+          name: 'description'
+        }, 
+        createText,
+        {
+          fontType: STRATOS, 
+          fontSize: h2, 
+          xPos: 0, 
+          yPos: .5, 
+          textColor: black
+        },
+      );
+      
       bubbleGroup.name = 'bubble';
       
       // Needs to be rotated because of how the file imported
@@ -150,4 +208,4 @@ export default {
   bubbles,
   BUBBLESCALE,
   populateBubbles
-}
+};
