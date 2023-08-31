@@ -67,7 +67,8 @@ const introAnimation = () => {
                     () => {
                       bubbles.forEach(bubble => {
                         bubble.children.forEach(child => {
-                          tweenObject(child.material, textTweenOpacityProp, 250, TWEEN.Easing.Linear.None, 500);
+                          // change opacity for the entire bubble except description, which will only appear when clicked
+                          if(child.name !== 'description') tweenObject(child.material, textTweenOpacityProp, 250, TWEEN.Easing.Linear.None, 500);
                         })
                       })
                     }
@@ -83,20 +84,26 @@ const introAnimation = () => {
 
 const bubbleClickAnimation = (object, isClicked) => {
   let titles = object.children.filter(child => child.name === 'title');
+  let descriptions = object.children.filter(child => child.name === 'description');
 
   if(isClicked){
     object.tween.stop();
 
     titles.forEach((title, i) => {
+      let titleScale = title.lineSpace ? .7 : .8
       tweenObject(title.scale, {
-        x: .5,
-        y: .5,
-        z: .5,
+        x: titleScale,
+        y: titleScale,
+        z: titleScale,
       }, 200, TWEEN.Easing.Back.Out, 200)
       tweenObject(title.position, {
-        z: title.lineSpace ? -3.75 + (i * .38 * title.lineSpace): -3.75,
+        z: title.lineSpace ? -3.65 + (i * .6 * title.lineSpace) : -3.5,
       }, 200, TWEEN.Easing.Back.Out, 200)
     });
+
+    descriptions.forEach((description, i) => {
+      tweenObject(description.material, {opacity: 1}, 200, TWEEN.Easing.Back.Out, 200)
+    })
 
     tweenObject(object.scale, bubbleTweenOnScaleProp, 200, TWEEN.Easing.Back.Out, 200);
     tweenObject(object.position, bubbleTweenOnPositionProp, 200, TWEEN.Easing.Back.Out, 200);
@@ -112,6 +119,10 @@ const bubbleClickAnimation = (object, isClicked) => {
       }, 200, TWEEN.Easing.Back.Out, 200)
       tweenObject(title.position, title.originalPosition, 200, TWEEN.Easing.Back.Out, 200)
     });
+
+    descriptions.forEach((description, i) => {
+      tweenObject(description.material, {opacity: 0}, 200, TWEEN.Easing.Back.Out, 200)
+    })
 
     tweenObject(object.scale, bubbleTweenOffScaleProp, 200, TWEEN.Easing.Back.Out, 200);
     tweenObject(object.position, object.originalPosition, 200, TWEEN.Easing.Back.Out, 200);
@@ -131,7 +142,8 @@ const ollieBarkAnimation = (scene) => {
   createText(
     {
       fontType: STRATOS, 
-      fontSize: h2, 
+      fontSize: h2,
+      fontThickness: 0.1,
       xPos: Math.random() * (Math.round(Math.random()) ? 1 : -1) - .35, 
       yPos: 0, 
       textCopy: Math.round(Math.random()) ? 'woof' : 'bark', 

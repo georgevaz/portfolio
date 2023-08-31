@@ -12,10 +12,14 @@ const fontLoader = new FontLoader();
 
 // Font Paths
 const STRATOS = './fonts/Stratos_Regular.json';
+const ROBOTO = './fonts/Roboto_Regular.json';
 
 // Font Sizes
 const h1 = 0.4;
 const h2 = 0.2;
+
+// Font Extrusion
+const fontThickness = 0.1;
 
 // Group
 const textGroup = new THREE.Group();
@@ -27,7 +31,8 @@ const loadFont = () => {
   createText(
     {
       fontType: STRATOS, 
-      fontSize: h1, 
+      fontSize: h1,
+      fontThickness,
       xPos: -3.5, 
       yPos: 3.5, 
       textCopy: "Hi, I'm George", 
@@ -39,7 +44,8 @@ const loadFont = () => {
   createText(
     {
       fontType: STRATOS, 
-      fontSize: h2, 
+      fontSize: h2,
+      fontThickness,
       xPos: -3.68, 
       yPos: 3, 
       textCopy: "I’m a software engineer", 
@@ -52,6 +58,7 @@ const loadFont = () => {
     {
       fontType: STRATOS, 
       fontSize: h1, 
+      fontThickness,
       xPos: 3.23, 
       yPos: -3, 
       textCopy: "and this is Ollie!", 
@@ -63,7 +70,8 @@ const loadFont = () => {
   createText(
     {
       fontType: STRATOS, 
-      fontSize: h2, 
+      fontSize: h2,
+      fontThickness,
       xPos: 2.3, 
       yPos: -3.5, 
       textCopy: "he’s a good boy", 
@@ -73,15 +81,15 @@ const loadFont = () => {
   );
 };
 
-const createText = (textAttributes, callback, name='text') => {
-  const { fontType, fontSize, xPos, yPos, textCopy, textColor } = textAttributes;
+const createText = (textAttributes, callback, name='text', opacity=0) => {
+  const { fontType, fontThickness, fontSize, xPos, yPos, textCopy, textColor } = textAttributes;
   fontLoader.load(fontType, // url
     //on load
     (font) => {
       const geometry = new TextGeometry(textCopy, {
         font,
         size: fontSize,
-        height: 0.1,
+        height: fontThickness,
         curveSegments: 12,
         bevelEnabled: true,
         bevelThickness: .01,
@@ -100,7 +108,7 @@ const createText = (textAttributes, callback, name='text') => {
       text.position.y = yPos;
 
       text.material.transparent = true;
-      text.material.opacity = 1;
+      text.material.opacity = opacity;
 
       callback(text);
     },
@@ -117,6 +125,7 @@ loadFont();
 
 export default {
   STRATOS,
+  ROBOTO,
   h1, h2,
   textGroup,
   createText

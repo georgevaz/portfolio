@@ -8,7 +8,7 @@ import text from './text.js';
 const { black, white, grayDark, gray, grayLight } = colors
 
 // Text
-const { STRATOS, h1, h2, createText } = text;
+const { STRATOS, ROBOTO, h1, h2, createText } = text;
 
 // Loader
 const loader = new GLTFLoader();
@@ -33,7 +33,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription) => {
         if(child.name.slice(-4) === 'Fill') child.material = new THREE.MeshStandardMaterial({ color: grayLight });
         else child.material = new THREE.MeshStandardMaterial({ color: black });
         child.material.transparent = true;
-        child.material.opacity = 1;
+        child.material.opacity = 0;
       });
 
       // group setup   
@@ -62,7 +62,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription) => {
         let lineSpace;
         let currentLine;
         const { maxLength, singleLineZPos, multiLineZPos, tracking } = textAttributes;
-        const { fontType, fontSize, xPos, yPos, textColor, name } = callbackParams;
+        const { fontType, fontSize, fontThickness, xPos, yPos, textColor, name } = callbackParams;
 
         const setText = (text) => {
           text.position.z = zPos;
@@ -90,7 +90,8 @@ const loadBubble = (xPos, yPos, projectName, projectDescription) => {
           callback(
             {
             fontType, 
-            fontSize, 
+            fontSize,
+            fontThickness,
             xPos, 
             yPos, 
             textCopy: bubbleText, 
@@ -103,17 +104,17 @@ const loadBubble = (xPos, yPos, projectName, projectDescription) => {
           zPos = multiLineZPos;
           lineSpace = tracking;
           const bubbleTextSplit = bubbleText.split(' ');
-  
           while(bubbleTextSplit.length){
             currentLine = bubbleTextSplit.shift();
-            while(bubbleTextSplit.length && currentLine.length + bubbleTextSplit[0].length <= 10){
+            while(bubbleTextSplit.length && currentLine.length + bubbleTextSplit[0].length <= maxLength){
               currentLine += ' ' + bubbleTextSplit.shift();
             };
   
             callback(
               {
               fontType, 
-              fontSize, 
+              fontSize,
+              fontThickness,
               xPos, 
               yPos, 
               textCopy: currentLine, 
@@ -139,7 +140,8 @@ const loadBubble = (xPos, yPos, projectName, projectDescription) => {
         createText,
         {
           fontType: STRATOS, 
-          fontSize: h1, 
+          fontSize: h1,
+          fontThickness: 0,
           xPos: 0, 
           yPos: .5, 
           textColor: black,
@@ -151,22 +153,23 @@ const loadBubble = (xPos, yPos, projectName, projectDescription) => {
       populateBubbleText(
         projectDescription, 
         {
-          maxLength: 30,
-          singleLineZPos: -2, 
-          multiLineZPos: -2,
-          tracking: .3,
-          name: 'description'
+          maxLength: 20,
+          singleLineZPos: -3, 
+          multiLineZPos: -3,
+          tracking: .3
         }, 
         createText,
         {
-          fontType: STRATOS, 
-          fontSize: h2, 
+          fontType: ROBOTO, 
+          fontSize: .15,
+          fontThickness: 0,
           xPos: 0, 
           yPos: .5, 
-          textColor: black
+          textColor: black,
+          name: 'description',
         },
       );
-      
+
       bubbleGroup.name = 'bubble';
       
       // Needs to be rotated because of how the file imported
