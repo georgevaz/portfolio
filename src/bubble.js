@@ -8,7 +8,7 @@ import text from './text.js';
 const { black, white, grayDark, gray, grayLight } = colors
 
 // Text
-const { STRATOS, h1, h2, createText } = text;
+const { STRATOS, ROBOTO, h1, h2, createText } = text;
 
 // Loader
 const loader = new GLTFLoader();
@@ -16,7 +16,7 @@ const loader = new GLTFLoader();
 const bubbles = [];
 const BUBBLESCALE = [.3, .3, .3]
 
-const loadBubble = (xPos, yPos, projectName) => {
+const loadBubble = (xPos, yPos, projectName, projectDescription) => {
   
   // Bubble Group
   const bubbleGroup = new THREE.Group();
@@ -54,34 +54,121 @@ const loadBubble = (xPos, yPos, projectName) => {
         x: bubbleGroup.position.x,
         y: bubbleGroup.position.y,
         z: bubbleGroup.position.z,
-      }
+      };
 
-      // add title
-      // ten letters max per line, logic to check if it needs multiple lines
-      if(projectName.length <= 10) {
-        createText(STRATOS, h1, 0, .5, projectName.slice(0, 10), black, (text) => {
-          text.position.z = -3;
-          text.rotation.x = THREE.MathUtils.degToRad(270);
-          bubbleGroup.add(text)
-        });
-      } else {
-        let zPos = -3.35;
+      // Function to set text
+      const populateBubbleText = (bubbleText, textAttributes, callback, callbackParams) => {
+        let zPos;
+        let lineSpace;
         let currentLine;
-        const projectNameSplit = projectName.split(' ');
-        while(projectNameSplit.length){
-          currentLine = projectNameSplit.shift();
-          while(projectNameSplit.length && currentLine.length + projectNameSplit[0].length <= 10){
-            currentLine += ' ' + projectNameSplit.shift();
+        const { maxLength, singleLineZPos, multiLineZPos, tracking } = textAttributes;
+        const { fontType, fontSize, fontThickness, xPos, yPos, textColor, name } = callbackParams;
+
+        const setText = (text) => {
+          text.position.z = zPos;
+  
+          if(lineSpace){
+            zPos += lineSpace
+  
+            // Determine line spacing for tweening later
+            text.lineSpace = lineSpace;
           };
-          createText(STRATOS, h1, 0, .5, currentLine, black, (text) => {
-            text.position.z = zPos;
-            zPos += .75;
-            text.rotation.x = THREE.MathUtils.degToRad(270);
-            bubbleGroup.add(text);
-          });
-          currentLine = '';
+          
+          // Need to keep tabs on the original positioning for tweening
+          text.originalPosition = {
+            x: text.position.x,
+            y: text.position.y,
+            z: text.position.z,
+          };
+  
+          text.rotation.x = THREE.MathUtils.degToRad(270);
+          bubbleGroup.add(text);
+        };
+
+        if(bubbleText.length <= maxLength) {
+          zPos = singleLineZPos;
+          callback(
+            {
+            fontType, 
+            fontSize,
+            fontThickness,
+            xPos, 
+            yPos, 
+            textCopy: bubbleText, 
+            textColor
+            }, 
+            setText, 
+            name
+          );
+        } else {
+          zPos = multiLineZPos;
+          lineSpace = tracking;
+          const bubbleTextSplit = bubbleText.split(' ');
+          while(bubbleTextSplit.length){
+            currentLine = bubbleTextSplit.shift();
+            while(bubbleTextSplit.length && currentLine.length + bubbleTextSplit[0].length <= maxLength){
+              currentLine += ' ' + bubbleTextSplit.shift();
+            };
+  
+            callback(
+              {
+              fontType, 
+              fontSize,
+              fontThickness,
+              xPos, 
+              yPos, 
+              textCopy: currentLine, 
+              textColor
+              }, 
+              setText, 
+              name
+            );
+            currentLine = '';
+          };
         };
       };
+
+      // add title
+      populateBubbleText(
+        projectName, 
+        {
+          maxLength: 10,
+          singleLineZPos: -3, 
+          multiLineZPos: -3.35,
+          tracking: .75
+        }, 
+        createText,
+        {
+          fontType: STRATOS, 
+          fontSize: h1,
+          fontThickness: 0,
+          xPos: 0, 
+          yPos: .5, 
+          textColor: black,
+          name: 'title'
+        },
+      );
+
+      // add description
+      populateBubbleText(
+        projectDescription, 
+        {
+          maxLength: 20,
+          singleLineZPos: -3, 
+          multiLineZPos: -3,
+          tracking: .3
+        }, 
+        createText,
+        {
+          fontType: ROBOTO, 
+          fontSize: .15,
+          fontThickness: 0,
+          xPos: 0, 
+          yPos: .5, 
+          textColor: black,
+          name: 'description',
+        },
+      );
 
       bubbleGroup.name = 'bubble';
       
@@ -105,14 +192,17 @@ const populateBubbles = (numOfBubbles, projects) => {
   const yConst = -.55;
 
   for(let i = 0; i < numOfBubbles; i++){
+    let projectName = projects[Object.keys(projects)[i]].name;
+    let projectDescription = projects[Object.keys(projects)[i]].description;
+
     if(i === 0) {
-      bubbles.push(loadBubble(0, 0, projects[Object.keys(projects)[i]].name))
+      bubbles.push(loadBubble(0, 0, projectName, projectDescription))
       row++;
     } else if(i % 2 === 0) {
-      bubbles.push(loadBubble(row + xConst, row * (row * yConst), projects[Object.keys(projects)[i]].name))
+      bubbles.push(loadBubble(row + xConst, row * (row * yConst), projectName, projectDescription))
       row++;
     } else {
-      bubbles.push(loadBubble(-(row + xConst), row * (row * yConst), projects[Object.keys(projects)[i]].name))
+      bubbles.push(loadBubble(-(row + xConst), row * (row * yConst), projectName, projectDescription))
     };
   };
 };
@@ -121,4 +211,4 @@ export default {
   bubbles,
   BUBBLESCALE,
   populateBubbles
-}
+};

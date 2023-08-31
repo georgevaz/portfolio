@@ -12,29 +12,84 @@ const fontLoader = new FontLoader();
 
 // Font Paths
 const STRATOS = './fonts/Stratos_Regular.json';
+const ROBOTO = './fonts/Roboto_Regular.json';
 
 // Font Sizes
 const h1 = 0.4;
 const h2 = 0.2;
 
+// Font Extrusion
+const fontThickness = 0.1;
+
 // Group
 const textGroup = new THREE.Group();
 
+// Callback
+const addToGroup = (text) => textGroup.add(text);
+
 const loadFont = () => {
-  createText(STRATOS, h1, -3.5, 3.5, "Hi, I'm George", grayDark, (text) => textGroup.add(text));
-  createText(STRATOS, h2, -3.68, 3, "I’m a software engineer", grayDark, (text) => textGroup.add(text));
-  createText(STRATOS, h1, 3.23, -3, "and this is Ollie!", grayDark, (text) => textGroup.add(text));
-  createText(STRATOS, h2, 2.3, -3.5, "he’s a good boy", grayDark, (text) => textGroup.add(text));
+  createText(
+    {
+      fontType: STRATOS, 
+      fontSize: h1,
+      fontThickness,
+      xPos: -3.5, 
+      yPos: 3.5, 
+      textCopy: "Hi, I'm George", 
+      textColor: grayDark
+    }, 
+    addToGroup
+  );
+
+  createText(
+    {
+      fontType: STRATOS, 
+      fontSize: h2,
+      fontThickness,
+      xPos: -3.68, 
+      yPos: 3, 
+      textCopy: "I’m a software engineer", 
+      textColor: grayDark
+    }, 
+    addToGroup
+  );
+
+  createText(
+    {
+      fontType: STRATOS, 
+      fontSize: h1, 
+      fontThickness,
+      xPos: 3.23, 
+      yPos: -3, 
+      textCopy: "and this is Ollie!", 
+      textColor: grayDark
+    },
+    addToGroup
+  );
+
+  createText(
+    {
+      fontType: STRATOS, 
+      fontSize: h2,
+      fontThickness,
+      xPos: 2.3, 
+      yPos: -3.5, 
+      textCopy: "he’s a good boy", 
+      textColor: grayDark
+    },
+    addToGroup
+  );
 };
 
-const createText = (fontType, fontSize, xPos, yPos, textCopy, textColor, callback) => {
+const createText = (textAttributes, callback, name='text', opacity=0) => {
+  const { fontType, fontThickness, fontSize, xPos, yPos, textCopy, textColor } = textAttributes;
   fontLoader.load(fontType, // url
     //on load
     (font) => {
       const geometry = new TextGeometry(textCopy, {
         font,
         size: fontSize,
-        height: 0.1,
+        height: fontThickness,
         curveSegments: 12,
         bevelEnabled: true,
         bevelThickness: .01,
@@ -44,7 +99,8 @@ const createText = (fontType, fontSize, xPos, yPos, textCopy, textColor, callbac
       });
       const material = new THREE.MeshPhongMaterial({ color: textColor });
       const text = new THREE.Mesh(geometry, material);
-      text.name = textCopy;
+      text.name = name;
+      text.textCopy = textCopy;
 
       // center the text, and then move it
       geometry.center();
@@ -52,7 +108,7 @@ const createText = (fontType, fontSize, xPos, yPos, textCopy, textColor, callbac
       text.position.y = yPos;
 
       text.material.transparent = true;
-      text.material.opacity = 0;
+      text.material.opacity = opacity;
 
       callback(text);
     },
@@ -69,6 +125,7 @@ loadFont();
 
 export default {
   STRATOS,
+  ROBOTO,
   h1, h2,
   textGroup,
   createText
