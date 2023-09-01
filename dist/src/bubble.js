@@ -80,7 +80,18 @@ const loadBubble = (xPos, yPos, projectName, projectDescription) => {
             y: text.position.y,
             z: text.position.z,
           };
-  
+
+          // Making the text geometry a small font size often has the letters too close to each other
+          // In the case of the description text, it does not look good
+          // When loading the text by default, I set the font size to 1 and then to reduce the "font size", 
+          // I can alter the scale instead
+          // I don't like this block of code being here but it seems to work best since it is in a callback
+          if(text.name === 'description'){
+            text.scale.x = .15;
+            text.scale.y = .15;
+            text.scale.z = .15;
+          };
+
           text.rotation.x = THREE.MathUtils.degToRad(270);
           bubbleGroup.add(text);
         };
@@ -98,12 +109,13 @@ const loadBubble = (xPos, yPos, projectName, projectDescription) => {
             textColor
             }, 
             setText, 
-            name
+            name, 
           );
         } else {
           zPos = multiLineZPos;
           lineSpace = tracking;
           const bubbleTextSplit = bubbleText.split(' ');
+          titleIsMulti = true;
           while(bubbleTextSplit.length){
             currentLine = bubbleTextSplit.shift();
             while(bubbleTextSplit.length && currentLine.length + bubbleTextSplit[0].length <= maxLength){
@@ -121,12 +133,14 @@ const loadBubble = (xPos, yPos, projectName, projectDescription) => {
               textColor
               }, 
               setText, 
-              name
+              name, 
             );
             currentLine = '';
           };
         };
       };
+
+      let titleIsMulti = false;
 
       // add title
       populateBubbleText(
@@ -154,14 +168,14 @@ const loadBubble = (xPos, yPos, projectName, projectDescription) => {
         projectDescription, 
         {
           maxLength: 20,
-          singleLineZPos: -3, 
-          multiLineZPos: -3,
-          tracking: .3
+          singleLineZPos: titleIsMulti ? -2.8 : -3, 
+          multiLineZPos: titleIsMulti ? -2.8 : -3,
+          tracking: .2
         }, 
         createText,
         {
           fontType: ROBOTO, 
-          fontSize: .15,
+          fontSize: 1,
           fontThickness: 0,
           xPos: 0, 
           yPos: .5, 
