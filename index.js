@@ -10,6 +10,7 @@ import ollie from './public/src/ollie.js';
 import bubble from './public/src/bubble.js';
 import animations from './public/src/animations.js';
 import image from './public/src/image.js';
+import icon from './public/src/icon.js';
 
 // Colors
 const { black, white, grayDark, gray, grayLight } = colors
@@ -28,6 +29,9 @@ const { introAnimation, bubbleClickAnimation, bubbleIdleAnimation, ollieBarkAnim
 
 // Images
 const { createImage } = image;
+
+// Icons
+const { createIcon } = icon;
 
 let camera, aspectRatio;
 let scene, renderer, light, controls;
@@ -82,8 +86,9 @@ const init = () => {
     raycaster = new THREE.Raycaster();
     pointer = new THREE.Vector2();
 
+    let icon = createIcon();
     populateBubbles(Object.keys(projects).length, projects);
-    scene.add(textGroup, ollieGroup, table, tableBottom, ...bubbles);
+    scene.add(textGroup, ollieGroup, table, tableBottom, ...bubbles, icon);
 
     // Set event listeners
     window.addEventListener('click', onClick);
