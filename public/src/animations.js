@@ -1,9 +1,9 @@
 import TWEEN, { Tween } from '@tweenjs/tween.js';
 
 import colors from './_colors.js';
-import text from './text.js';
-import ollie from './ollie.js';
-import bubble from './bubble.js';
+import text from './textLoader.js';
+import ollie from './ollieLoader.js';
+import bubble from './bubbleLoader.js';
 
 // Colors
 const { black, white, grayDark, gray, grayLight } = colors

@@ -2,13 +2,21 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 import colors from './_colors.js';
-import text from './text.js';
+import icons from './_icons.js';
+import textLoader from './textLoader.js';
+import iconLoader from './iconLoader.js';
 
 // Colors
-const { black, white, grayDark, gray, grayLight } = colors
+const { black, white, grayDark, gray, grayLight } = colors;
 
-// Text
-const { STRATOS, ROBOTO, h1, h2, createText } = text;
+// Icons
+const { githubIcon, browserIcon, searchIcon, videoIcon } = icons;
+
+// Text Loader
+const { STRATOS, ROBOTO, h1, h2, createText } = textLoader;
+
+// Icon Loader
+const { createIcon } = iconLoader
 
 // Loader
 const loader = new GLTFLoader();
@@ -33,7 +41,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription) => {
         if(child.name.slice(-4) === 'Fill') child.material = new THREE.MeshStandardMaterial({ color: grayLight });
         else child.material = new THREE.MeshStandardMaterial({ color: black });
         child.material.transparent = true;
-        child.material.opacity = 0;
+        child.material.opacity = 1;
       });
 
       // group setup   
@@ -109,7 +117,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription) => {
             textColor
             }, 
             setText, 
-            name, 
+            name, 1
           );
         } else {
           zPos = multiLineZPos;
@@ -133,7 +141,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription) => {
               textColor
               }, 
               setText, 
-              name, 
+              name, 1
             );
             currentLine = '';
           };
@@ -183,6 +191,21 @@ const loadBubble = (xPos, yPos, projectName, projectDescription) => {
           name: 'description',
         },
       );
+
+      // add icons
+      createIcon(githubIcon, (mesh) => {
+        // SVG default size is huge
+        mesh.scale.set(.01, .01, .01)
+        
+        // Needs to be rotated because of how the file imported
+        mesh.rotation.x = THREE.MathUtils.degToRad(90);
+
+        // Needs to be positioned
+        mesh.position.x = -1;
+        mesh.position.y = .5;
+        mesh.position.z = -2.6;
+        bubbleGroup.add(mesh);
+      });
 
       bubbleGroup.name = 'bubble';
       

@@ -6,12 +6,11 @@ import colors from './_colors.js';
 // Colors
 const { black, white, grayDark, gray, grayLight } = colors
 
+// Loader
 const iconLoader = new SVGLoader();
 
-const createIcon = () => {
-  const group = new THREE.Group();
-
-  iconLoader.load('./assets/github.svg', // url
+const createIcon = (icon, callback) => {
+  iconLoader.load(icon, // url
     // on load
     (icon) => {
       const paths = icon.paths;
@@ -30,7 +29,7 @@ const createIcon = () => {
           const shape = shapes[j];
           const geometry = new THREE.ShapeGeometry(shape);
           const mesh = new THREE.Mesh(geometry, material);
-          group.add(mesh);
+          callback(mesh);
         }
       };
     },
@@ -41,13 +40,6 @@ const createIcon = () => {
       console.error(error);
     },
   );
-  // SVG default size is huge
-  group.scale.set(.1, .1, .1)
-
-  // Needs to be rotated because of how the file imported
-  group.rotation.x = THREE.MathUtils.degToRad(180);
-
-  return group;
 };
 
 export default { createIcon };

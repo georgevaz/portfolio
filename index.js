@@ -5,33 +5,29 @@ import TWEEN from '@tweenjs/tween.js';
 
 import colors from './public/src/_colors.js';
 import projects from './public/src/_projects.js';
-import text from './public/src/text.js';
-import ollie from './public/src/ollie.js';
-import bubble from './public/src/bubble.js';
+import textLoader from './public/src/textLoader.js';
+import ollieLoader from './public/src/ollieLoader.js';
+import bubbleLoader from './public/src/bubbleLoader.js';
 import animations from './public/src/animations.js';
-import image from './public/src/image.js';
-import icon from './public/src/icon.js';
+import imageLoader from './public/src/imageLoader.js';
 
 // Colors
 const { black, white, grayDark, gray, grayLight } = colors
 
 // Text
-const { textGroup } = text;
+const { textGroup } = textLoader;
 
 // Ollie
-const { ollieGroup, ollieLeftEye, ollieRightEye, table, tableBottom } = ollie;
+const { ollieGroup, ollieLeftEye, ollieRightEye, table, tableBottom } = ollieLoader;
 
 // Bubble
-const { bubbles, BUBBLESCALE, populateBubbles } = bubble;
+const { bubbles, BUBBLESCALE, populateBubbles } = bubbleLoader;
 
 // Animation
 const { introAnimation, bubbleClickAnimation, bubbleIdleAnimation, ollieBarkAnimation } = animations;
 
 // Images
-const { createImage } = image;
-
-// Icons
-const { createIcon } = icon;
+const { createImage } = imageLoader;
 
 let camera, aspectRatio;
 let scene, renderer, light, controls;
@@ -86,9 +82,8 @@ const init = () => {
     raycaster = new THREE.Raycaster();
     pointer = new THREE.Vector2();
 
-    let icon = createIcon();
     populateBubbles(Object.keys(projects).length, projects);
-    scene.add(textGroup, ollieGroup, table, tableBottom, ...bubbles, icon);
+    scene.add(textGroup, ollieGroup, table, tableBottom, ...bubbles);
 
     // Set event listeners
     window.addEventListener('click', onClick);
