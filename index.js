@@ -88,6 +88,7 @@ const init = () => {
     // Set event listeners
     window.addEventListener('click', onClick);
     window.addEventListener('touchstart', onClick); // mobile
+    window.addEventListener('mousemove', onMouseMove)
 
     // Handles resizing of window
     window.addEventListener('resize', onWindowResize);
@@ -181,6 +182,10 @@ const onClick = e => {
       bubbleClickAnimation(previousBubble, false);
       previousBubble = undefined;
   };
+};
+
+const onMouseMove = e => {
+  const intersects = shootRaycast(e);
 };
 
 init(); // Initialize

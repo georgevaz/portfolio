@@ -206,7 +206,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
 
         // Needs to be positioned
         icon.position.x = iconXPos;
-        icon.position.y = .5;
+        icon.position.y = .55;
         icon.position.z = -2.2;
 
         icon.children.forEach(mesh => mesh.material.opacity = 0)
