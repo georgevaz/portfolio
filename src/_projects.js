@@ -1,23 +1,70 @@
+import icons from './_icons.js';
+
+// Icons
+const { githubIcon, browserIcon, searchIcon, videoIcon } = icons;
+
 const projects = {
   'zukeeper': {
     name: 'Zukeeper',
-    description: 'Developer Tools for Zustand'
+    description: 'Developer Tools for Zustand',
+    links: {
+      website: {
+        url: 'https://www.zukeeper-tools.com/',
+        icon: browserIcon,
+      },
+      github: {
+        url: 'https://github.com/oslabs-beta/Zukeeper',
+        icon: githubIcon,
+      },
+    },
   },
   'armoire': {
     name: 'Armoire',
-    description: 'Closet Management Application'
+    description: 'Closet Management Application',
+    links: {
+    },
   },
   'pet-friend-finder': {
     name: 'Pet Friend Finder',
-    description: 'Shelter Dog Searching Application'
+    description: 'Shelter Dog Searching Application',
+    links: {
+      website: {
+        url: 'https://georgevaz.github.io/pet-friend-finder/',
+        icon: browserIcon,
+      },
+      github: {
+        url: 'https://github.com/georgevaz/pet-friend-finder',
+        icon: githubIcon,
+      }
+    },
   },
   'crop-dust': {
     name: 'Crop Dust',
-    description: 'Fast Pace Farming Game'
+    description: 'Fast-Paced Farming Game',
+    links: {
+      website: {
+        url: 'https://george-vaz.itch.io/crop-dust',
+        icon: browserIcon,
+      },
+      video: {
+        url: 'https://www.youtube.com/watch?v=OkJlKYUMYXA',
+        icon: videoIcon,
+      },
+    },
   },
   'tube-disasters': {
     name: 'Tube Disasters',
-    description: 'FPS RPG Game'
+    description: 'FPS RPG Game',
+    links: {
+      website: {
+        url: 'https://george-vaz.itch.io/tube-disasters',
+        icon: browserIcon,
+      },
+      video: {
+        url: 'https://www.youtube.com/watch?v=hJZeeUEZmWA',
+        icon: videoIcon,
+      },
+    },
   },
 };
 
