@@ -82,7 +82,7 @@ const init = () => {
     raycaster = new THREE.Raycaster();
     pointer = new THREE.Vector2();
 
-    populateBubbles(Object.keys(projects).length, projects);
+    populateBubbles(projects);
     scene.add(textGroup, ollieGroup, table, tableBottom, ...bubbles);
 
     // Set event listeners
@@ -182,33 +182,12 @@ const onClick = e => {
   };
 };
 
-// const moveEyes = e => {
-  
-//   let target1 = new THREE.Vector3()
-//   let target2 = new THREE.Vector3()
-//   target1 = ollieLeftEye.getWorldPosition(target1)
-//   target2 = ollieRightEye.getWorldPosition(target2)
-//   console.log(target1)
-//   console.log(target2)
-//   updatePointer(e);
-//   // console.log(ollieLeftEye.position.x)
-//   if(ollieLeftEye && ollieRightEye){
-
-//     ollieLeftEye.position.x = pointer.x;
-//     ollieRightEye.position.x = pointer.x;
-//   //   // The below is on the z axis because of how the original model was set
-//   //   ollieLeftEye.position.z = -pointer.y;
-//   //   ollieRightEye.position.z = -pointer.y;
-
-//   };
-// };
-
 init(); // Initialize
 
 // Needs to wait for fonts to load first, 1 second seems to suffice
 // Always errors out unless it starts 5-6 frames after init
 setTimeout(() => {
-  introAnimation();
+  // introAnimation();
   bubbles.forEach(bubble => bubbleIdleAnimation(bubble))
 }, 1000);
 

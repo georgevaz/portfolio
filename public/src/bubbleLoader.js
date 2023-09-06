@@ -24,7 +24,7 @@ const loader = new GLTFLoader();
 const bubbles = [];
 const BUBBLESCALE = [.3, .3, .3]
 
-const loadBubble = (xPos, yPos, projectName, projectDescription) => {
+const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) => {
   
   // Bubble Group
   const bubbleGroup = new THREE.Group();
@@ -66,17 +66,17 @@ const loadBubble = (xPos, yPos, projectName, projectDescription) => {
 
       // Function to set text
       const populateBubbleText = (bubbleText, textAttributes, callback, callbackParams) => {
-        let zPos;
+        let textZPos;
         let lineSpace;
         let currentLine;
         const { maxLength, singleLineZPos, multiLineZPos, tracking } = textAttributes;
         const { fontType, fontSize, fontThickness, xPos, yPos, textColor, name } = callbackParams;
 
         const setText = (text) => {
-          text.position.z = zPos;
+          text.position.z = textZPos;
   
           if(lineSpace){
-            zPos += lineSpace
+            textZPos += lineSpace
   
             // Determine line spacing for tweening later
             text.lineSpace = lineSpace;
@@ -105,7 +105,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription) => {
         };
 
         if(bubbleText.length <= maxLength) {
-          zPos = singleLineZPos;
+          textZPos = singleLineZPos;
           callback(
             {
             fontType, 
@@ -120,7 +120,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription) => {
             name, 1
           );
         } else {
-          zPos = multiLineZPos;
+          textZPos = multiLineZPos;
           lineSpace = tracking;
           const bubbleTextSplit = bubbleText.split(' ');
           titleIsMulti = true;
@@ -193,19 +193,31 @@ const loadBubble = (xPos, yPos, projectName, projectDescription) => {
       );
 
       // add icons
-      createIcon(githubIcon, (mesh) => {
+      const projectLinksKeys = Object.keys(projectLinks);
+      let iconXPos = projectLinksKeys.length * -.38;
+
+      const setIcon = (mesh) => {
         // SVG default size is huge
-        mesh.scale.set(.01, .01, .01)
+        mesh.scale.set(.007, .007, .007)
         
         // Needs to be rotated because of how the file imported
         mesh.rotation.x = THREE.MathUtils.degToRad(90);
 
         // Needs to be positioned
-        mesh.position.x = -1;
+        mesh.position.x = iconXPos;
         mesh.position.y = .5;
-        mesh.position.z = -2.6;
+        mesh.position.z = -2.2;
         bubbleGroup.add(mesh);
-      });
+
+        iconXPos += .75;
+      };
+      
+      // every bubble will have the search icon
+      createIcon(searchIcon, 'examples', setIcon);
+
+      for(let i = 0; i < projectLinksKeys.length; i++){
+        createIcon(projectLinks[projectLinksKeys[i]].icon, projectLinksKeys[i], setIcon);
+      }
 
       bubbleGroup.name = 'bubble';
       
@@ -223,23 +235,25 @@ const loadBubble = (xPos, yPos, projectName, projectDescription) => {
   return bubbleGroup;
 };
 
-const populateBubbles = (numOfBubbles, projects) => {
+const populateBubbles = projects => {
   let row = 0;
   const xConst = 1.5;
   const yConst = -.55;
+  const numOfBubbles = Object.keys(projects).length;
 
   for(let i = 0; i < numOfBubbles; i++){
-    let projectName = projects[Object.keys(projects)[i]].name;
-    let projectDescription = projects[Object.keys(projects)[i]].description;
+    const projectName = projects[Object.keys(projects)[i]].name;
+    const projectDescription = projects[Object.keys(projects)[i]].description;
+    const projectLinks = projects[Object.keys(projects)[i]].links;
 
     if(i === 0) {
-      bubbles.push(loadBubble(0, 0, projectName, projectDescription))
+      bubbles.push(loadBubble(0, 0, projectName, projectDescription, projectLinks))
       row++;
     } else if(i % 2 === 0) {
-      bubbles.push(loadBubble(row + xConst, row * (row * yConst), projectName, projectDescription))
+      bubbles.push(loadBubble(row + xConst, row * (row * yConst), projectName, projectDescription, projectLinks))
       row++;
     } else {
-      bubbles.push(loadBubble(-(row + xConst), row * (row * yConst), projectName, projectDescription))
+      bubbles.push(loadBubble(-(row + xConst), row * (row * yConst), projectName, projectDescription, projectLinks))
     };
   };
 };

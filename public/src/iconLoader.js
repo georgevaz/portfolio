@@ -9,15 +9,15 @@ const { black, white, grayDark, gray, grayLight } = colors
 // Loader
 const iconLoader = new SVGLoader();
 
-const createIcon = (icon, callback) => {
+const createIcon = (icon, name, callback) => {
   iconLoader.load(icon, // url
     // on load
     (icon) => {
       const paths = icon.paths;
+      const group = new THREE.Group();
       for(let i = 0; i < paths.length; i++){
         const path = paths[i];
-
-        const material = new THREE.MeshBasicMaterial({
+        const material = new THREE.MeshPhongMaterial({
           color: black,
           side: THREE.DoubleSide,
           depthWrite: true
@@ -29,9 +29,14 @@ const createIcon = (icon, callback) => {
           const shape = shapes[j];
           const geometry = new THREE.ShapeGeometry(shape);
           const mesh = new THREE.Mesh(geometry, material);
-          callback(mesh);
+
+          mesh.name = name;
+          geometry.center();
+
+          group.add(mesh);
         }
       };
+      callback(group);
     },
     // on progress
     undefined,
