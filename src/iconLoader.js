@@ -9,13 +9,17 @@ const { black, white, grayDark, gray, grayLight } = colors
 // Loader
 const iconLoader = new SVGLoader();
 
-const createIcon = (icon, name, callback) => {
+const createIcon = (icon, name, callback, link) => {
+  let boundingX;
+  let boundingY;
+
   iconLoader.load(icon, // url
     // on load
     (icon) => {
       const paths = icon.paths;
       const group = new THREE.Group();
       group.name = 'icon';
+      group.link = link;
 
       for(let i = 0; i < paths.length; i++){
         const path = paths[i];
@@ -36,9 +40,24 @@ const createIcon = (icon, name, callback) => {
           mesh.name = name;
           geometry.center();
 
+          // measure the height and width of icon to use on invisible cube later
+          // since some icons have more than one piece, we have to make sure we are grabbing the largest size
+          // typically the shape that encompasses the perimeter
+          boundingX = boundingX > geometry.boundingBox.max.x * 2 ? boundingX : geometry.boundingBox.max.x * 2;
+          boundingY = boundingY > geometry.boundingBox.max.y * 2 ? boundingY : geometry.boundingBox.max.y * 2;
+
           group.add(mesh);
         }
       };
+
+      // invisible cube to register clicking
+      const geometry = new THREE.BoxGeometry(boundingX, boundingY, 5);
+      const material = new THREE.MeshBasicMaterial({
+        color: black,
+        visible: false
+      });
+      const cube = new THREE.Mesh(geometry, material);
+      group.add(cube)
 
       callback(group);
     },

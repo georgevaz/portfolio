@@ -206,7 +206,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
 
         // Needs to be positioned
         icon.position.x = iconXPos;
-        icon.position.y = .5;
+        icon.position.y = .55;
         icon.position.z = -2.2;
 
         icon.children.forEach(mesh => mesh.material.opacity = 0)
@@ -220,7 +220,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
       createIcon(searchIcon, 'examples', setIcon);
 
       for(let i = 0; i < projectLinksKeys.length; i++){
-        createIcon(projectLinks[projectLinksKeys[i]].icon, projectLinksKeys[i], setIcon);
+        createIcon(projectLinks[projectLinksKeys[i]].icon, projectLinksKeys[i], setIcon, projectLinks[projectLinksKeys[i]].url);
       }
 
       bubbleGroup.name = 'bubble';
