@@ -174,6 +174,10 @@ const onClick = e => {
         ollieBarkAnimation(scene);
         break;
       };
+      if(intersects[i].object.parent.name === 'icon'){
+        window.open(intersects[i].object.parent.link);
+        break;
+      }
     };
     // Reset pointer
     pointer.x = null;
@@ -186,6 +190,15 @@ const onClick = e => {
 
 const onMouseMove = e => {
   const intersects = shootRaycast(e);
+  
+  if (intersects.length > 0) {
+    for (let i = 0; i < intersects.length; i++){
+      if(intersects[i].object.parent.name === 'icon' && intersects[i].object.material.opacity >= 1){
+        document.body.style.cursor = 'pointer';
+        break;
+      } else document.body.style.cursor = '';
+    };
+  } else document.body.style.cursor = '';
 };
 
 init(); // Initialize

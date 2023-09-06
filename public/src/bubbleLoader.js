@@ -220,7 +220,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
       createIcon(searchIcon, 'examples', setIcon);
 
       for(let i = 0; i < projectLinksKeys.length; i++){
-        createIcon(projectLinks[projectLinksKeys[i]].icon, projectLinksKeys[i], setIcon);
+        createIcon(projectLinks[projectLinksKeys[i]].icon, projectLinksKeys[i], setIcon, projectLinks[projectLinksKeys[i]].url);
       }
 
       bubbleGroup.name = 'bubble';
