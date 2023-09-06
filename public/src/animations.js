@@ -67,8 +67,8 @@ const introAnimation = () => {
                     () => {
                       bubbles.forEach(bubble => {
                         bubble.children.forEach(child => {
-                          // change opacity for the entire bubble except description, which will only appear when clicked
-                          if(child.name !== 'description') tweenObject(child.material, textTweenOpacityProp, 250, TWEEN.Easing.Linear.None, 500);
+                          // change opacity for the entire bubble except description and icons, which will only appear when clicked
+                          if(child.name !== 'description' && child.name !== 'icon') tweenObject(child.material, textTweenOpacityProp, 250, TWEEN.Easing.Linear.None, 500);
                         })
                       })
                     }
@@ -85,6 +85,7 @@ const introAnimation = () => {
 const bubbleClickAnimation = (object, isClicked) => {
   let titles = object.children.filter(child => child.name === 'title');
   let descriptions = object.children.filter(child => child.name === 'description');
+  let icons = object.children.filter(child => child.name === 'icon');
 
   if(isClicked){
     object.tween.stop();
@@ -101,8 +102,14 @@ const bubbleClickAnimation = (object, isClicked) => {
       }, 200, TWEEN.Easing.Back.Out, 200)
     });
 
-    descriptions.forEach((description, i) => {
-      tweenObject(description.material, {opacity: 1}, 200, TWEEN.Easing.Back.Out, 200)
+    icons.forEach(icon => {
+      icon.children.forEach(mesh => {
+        tweenObject(mesh.material, {opacity: 1}, 200, TWEEN.Easing.Back.Out, 200);
+      });
+    });
+
+    descriptions.forEach(description => {
+      tweenObject(description.material, {opacity: 1}, 200, TWEEN.Easing.Back.Out, 200);
     })
 
     tweenObject(object.scale, bubbleTweenOnScaleProp, 200, TWEEN.Easing.Back.Out, 200);
@@ -117,12 +124,18 @@ const bubbleClickAnimation = (object, isClicked) => {
         y: 1,
         z: 1,
       }, 200, TWEEN.Easing.Back.Out, 200)
-      tweenObject(title.position, title.originalPosition, 200, TWEEN.Easing.Back.Out, 200)
+      tweenObject(title.position, title.originalPosition, 200, TWEEN.Easing.Back.Out, 200);
     });
 
-    descriptions.forEach((description, i) => {
-      tweenObject(description.material, {opacity: 0}, 200, TWEEN.Easing.Back.Out, 200)
-    })
+    icons.forEach(icon => {
+      icon.children.forEach(mesh => {
+        tweenObject(mesh.material, {opacity: 0}, 200, TWEEN.Easing.Back.Out, 200);
+      });
+    });
+
+    descriptions.forEach(description => {
+      tweenObject(description.material, {opacity: 0}, 200, TWEEN.Easing.Back.Out, 200);
+    });
 
     tweenObject(object.scale, bubbleTweenOffScaleProp, 200, TWEEN.Easing.Back.Out, 200);
     tweenObject(object.position, object.originalPosition, 200, TWEEN.Easing.Back.Out, 200);

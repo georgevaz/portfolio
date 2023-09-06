@@ -41,7 +41,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
         if(child.name.slice(-4) === 'Fill') child.material = new THREE.MeshStandardMaterial({ color: grayLight });
         else child.material = new THREE.MeshStandardMaterial({ color: black });
         child.material.transparent = true;
-        child.material.opacity = 1;
+        child.material.opacity = 0;
       });
 
       // group setup   
@@ -101,6 +101,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
           };
 
           text.rotation.x = THREE.MathUtils.degToRad(270);
+          
           bubbleGroup.add(text);
         };
 
@@ -117,7 +118,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
             textColor
             }, 
             setText, 
-            name, 1
+            name, 
           );
         } else {
           textZPos = multiLineZPos;
@@ -141,7 +142,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
               textColor
               }, 
               setText, 
-              name, 1
+              name, 
             );
             currentLine = '';
           };
@@ -196,18 +197,21 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
       const projectLinksKeys = Object.keys(projectLinks);
       let iconXPos = projectLinksKeys.length * -.38;
 
-      const setIcon = (mesh) => {
+      const setIcon = (icon) => {
         // SVG default size is huge
-        mesh.scale.set(.007, .007, .007)
+        icon.scale.set(.007, .007, .007)
         
         // Needs to be rotated because of how the file imported
-        mesh.rotation.x = THREE.MathUtils.degToRad(90);
+        icon.rotation.x = THREE.MathUtils.degToRad(90);
 
         // Needs to be positioned
-        mesh.position.x = iconXPos;
-        mesh.position.y = .5;
-        mesh.position.z = -2.2;
-        bubbleGroup.add(mesh);
+        icon.position.x = iconXPos;
+        icon.position.y = .5;
+        icon.position.z = -2.2;
+
+        icon.children.forEach(mesh => mesh.material.opacity = 0)
+
+        bubbleGroup.add(icon);
 
         iconXPos += .75;
       };

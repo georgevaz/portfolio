@@ -97,7 +97,11 @@ const createText = (textAttributes, callback, name='text', opacity=0) => {
         bevelOffset: 0,
         bevelSegments: 5
       });
-      const material = new THREE.MeshPhongMaterial({ color: textColor });
+      const material = new THREE.MeshPhongMaterial({ 
+        color: textColor,
+        transparent: true,
+        opacity: opacity
+      });
       const text = new THREE.Mesh(geometry, material);
       text.name = name;
       text.textCopy = textCopy;
@@ -106,9 +110,6 @@ const createText = (textAttributes, callback, name='text', opacity=0) => {
       geometry.center();
       text.position.x = xPos;
       text.position.y = yPos;
-
-      text.material.transparent = true;
-      text.material.opacity = opacity;
 
       callback(text);
     },

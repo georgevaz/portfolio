@@ -2,13 +2,21 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 import colors from './_colors.js';
-import text from './text.js';
+import icons from './_icons.js';
+import textLoader from './textLoader.js';
+import iconLoader from './iconLoader.js';
 
 // Colors
-const { black, white, grayDark, gray, grayLight } = colors
+const { black, white, grayDark, gray, grayLight } = colors;
 
-// Text
-const { STRATOS, ROBOTO, h1, h2, createText } = text;
+// Icons
+const { githubIcon, browserIcon, searchIcon, videoIcon } = icons;
+
+// Text Loader
+const { STRATOS, ROBOTO, h1, h2, createText } = textLoader;
+
+// Icon Loader
+const { createIcon } = iconLoader
 
 // Loader
 const loader = new GLTFLoader();
@@ -16,7 +24,7 @@ const loader = new GLTFLoader();
 const bubbles = [];
 const BUBBLESCALE = [.3, .3, .3]
 
-const loadBubble = (xPos, yPos, projectName, projectDescription) => {
+const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) => {
   
   // Bubble Group
   const bubbleGroup = new THREE.Group();
@@ -58,17 +66,17 @@ const loadBubble = (xPos, yPos, projectName, projectDescription) => {
 
       // Function to set text
       const populateBubbleText = (bubbleText, textAttributes, callback, callbackParams) => {
-        let zPos;
+        let textZPos;
         let lineSpace;
         let currentLine;
         const { maxLength, singleLineZPos, multiLineZPos, tracking } = textAttributes;
         const { fontType, fontSize, fontThickness, xPos, yPos, textColor, name } = callbackParams;
 
         const setText = (text) => {
-          text.position.z = zPos;
+          text.position.z = textZPos;
   
           if(lineSpace){
-            zPos += lineSpace
+            textZPos += lineSpace
   
             // Determine line spacing for tweening later
             text.lineSpace = lineSpace;
@@ -93,11 +101,12 @@ const loadBubble = (xPos, yPos, projectName, projectDescription) => {
           };
 
           text.rotation.x = THREE.MathUtils.degToRad(270);
+          
           bubbleGroup.add(text);
         };
 
         if(bubbleText.length <= maxLength) {
-          zPos = singleLineZPos;
+          textZPos = singleLineZPos;
           callback(
             {
             fontType, 
@@ -112,7 +121,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription) => {
             name, 
           );
         } else {
-          zPos = multiLineZPos;
+          textZPos = multiLineZPos;
           lineSpace = tracking;
           const bubbleTextSplit = bubbleText.split(' ');
           titleIsMulti = true;
@@ -184,6 +193,36 @@ const loadBubble = (xPos, yPos, projectName, projectDescription) => {
         },
       );
 
+      // add icons
+      const projectLinksKeys = Object.keys(projectLinks);
+      let iconXPos = projectLinksKeys.length * -.38;
+
+      const setIcon = (icon) => {
+        // SVG default size is huge
+        icon.scale.set(.007, .007, .007)
+        
+        // Needs to be rotated because of how the file imported
+        icon.rotation.x = THREE.MathUtils.degToRad(90);
+
+        // Needs to be positioned
+        icon.position.x = iconXPos;
+        icon.position.y = .5;
+        icon.position.z = -2.2;
+
+        icon.children.forEach(mesh => mesh.material.opacity = 0)
+
+        bubbleGroup.add(icon);
+
+        iconXPos += .75;
+      };
+      
+      // every bubble will have the search icon
+      createIcon(searchIcon, 'examples', setIcon);
+
+      for(let i = 0; i < projectLinksKeys.length; i++){
+        createIcon(projectLinks[projectLinksKeys[i]].icon, projectLinksKeys[i], setIcon);
+      }
+
       bubbleGroup.name = 'bubble';
       
       // Needs to be rotated because of how the file imported
@@ -200,23 +239,25 @@ const loadBubble = (xPos, yPos, projectName, projectDescription) => {
   return bubbleGroup;
 };
 
-const populateBubbles = (numOfBubbles, projects) => {
+const populateBubbles = projects => {
   let row = 0;
   const xConst = 1.5;
   const yConst = -.55;
+  const numOfBubbles = Object.keys(projects).length;
 
   for(let i = 0; i < numOfBubbles; i++){
-    let projectName = projects[Object.keys(projects)[i]].name;
-    let projectDescription = projects[Object.keys(projects)[i]].description;
+    const projectName = projects[Object.keys(projects)[i]].name;
+    const projectDescription = projects[Object.keys(projects)[i]].description;
+    const projectLinks = projects[Object.keys(projects)[i]].links;
 
     if(i === 0) {
-      bubbles.push(loadBubble(0, 0, projectName, projectDescription))
+      bubbles.push(loadBubble(0, 0, projectName, projectDescription, projectLinks))
       row++;
     } else if(i % 2 === 0) {
-      bubbles.push(loadBubble(row + xConst, row * (row * yConst), projectName, projectDescription))
+      bubbles.push(loadBubble(row + xConst, row * (row * yConst), projectName, projectDescription, projectLinks))
       row++;
     } else {
-      bubbles.push(loadBubble(-(row + xConst), row * (row * yConst), projectName, projectDescription))
+      bubbles.push(loadBubble(-(row + xConst), row * (row * yConst), projectName, projectDescription, projectLinks))
     };
   };
 };

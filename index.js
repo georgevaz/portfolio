@@ -168,6 +168,7 @@ const onClick = e => {
         bubbleClickAnimation(previousBubble, false);
         previousBubble = undefined;
       };
+      
       if(intersects[i].object.parent.name === 'ollieBody'){
         ollieBarkAnimation(scene);
         break;
@@ -187,7 +188,7 @@ init(); // Initialize
 // Needs to wait for fonts to load first, 1 second seems to suffice
 // Always errors out unless it starts 5-6 frames after init
 setTimeout(() => {
-  // introAnimation();
+  introAnimation();
   bubbles.forEach(bubble => bubbleIdleAnimation(bubble))
 }, 1000);
 
