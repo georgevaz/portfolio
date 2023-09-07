@@ -217,11 +217,13 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
       };
       
       // every bubble will have the search icon
-      createIcon(searchIcon, 'examples', setIcon);
+      createIcon(searchIcon, 'examples', (icon) => {
+        setIcon(icon)
+        for(let i = 0; i < projectLinksKeys.length; i++){
+          createIcon(projectLinks[projectLinksKeys[i]].icon, projectLinksKeys[i], setIcon, projectLinks[projectLinksKeys[i]].url);
+        };
+      });
 
-      for(let i = 0; i < projectLinksKeys.length; i++){
-        createIcon(projectLinks[projectLinksKeys[i]].icon, projectLinksKeys[i], setIcon, projectLinks[projectLinksKeys[i]].url);
-      }
 
       bubbleGroup.name = 'bubble';
       

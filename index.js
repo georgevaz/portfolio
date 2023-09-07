@@ -149,8 +149,10 @@ const shootRaycast = e => {
 
 const onClick = e => {
   const intersects = shootRaycast(e);
+
   if (intersects.length > 0) {
     for (let i = 0; i < intersects.length; i++) {
+
       // find out the parent (group) of object intersecting and also check if it is completely in view (animation completed)
       if(intersects[i].object.parent.name === 'bubble' && intersects[i].object.material.opacity >= 1) {
         // if the there is an enlarged bubble, and the currently clicked bubble isn't that one
@@ -164,6 +166,7 @@ const onClick = e => {
         };
         break;
       };
+
       // if a bubble is enlarged and after we iterate through all objects and none of the intersected objects are bubbles, shrink it
       if(previousBubble && i >= intersects.length - 1){
         bubbleClickAnimation(previousBubble, false);
@@ -174,11 +177,13 @@ const onClick = e => {
         ollieBarkAnimation(scene);
         break;
       };
+
       if(intersects[i].object.parent.name === 'icon'){
         window.open(intersects[i].object.parent.link);
         break;
-      }
+      };
     };
+
     // Reset pointer
     pointer.x = null;
     pointer.y = null;
