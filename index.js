@@ -180,7 +180,7 @@ const onClick = e => {
         break;
       };
 
-      if(intersects[i].object.parent.name === 'icon'){
+      if(intersects[i].object.parent.name === 'icon' && intersects[i].object.material.opacity >= 1){
         window.open(intersects[i].object.parent.link);
         break;
       };

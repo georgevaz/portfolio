@@ -54,6 +54,8 @@ const createIcon = (icon, name, callback, link) => {
       const geometry = new THREE.BoxGeometry(boundingX, boundingY, 5);
       const material = new THREE.MeshBasicMaterial({
         color: black,
+        transparent: true,
+        opacity: 0,
         visible: false
       });
       const cube = new THREE.Mesh(geometry, material);
