@@ -17,6 +17,8 @@ const { olliePaws, ollieBody, table } = ollie;
 // Bubble
 const { BUBBLESCALE, bubbles } = bubble;
 
+let introAnimationFinished = false;
+
 const tweenObject = (property, propChange, timing, easeType, delay=0) => {
   return new TWEEN.Tween(property)
     .to(propChange, timing)
@@ -69,8 +71,9 @@ const introAnimation = () => {
                         bubble.children.forEach(child => {
                           // change opacity for the entire bubble except description and icons, which will only appear when clicked
                           if(child.name !== 'description' && child.name !== 'icon') tweenObject(child.material, textTweenOpacityProp, 250, TWEEN.Easing.Linear.None, 500);
-                        })
-                      })
+                        });
+                      });
+                      introAnimationFinished = true;
                     }
                   )
                 )
@@ -152,30 +155,32 @@ const bubbleIdleAnimation = (object) => {
 };
 
 const ollieBarkAnimation = (scene) => {
-  createText(
-    {
-      fontType: STRATOS, 
-      fontSize: h2,
-      fontThickness: 0.1,
-      xPos: Math.random() * (Math.round(Math.random()) ? 1 : -1) - .35, 
-      yPos: 0, 
-      textCopy: Math.round(Math.random()) ? 'woof' : 'bark', 
-      textColor: black,
-    }, 
-    (text) => {
-      text.material.opacity = 1;
-      scene.add(text);
-      tweenObject(text.position, {y: 1}, 1000, TWEEN.Easing.Linear.None);
-      tweenObject(text.material, {opacity: 0}, 1000, TWEEN.Easing.Linear.None)
-      .onComplete(
-        () => {
-          text.geometry.dispose();
-          text.material.dispose();
-          scene.remove(text);
-        }
-      );
-    }
-  );
+  if(introAnimationFinished){
+    createText(
+      {
+        fontType: STRATOS, 
+        fontSize: h2,
+        fontThickness: 0.1,
+        xPos: Math.random() * (Math.round(Math.random()) ? 1 : -1) - .35, 
+        yPos: 0, 
+        textCopy: Math.round(Math.random()) ? 'woof' : 'bark', 
+        textColor: black,
+      }, 
+      (text) => {
+        text.material.opacity = 1;
+        scene.add(text);
+        tweenObject(text.position, {y: 1}, 1000, TWEEN.Easing.Linear.None);
+        tweenObject(text.material, {opacity: 0}, 1000, TWEEN.Easing.Linear.None)
+        .onComplete(
+          () => {
+            text.geometry.dispose();
+            text.material.dispose();
+            scene.remove(text);
+          }
+        );
+      }
+    );
+  };
 };
 
 export default {
