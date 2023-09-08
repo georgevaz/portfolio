@@ -123,7 +123,9 @@ const onWindowResize = e => {
 };
 
 const calculateFOV = () => {
-  let camDistance = window.innerWidth / 2 / Math.tan(Math.PI * CAMFOV / 360);
+  // Formula to calculate a suitable FOV based on user's window size. 
+  // The aspect ratio check is to see if we are accommodating for landscape or portrait view to fit the scene appropriately
+  let camDistance = (aspectRatio <= 1.5 ? window.innerWidth : window.innerHeight * 1.5) / 2 / Math.tan(Math.PI * CAMFOV / 360);
   return 2 * Math.atan( (window.innerWidth / aspectRatio) / ( 2 * camDistance ) ) * ( 180 / Math.PI );
 };
 
