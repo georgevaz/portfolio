@@ -91,7 +91,7 @@ const bubbleClickAnimation = (object, isClicked) => {
   let icons = object.children.filter(child => child.name === 'icon');
 
   if(isClicked){
-    object.tween.stop();
+    object.idleTween.stop();
 
     titles.forEach((title, i) => {
       let titleScale = title.lineSpace ? .7 : .8
@@ -119,7 +119,7 @@ const bubbleClickAnimation = (object, isClicked) => {
     tweenObject(object.position, bubbleTweenOnPositionProp, 200, TWEEN.Easing.Back.Out, 200);
 
   } else {
-    object.tween.start();
+    object.idleTween.start();
 
     titles.forEach((title) => {
       tweenObject(title.scale, {
@@ -149,7 +149,7 @@ const bubbleClickAnimation = (object, isClicked) => {
 const bubbleIdleAnimation = (object) => {
   let randomTiming = Math.floor(Math.random() * (5000 - 3000 + 1) + 3000);
   // store the tween into the bubble object to access later (start/stop)
-  object.tween = tweenObject(object.position, {y: object.position.y - .1}, randomTiming, TWEEN.Easing.Sinusoidal.InOut, 200)
+  object.idleTween = tweenObject(object.position, {y: object.position.y - .1}, randomTiming, TWEEN.Easing.Sinusoidal.InOut, 200)
   .repeat(Infinity)
   .yoyo(true);
 };
