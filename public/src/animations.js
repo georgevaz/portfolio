@@ -70,7 +70,7 @@ const introAnimation = () => {
                       bubbles.forEach(bubble => {
                         bubble.children.forEach(child => {
                           // change opacity for the entire bubble except description and icons, which will only appear when clicked
-                          if(child.name !== 'description' && child.name !== 'icon') tweenObject(child.material, textTweenOpacityProp, 250, TWEEN.Easing.Linear.None, 500);
+                          if(child.name !== 'description' && child.name !== 'image') tweenObject(child.material, textTweenOpacityProp, 250, TWEEN.Easing.Linear.None, 500);
                         });
                       });
                       introAnimationFinished = true;
@@ -86,9 +86,9 @@ const introAnimation = () => {
 };
 
 const bubbleClickAnimation = (object, isClicked) => {
-  let titles = object.children.filter(child => child.name === 'title');
-  let descriptions = object.children.filter(child => child.name === 'description');
-  let icons = object.children.filter(child => child.name === 'icon');
+  let titles = object.children.filter(child => child.name === 'titleText');
+  let descriptions = object.getObjectByName("description").children.filter(child => child.name === 'descriptionText');
+  let icons = object.getObjectByName("description").children.filter(child => child.name === 'icon');
 
   if(isClicked){
     object.idleTween.stop();

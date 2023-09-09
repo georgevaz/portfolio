@@ -33,8 +33,16 @@ const startingOpacity = 0;
 
 const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) => {
   
-  // Bubble Group
+  // Parent Group
   const bubbleGroup = new THREE.Group();
+
+  const descriptionGroup = new THREE.Group();
+  const imageGroup = new THREE.Group();
+
+  bubbleGroup.name = 'bubble';
+  descriptionGroup.name = 'description';
+  imageGroup.name = 'image';
+
   
   loader.load('./assets/bubble.glb', // url
     // on load
@@ -72,7 +80,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
       };
 
       // Function to set text
-      const populateBubbleText = (bubbleText, textAttributes, callback, callbackParams) => {
+      const populateBubbleText = (bubbleText, group, textAttributes, callback, callbackParams) => {
         let textZPos;
         let lineSpace;
         let currentLine;
@@ -101,7 +109,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
           // When loading the text by default, I set the font size to 1 and then to reduce the "font size", 
           // I can alter the scale instead
           // I don't like this block of code being here but it seems to work best since it is in a callback
-          if(text.name === 'description'){
+          if(text.name === 'descriptionText'){
             text.scale.x = .15;
             text.scale.y = .15;
             text.scale.z = .15;
@@ -109,7 +117,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
 
           text.rotation.x = THREE.MathUtils.degToRad(270);
           
-          bubbleGroup.add(text);
+          group.add(text);
         };
 
         if(bubbleText.length <= maxLength) {
@@ -138,7 +146,6 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
             while(bubbleTextSplit.length && currentLine.length + bubbleTextSplit[0].length <= maxLength){
               currentLine += ' ' + bubbleTextSplit.shift();
             };
-  
             callback(
               {
               fontType, 
@@ -162,7 +169,8 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
 
       // add title
       populateBubbleText(
-        projectName, 
+        projectName,
+        bubbleGroup,
         {
           maxLength: 10,
           singleLineZPos: -3, 
@@ -177,14 +185,15 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
           xPos: 0, 
           yPos: .5, 
           textColor: black,
-          name: 'title',
+          name: 'titleText',
           startingOpacity
         },
       );
 
       // add description
       populateBubbleText(
-        projectDescription, 
+        projectDescription,
+        descriptionGroup,
         {
           maxLength: 20,
           singleLineZPos: titleIsMulti ? -2.8 : -3, 
@@ -199,7 +208,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
           xPos: 0, 
           yPos: .5, 
           textColor: black,
-          name: 'description',
+          name: 'descriptionText',
           startingOpacity
         },
       );
@@ -222,7 +231,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
 
         icon.children.forEach(mesh => mesh.material.opacity = startingOpacity)
 
-        bubbleGroup.add(icon);
+        descriptionGroup.add(icon);
 
         iconXPos += .75;
       };
@@ -239,19 +248,18 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
         // Needs to be rotated because of how the file imported
         mesh.rotation.x = THREE.MathUtils.degToRad(270);
 
-        mesh.material.opacity = 0;
+        mesh.material.opacity = startingOpacity;
         mesh.position.set(0, .5, -3);
 
         mesh.name = 'piece';
 
-        bubbleGroup.add(mesh);
+        imageGroup.add(mesh);
       });
-
-      bubbleGroup.name = 'bubble';
       
       // Needs to be rotated because of how the file imported
       bubbleGroup.rotation.x = THREE.MathUtils.degToRad(90);
 
+      bubbleGroup.add(descriptionGroup, imageGroup)
     },
     // on progress
     undefined,
