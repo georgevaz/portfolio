@@ -5,6 +5,7 @@ import colors from './_colors.js';
 import icons from './_icons.js';
 import textLoader from './textLoader.js';
 import iconLoader from './iconLoader.js';
+import imageLoader from './imageLoader.js';
 
 // Colors
 const { black, white, grayDark, gray, grayLight } = colors;
@@ -18,11 +19,17 @@ const { STRATOS, ROBOTO, h1, h2, createText } = textLoader;
 // Icon Loader
 const { createIcon } = iconLoader
 
+// Images
+const { createImage } = imageLoader;
+
 // Loader
 const loader = new GLTFLoader();
 
 const bubbles = [];
-const BUBBLESCALE = [.3, .3, .3]
+const BUBBLESCALE = [.3, .3, .3];
+
+// This is mainly for ease of use during development
+const startingOpacity = 0;
 
 const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) => {
   
@@ -41,7 +48,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
         if(child.name.slice(-4) === 'Fill') child.material = new THREE.MeshStandardMaterial({ color: grayLight });
         else child.material = new THREE.MeshStandardMaterial({ color: black });
         child.material.transparent = true;
-        child.material.opacity = 0;
+        child.material.opacity = startingOpacity;
       });
 
       // group setup   
@@ -118,7 +125,8 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
             textColor
             }, 
             setText, 
-            name, 
+            name,
+            startingOpacity
           );
         } else {
           textZPos = multiLineZPos;
@@ -142,7 +150,8 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
               textColor
               }, 
               setText, 
-              name, 
+              name,
+              startingOpacity
             );
             currentLine = '';
           };
@@ -168,7 +177,8 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
           xPos: 0, 
           yPos: .5, 
           textColor: black,
-          name: 'title'
+          name: 'title',
+          startingOpacity
         },
       );
 
@@ -190,6 +200,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
           yPos: .5, 
           textColor: black,
           name: 'description',
+          startingOpacity
         },
       );
 
@@ -209,7 +220,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
         icon.position.y = .55;
         icon.position.z = -2.2;
 
-        icon.children.forEach(mesh => mesh.material.opacity = 0)
+        icon.children.forEach(mesh => mesh.material.opacity = startingOpacity)
 
         bubbleGroup.add(icon);
 
@@ -224,6 +235,17 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
         };
       });
 
+      createImage('./assets/Zukeeper-1.gif', 2.4, (mesh) => {
+        // Needs to be rotated because of how the file imported
+        mesh.rotation.x = THREE.MathUtils.degToRad(270);
+
+        mesh.material.opacity = 0;
+        mesh.position.set(0, .5, -3);
+
+        mesh.name = 'piece';
+
+        bubbleGroup.add(mesh);
+      });
 
       bubbleGroup.name = 'bubble';
       

@@ -9,7 +9,6 @@ import textLoader from './public/src/textLoader.js';
 import ollieLoader from './public/src/ollieLoader.js';
 import bubbleLoader from './public/src/bubbleLoader.js';
 import animations from './public/src/animations.js';
-import imageLoader from './public/src/imageLoader.js';
 
 // Colors
 const { black, white, grayDark, gray, grayLight } = colors
@@ -25,9 +24,6 @@ const { bubbles, BUBBLESCALE, populateBubbles } = bubbleLoader;
 
 // Animation
 const { introAnimation, bubbleClickAnimation, bubbleIdleAnimation, ollieBarkAnimation } = animations;
-
-// Images
-const { createImage } = imageLoader;
 
 let camera, aspectRatio;
 let scene, renderer, light, controls;
