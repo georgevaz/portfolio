@@ -237,7 +237,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
       };
       
       // every bubble will have the search icon
-      createIcon(searchIcon, 'examples', (icon) => {
+      createIcon(searchIcon, 'portfolioMocks', (icon) => {
         setIcon(icon)
         for(let i = 0; i < projectLinksKeys.length; i++){
           createIcon(projectLinks[projectLinksKeys[i]].icon, projectLinksKeys[i], setIcon, projectLinks[projectLinksKeys[i]].url);
@@ -251,7 +251,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
         mesh.material.opacity = startingOpacity;
         mesh.position.set(0, .5, -3);
 
-        mesh.name = 'piece';
+        mesh.name = 'portfolioMock';
 
         imageGroup.add(mesh);
       });

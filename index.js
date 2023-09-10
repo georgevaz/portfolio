@@ -177,6 +177,11 @@ const onClick = e => {
       };
 
       if(intersects[i].object.parent.name === 'icon' && intersects[i].object.material.opacity >= 1){
+        // if user clicks on the magnifying glass, show portfolio mockups
+        if(intersects[i].object.parent.iconType ==='portfolioMocks'){
+          console.log('ok');
+          break;
+        }
         window.open(intersects[i].object.parent.link);
         break;
       };
