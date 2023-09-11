@@ -23,7 +23,7 @@ const { ollieGroup, ollieLeftEye, ollieRightEye, table, tableBottom } = ollieLoa
 const { bubbles, BUBBLESCALE, populateBubbles } = bubbleLoader;
 
 // Animation
-const { introAnimation, bubbleClickAnimation, bubbleIdleAnimation, ollieBarkAnimation } = animations;
+const { introAnimation, bubbleClickAnimation, bubbleIdleAnimation, bubbleStateChangeAnimation, ollieBarkAnimation } = animations;
 
 let camera, aspectRatio;
 let scene, renderer, light, controls;
@@ -178,11 +178,9 @@ const onClick = e => {
 
       if(intersects[i].object.parent.name === 'icon' && intersects[i].object.material.opacity >= 1){
         // if user clicks on the magnifying glass, show portfolio mockups
-        if(intersects[i].object.parent.iconType ==='portfolioMocks'){
-          console.log('ok');
-          break;
-        }
-        window.open(intersects[i].object.parent.link);
+        if(intersects[i].object.parent.iconType === 'portfolioMocks') bubbleStateChangeAnimation(previousBubble, true);
+        else if(intersects[i].object.parent.iconType === 'exit') bubbleStateChangeAnimation(previousBubble, false);
+        else window.open(intersects[i].object.parent.link);
         break;
       };
     };

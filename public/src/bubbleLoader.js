@@ -11,7 +11,7 @@ import imageLoader from './imageLoader.js';
 const { black, white, grayDark, gray, grayLight } = colors;
 
 // Icons
-const { githubIcon, browserIcon, searchIcon, videoIcon } = icons;
+const { githubIcon, browserIcon, searchIcon, videoIcon, leftIcon, rightIcon, exitIcon } = icons;
 
 // Text Loader
 const { STRATOS, ROBOTO, h1, h2, createText } = textLoader;
@@ -37,11 +37,11 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
   const bubbleGroup = new THREE.Group();
 
   const descriptionGroup = new THREE.Group();
-  const imageGroup = new THREE.Group();
+  const mockGroup = new THREE.Group();
 
   bubbleGroup.name = 'bubble';
   descriptionGroup.name = 'description';
-  imageGroup.name = 'image';
+  mockGroup.name = 'mock';
 
   
   loader.load('./assets/bubble.glb', // url
@@ -244,22 +244,77 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
         };
       });
 
+      // the mock up section of the bubble
       createImage('./assets/Zukeeper-1.gif', 2.4, (mesh) => {
         // Needs to be rotated because of how the file imported
         mesh.rotation.x = THREE.MathUtils.degToRad(270);
 
         mesh.material.opacity = startingOpacity;
-        mesh.position.set(0, .5, -3);
+        mesh.position.set(0, .4, -3);
 
         mesh.name = 'portfolioMock';
 
-        imageGroup.add(mesh);
+        mockGroup.add(mesh);
       });
-      
+
+      createIcon(exitIcon, 'exit', (icon) => {
+        // SVG default size is huge
+        icon.scale.set(.002, .002, .002)
+        
+        // Needs to be rotated because of how the file imported
+        icon.rotation.x = THREE.MathUtils.degToRad(90);
+
+        // Needs to be positioned
+        icon.position.x = 0;
+        icon.position.y = .56;
+        icon.position.z = -2.2;
+
+        icon.children.forEach(mesh => mesh.material.opacity = startingOpacity);
+
+        mockGroup.add(icon);
+
+      }, '');
+
+      createIcon(leftIcon, 'left', (icon) => {
+        // SVG default size is huge
+        icon.scale.set(.007, .007, .007)
+        
+        // Needs to be rotated because of how the file imported
+        icon.rotation.x = THREE.MathUtils.degToRad(90);
+
+        // Needs to be positioned
+        icon.position.x = -1.4;
+        icon.position.y = .67;
+        icon.position.z = -3;
+
+        icon.children.forEach(mesh => mesh.material.opacity = startingOpacity);
+
+        mockGroup.add(icon);
+
+      }, '');
+
+      createIcon(rightIcon, 'right', (icon) => {
+        // SVG default size is huge
+        icon.scale.set(.007, .007, .007)
+        
+        // Needs to be rotated because of how the file imported
+        icon.rotation.x = THREE.MathUtils.degToRad(90);
+
+        // Needs to be positioned
+        icon.position.x = 1.4;
+        icon.position.y = .67;
+        icon.position.z = -3;
+
+        icon.children.forEach(mesh => mesh.material.opacity = startingOpacity);
+
+        mockGroup.add(icon);
+
+      }, '');
+
       // Needs to be rotated because of how the file imported
       bubbleGroup.rotation.x = THREE.MathUtils.degToRad(90);
 
-      bubbleGroup.add(descriptionGroup, imageGroup)
+      bubbleGroup.add(descriptionGroup, mockGroup);
     },
     // on progress
     undefined,
