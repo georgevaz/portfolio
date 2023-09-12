@@ -31,6 +31,107 @@ const BUBBLESCALE = [.3, .3, .3];
 // This is mainly for ease of use during development
 const startingOpacity = 0;
 
+let titleIsMulti = false;
+
+// Function to set text
+const populateBubbleText = (bubbleText, group, textAttributes, callback, callbackParams) => {
+  let textZPos;
+  let lineSpace;
+  let currentLine;
+  const { maxLength, singleLineZPos, multiLineZPos, tracking } = textAttributes;
+  const { fontType, fontSize, fontThickness, xPos, yPos, textColor, name } = callbackParams;
+
+  const setText = (text) => {
+    text.position.z = textZPos;
+
+    if(lineSpace){
+      textZPos += lineSpace
+
+      // Determine line spacing for tweening later
+      text.lineSpace = lineSpace;
+    };
+    
+    // Need to keep tabs on the original positioning for tweening
+    text.originalPosition = {
+      x: text.position.x,
+      y: text.position.y,
+      z: text.position.z,
+    };
+
+    // Making the text geometry a small font size often has the letters too close to each other
+    // In the case of the description text, it does not look good
+    // When loading the text by default, I set the font size to 1 and then to reduce the "font size", 
+    // I can alter the scale instead
+    // I don't like this block of code being here but it seems to work best since it is in a callback
+    if(text.name === 'descriptionText'){
+      text.scale.x = .15;
+      text.scale.y = .15;
+      text.scale.z = .15;
+    };
+
+    text.rotation.x = THREE.MathUtils.degToRad(270);
+    
+    group.add(text);
+  };
+
+  if(bubbleText.length <= maxLength) {
+    textZPos = singleLineZPos;
+    callback(
+      {
+      fontType, 
+      fontSize,
+      fontThickness,
+      xPos, 
+      yPos, 
+      textCopy: bubbleText, 
+      textColor
+      }, 
+      setText, 
+      name,
+      startingOpacity
+    );
+  } else {
+    textZPos = multiLineZPos;
+    lineSpace = tracking;
+    const bubbleTextSplit = bubbleText.split(' ');
+    titleIsMulti = true;
+    while(bubbleTextSplit.length){
+      currentLine = bubbleTextSplit.shift();
+      while(bubbleTextSplit.length && currentLine.length + bubbleTextSplit[0].length <= maxLength){
+        currentLine += ' ' + bubbleTextSplit.shift();
+      };
+      callback(
+        {
+        fontType, 
+        fontSize,
+        fontThickness,
+        xPos, 
+        yPos, 
+        textCopy: currentLine, 
+        textColor
+        }, 
+        setText, 
+        name,
+        startingOpacity
+      );
+      currentLine = '';
+    };
+  };
+};
+
+const setIcon = (icon, scale, position) => {
+  // SVG default size is huge
+  icon.scale.set(scale, scale, scale)
+  
+  // Needs to be rotated because of how the file imported
+  icon.rotation.x = THREE.MathUtils.degToRad(90);
+
+  // Needs to be positioned
+  icon.position.set(position.x, position.y, position.z);
+
+  icon.children.forEach(mesh => mesh.material.opacity = startingOpacity)
+};
+
 const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) => {
   
   // Parent Group
@@ -43,7 +144,6 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
   descriptionGroup.name = 'description';
   mockGroup.name = 'mock';
 
-  
   loader.load('./assets/bubble.glb', // url
     // on load
     (gltf) => {
@@ -78,94 +178,6 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
         y: bubbleGroup.position.y,
         z: bubbleGroup.position.z,
       };
-
-      // Function to set text
-      const populateBubbleText = (bubbleText, group, textAttributes, callback, callbackParams) => {
-        let textZPos;
-        let lineSpace;
-        let currentLine;
-        const { maxLength, singleLineZPos, multiLineZPos, tracking } = textAttributes;
-        const { fontType, fontSize, fontThickness, xPos, yPos, textColor, name } = callbackParams;
-
-        const setText = (text) => {
-          text.position.z = textZPos;
-  
-          if(lineSpace){
-            textZPos += lineSpace
-  
-            // Determine line spacing for tweening later
-            text.lineSpace = lineSpace;
-          };
-          
-          // Need to keep tabs on the original positioning for tweening
-          text.originalPosition = {
-            x: text.position.x,
-            y: text.position.y,
-            z: text.position.z,
-          };
-
-          // Making the text geometry a small font size often has the letters too close to each other
-          // In the case of the description text, it does not look good
-          // When loading the text by default, I set the font size to 1 and then to reduce the "font size", 
-          // I can alter the scale instead
-          // I don't like this block of code being here but it seems to work best since it is in a callback
-          if(text.name === 'descriptionText'){
-            text.scale.x = .15;
-            text.scale.y = .15;
-            text.scale.z = .15;
-          };
-
-          text.rotation.x = THREE.MathUtils.degToRad(270);
-          
-          group.add(text);
-        };
-
-        if(bubbleText.length <= maxLength) {
-          textZPos = singleLineZPos;
-          callback(
-            {
-            fontType, 
-            fontSize,
-            fontThickness,
-            xPos, 
-            yPos, 
-            textCopy: bubbleText, 
-            textColor
-            }, 
-            setText, 
-            name,
-            startingOpacity
-          );
-        } else {
-          textZPos = multiLineZPos;
-          lineSpace = tracking;
-          const bubbleTextSplit = bubbleText.split(' ');
-          titleIsMulti = true;
-          while(bubbleTextSplit.length){
-            currentLine = bubbleTextSplit.shift();
-            while(bubbleTextSplit.length && currentLine.length + bubbleTextSplit[0].length <= maxLength){
-              currentLine += ' ' + bubbleTextSplit.shift();
-            };
-            callback(
-              {
-              fontType, 
-              fontSize,
-              fontThickness,
-              xPos, 
-              yPos, 
-              textCopy: currentLine, 
-              textColor
-              }, 
-              setText, 
-              name,
-              startingOpacity
-            );
-            currentLine = '';
-          };
-        };
-      };
-
-      let titleIsMulti = false;
 
       // add title
       populateBubbleText(
@@ -215,34 +227,34 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
 
       // add icons
       const projectLinksKeys = Object.keys(projectLinks);
-      let iconXPos = projectLinksKeys.length * -.38;
-
-      const setIcon = (icon) => {
-        // SVG default size is huge
-        icon.scale.set(.007, .007, .007)
-        
-        // Needs to be rotated because of how the file imported
-        icon.rotation.x = THREE.MathUtils.degToRad(90);
-
-        // Needs to be positioned
-        icon.position.x = iconXPos;
-        icon.position.y = .55;
-        icon.position.z = -2.2;
-
-        icon.children.forEach(mesh => mesh.material.opacity = startingOpacity)
-
-        descriptionGroup.add(icon);
-
-        iconXPos += .75;
-      };
+      let iconPos = new THREE.Vector3(projectLinksKeys.length * -.38, .55, -2.2);
       
       // every bubble will have the search icon
-      createIcon(searchIcon, 'portfolioMocks', (icon) => {
-        setIcon(icon)
-        for(let i = 0; i < projectLinksKeys.length; i++){
-          createIcon(projectLinks[projectLinksKeys[i]].icon, projectLinksKeys[i], setIcon, projectLinks[projectLinksKeys[i]].url);
-        };
-      });
+      createIcon(
+        searchIcon, 
+        'portfolioMocks', 
+        (icon) => {
+          setIcon(icon, .007, iconPos);
+
+          descriptionGroup.add(icon);
+          iconPos.x += .75;
+
+          for(let i = 0; i < projectLinksKeys.length; i++){
+            createIcon(
+              projectLinks[projectLinksKeys[i]].icon, 
+              projectLinksKeys[i], 
+              (icon) => {
+                setIcon(icon, .007, iconPos);
+                
+                descriptionGroup.add(icon);
+                iconPos.x += .75;
+              }, 
+              projectLinks[projectLinksKeys[i]].url
+            );
+          };
+        }, 
+        ''
+      );
 
       // the mock up section of the bubble
       createImage('./assets/Zukeeper-1.gif', 2.4, (mesh) => {
@@ -258,57 +270,20 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
       });
 
       createIcon(exitIcon, 'exit', (icon) => {
-        // SVG default size is huge
-        icon.scale.set(.002, .002, .002)
-        
-        // Needs to be rotated because of how the file imported
-        icon.rotation.x = THREE.MathUtils.degToRad(90);
-
-        // Needs to be positioned
-        icon.position.x = 0;
-        icon.position.y = .56;
-        icon.position.z = -2.2;
-
-        icon.children.forEach(mesh => mesh.material.opacity = startingOpacity);
-
+        setIcon(icon, .002, new THREE.Vector3(0, .56, -2.2));
         mockGroup.add(icon);
-
       }, '');
 
+      let arrowPos = new THREE.Vector3(-1.4, .67, -3);
       createIcon(leftIcon, 'left', (icon) => {
-        // SVG default size is huge
-        icon.scale.set(.007, .007, .007)
-        
-        // Needs to be rotated because of how the file imported
-        icon.rotation.x = THREE.MathUtils.degToRad(90);
-
-        // Needs to be positioned
-        icon.position.x = -1.4;
-        icon.position.y = .67;
-        icon.position.z = -3;
-
-        icon.children.forEach(mesh => mesh.material.opacity = startingOpacity);
-
+        setIcon(icon, .007, arrowPos);
         mockGroup.add(icon);
-
       }, '');
 
       createIcon(rightIcon, 'right', (icon) => {
-        // SVG default size is huge
-        icon.scale.set(.007, .007, .007)
-        
-        // Needs to be rotated because of how the file imported
-        icon.rotation.x = THREE.MathUtils.degToRad(90);
-
-        // Needs to be positioned
-        icon.position.x = 1.4;
-        icon.position.y = .67;
-        icon.position.z = -3;
-
-        icon.children.forEach(mesh => mesh.material.opacity = startingOpacity);
-
+        arrowPos.x = -arrowPos.x;
+        setIcon(icon, .007, arrowPos);
         mockGroup.add(icon);
-
       }, '');
 
       // Needs to be rotated because of how the file imported

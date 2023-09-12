@@ -172,11 +172,9 @@ const bubbleStateChangeAnimation = (object, isClicked) => {
   if(isClicked){
     applyOpacityTween(onOpacityProp, [mocks], [mockIcons]);
     applyOpacityTween(offOpacityProp, [titles, descriptions], [descriptionIcons]);
-
   } else {
     applyOpacityTween(offOpacityProp, [mocks], [mockIcons]);
     applyOpacityTween(onOpacityProp, [titles, descriptions], [descriptionIcons]);
-
   };
 };
 
