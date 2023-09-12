@@ -37,6 +37,23 @@ const separateObject = object => {
   return { titles, descriptions, descriptionIcons, mocks, mockIcons };
 };
 
+const applyOpacityTween = (prop, arrayOfObjects, arrayOfGroupedIcons) => {
+  arrayOfObjects.forEach(object => {
+    object.forEach(child => {
+      tweenObject(child.material, prop, 200, TWEEN.Easing.Back.Out, 200);
+    });
+  });
+
+  // icons are special because they are grouped thus needing to dive further
+  arrayOfGroupedIcons.forEach(groupedIcons => {
+    groupedIcons.forEach(icon => {
+      icon.children.forEach(mesh => {
+        tweenObject(mesh.material, prop, 200, TWEEN.Easing.Back.Out, 200);
+      });
+    });
+  });
+};
+
 const onOpacityProp = {
   opacity: 1,
 };
@@ -116,17 +133,7 @@ const bubbleClickAnimation = (object, isClicked) => {
         z: title.lineSpace ? -3.65 + (i * .6 * title.lineSpace) : -3.5,
       }, 200, TWEEN.Easing.Back.Out, 200)
     });
-
-    descriptions.forEach(description => {
-      tweenObject(description.material, onOpacityProp, 200, TWEEN.Easing.Back.Out, 200);
-    });
-
-    descriptionIcons.forEach(icon => {
-      icon.children.forEach(mesh => {
-        tweenObject(mesh.material, onOpacityProp, 200, TWEEN.Easing.Back.Out, 200);
-      });
-    });
-
+    applyOpacityTween(onOpacityProp, [descriptions], [descriptionIcons])
 
     tweenObject(object.scale, bubbleTweenOnScaleProp, 200, TWEEN.Easing.Back.Out, 200);
     tweenObject(object.position, bubbleTweenOnPositionProp, 200, TWEEN.Easing.Back.Out, 200);
@@ -144,24 +151,7 @@ const bubbleClickAnimation = (object, isClicked) => {
       tweenObject(title.position, title.originalPosition, 200, TWEEN.Easing.Back.Out, 200);
     });
 
-    descriptions.forEach(description => {
-      tweenObject(description.material, offOpacityProp, 200, TWEEN.Easing.Back.Out, 200);
-    });
-
-    descriptionIcons.forEach(icon => {
-      icon.children.forEach(mesh => {
-        tweenObject(mesh.material, offOpacityProp, 200, TWEEN.Easing.Back.Out, 200);
-      });
-    });
-
-    mocks.forEach(child => {
-      tweenObject(child.material, offOpacityProp, 200, TWEEN.Easing.Back.Out, 200);
-    });
-    mockIcons.forEach(icon => {
-      icon.children.forEach(mesh => {
-        tweenObject(mesh.material, offOpacityProp, 200, TWEEN.Easing.Back.Out, 200);
-      });
-    });
+    applyOpacityTween(offOpacityProp, [descriptions, mocks], [descriptionIcons, mockIcons]);
 
     tweenObject(object.scale, bubbleTweenOffScaleProp, 200, TWEEN.Easing.Back.Out, 200);
     tweenObject(object.position, object.originalPosition, 200, TWEEN.Easing.Back.Out, 200);
@@ -180,47 +170,13 @@ const bubbleStateChangeAnimation = (object, isClicked) => {
   const { titles, descriptions, descriptionIcons, mocks, mockIcons } = separateObject(object);
   
   if(isClicked){
-    mocks.forEach(child => {
-      tweenObject(child.material, onOpacityProp, 200, TWEEN.Easing.Back.Out, 200);
-    });
-    mockIcons.forEach(icon => {
-      icon.children.forEach(mesh => {
-        tweenObject(mesh.material, onOpacityProp, 200, TWEEN.Easing.Back.Out, 200);
-      });
-    });
+    applyOpacityTween(onOpacityProp, [mocks], [mockIcons]);
+    applyOpacityTween(offOpacityProp, [titles, descriptions], [descriptionIcons]);
 
-    titles.forEach(child => {
-      tweenObject(child.material, offOpacityProp, 200, TWEEN.Easing.Back.Out, 200)
-    });
-    descriptions.forEach(child => {
-      tweenObject(child.material, offOpacityProp, 200, TWEEN.Easing.Back.Out, 200)
-    });
-    descriptionIcons.forEach(icon => {
-      icon.children.forEach(mesh => {
-        tweenObject(mesh.material, offOpacityProp, 200, TWEEN.Easing.Back.Out, 200);
-      });
-    });
   } else {
-    mocks.forEach(child => {
-      tweenObject(child.material, offOpacityProp, 200, TWEEN.Easing.Back.Out, 200);
-    });
-    mockIcons.forEach(icon => {
-      icon.children.forEach(mesh => {
-        tweenObject(mesh.material, offOpacityProp, 200, TWEEN.Easing.Back.Out, 200);
-      });
-    });
+    applyOpacityTween(offOpacityProp, [mocks], [mockIcons]);
+    applyOpacityTween(onOpacityProp, [titles, descriptions], [descriptionIcons]);
 
-    titles.forEach(child => {
-      tweenObject(child.material, onOpacityProp, 200, TWEEN.Easing.Back.Out, 200)
-    });
-    descriptions.forEach(child => {
-      tweenObject(child.material, onOpacityProp, 200, TWEEN.Easing.Back.Out, 200)
-    });
-    descriptionIcons.forEach(icon => {
-      icon.children.forEach(mesh => {
-        tweenObject(mesh.material, onOpacityProp, 200, TWEEN.Easing.Back.Out, 200);
-      });
-    });
   };
 };
 
