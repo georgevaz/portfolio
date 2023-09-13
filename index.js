@@ -178,9 +178,20 @@ const onClick = e => {
 
       if(intersects[i].object.parent.name === 'icon' && intersects[i].object.material.opacity >= 1){
         // if user clicks on the magnifying glass, show portfolio mockups
-        if(intersects[i].object.parent.iconType === 'portfolioMocks') bubbleStateChangeAnimation(previousBubble, true);
-        else if(intersects[i].object.parent.iconType === 'exit') bubbleStateChangeAnimation(previousBubble, false);
-        else window.open(intersects[i].object.parent.link);
+        if(intersects[i].object.parent.iconType === 'portfolioMocks'){
+          bubbleStateChangeAnimation(previousBubble, true);
+          
+          // user cannot change with controls while in this state 
+          controls.enableDamping = false; // I have to disable damping before reseting/disable controls in the case of damping occuring when user clicks, it will finish the current damp before turning off otherwise
+          controls.reset();
+          controls.enabled = false;
+        } else if(intersects[i].object.parent.iconType === 'exit'){
+          bubbleStateChangeAnimation(previousBubble, false);
+
+          // resume controls
+          controls.enableDamping = true;
+          controls.enabled = true;
+        } else window.open(intersects[i].object.parent.link);
         break;
       };
     };
@@ -191,6 +202,10 @@ const onClick = e => {
   } else if(previousBubble) { // If we click somewhere that doesn't catch an object and we have a bubble enlarged, shrink it
       bubbleClickAnimation(previousBubble, false);
       previousBubble = undefined;
+
+      // resume controls, in case the user clicks off the bubble during mock state
+      controls.enableDamping = true;
+      controls.enabled = true;
   };
 };
 

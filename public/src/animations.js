@@ -75,8 +75,20 @@ const bubbleTweenOnScaleProp = {
 };
 
 const bubbleTweenOnPositionProp = {
-  x: -.28,
+  x: 0,
   y: -6, // -4
+  z: 0.25,
+};
+
+const bubbleTweenMockScaleProp = {
+  x: 3,
+  y: 3,
+  z: 3,
+};
+
+const bubbleTweenMockPositionProp = {
+  x: 0,
+  y: -9,
   z: 0.25,
 };
 
@@ -172,9 +184,15 @@ const bubbleStateChangeAnimation = (object, isClicked) => {
   if(isClicked){
     applyOpacityTween(onOpacityProp, [mocks], [mockIcons]);
     applyOpacityTween(offOpacityProp, [titles, descriptions], [descriptionIcons]);
+
+    tweenObject(object.scale, bubbleTweenMockScaleProp, 200, TWEEN.Easing.Back.Out, 200);
+    tweenObject(object.position, bubbleTweenMockPositionProp, 200, TWEEN.Easing.Back.Out, 200);
   } else {
     applyOpacityTween(offOpacityProp, [mocks], [mockIcons]);
     applyOpacityTween(onOpacityProp, [titles, descriptions], [descriptionIcons]);
+
+    tweenObject(object.scale, bubbleTweenOnScaleProp, 200, TWEEN.Easing.Back.Out, 200);
+    tweenObject(object.position, bubbleTweenOnPositionProp, 200, TWEEN.Easing.Back.Out, 200);
   };
 };
 

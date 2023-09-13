@@ -229,7 +229,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
       const projectLinksKeys = Object.keys(projectLinks);
       let iconPos = new THREE.Vector3(projectLinksKeys.length * -.38, .55, -2.2);
       
-      // every bubble will have the search icon
+      // every bubble will have the search icon, so that will go first
       createIcon(
         searchIcon, 
         'portfolioMocks', 
