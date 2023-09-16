@@ -5,7 +5,6 @@ import colors from './_colors.js';
 import icons from './_icons.js';
 import textLoader from './textLoader.js';
 import iconLoader from './iconLoader.js';
-import imageLoader from './imageLoader.js';
 
 // Colors
 const { black, white, grayDark, gray, grayLight } = colors;
@@ -18,9 +17,6 @@ const { STRATOS, ROBOTO, h1, h2, createText } = textLoader;
 
 // Icon Loader
 const { createIcon } = iconLoader
-
-// Images
-const { createImage } = imageLoader;
 
 // Loader
 const loader = new GLTFLoader();
@@ -138,11 +134,9 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
   const bubbleGroup = new THREE.Group();
 
   const descriptionGroup = new THREE.Group();
-  const mockGroup = new THREE.Group();
 
   bubbleGroup.name = 'bubble';
   descriptionGroup.name = 'description';
-  mockGroup.name = 'mock';
 
   loader.load('./assets/bubble.glb', // url
     // on load
@@ -256,40 +250,10 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
         ''
       );
 
-      // the mock up section of the bubble
-      createImage('./assets/Zukeeper-1.gif', 2.4, (mesh) => {
-        // Needs to be rotated because of how the file imported
-        mesh.rotation.x = THREE.MathUtils.degToRad(270);
-
-        mesh.material.opacity = startingOpacity;
-        mesh.position.set(0, .4, -3);
-
-        mesh.name = 'portfolioMock';
-
-        mockGroup.add(mesh);
-      });
-
-      createIcon(exitIcon, 'exit', (icon) => {
-        setIcon(icon, .002, new THREE.Vector3(0, .56, -2.2));
-        mockGroup.add(icon);
-      }, '');
-
-      let arrowPos = new THREE.Vector3(-1.4, .67, -3);
-      createIcon(leftIcon, 'left', (icon) => {
-        setIcon(icon, .007, arrowPos);
-        mockGroup.add(icon);
-      }, '');
-
-      createIcon(rightIcon, 'right', (icon) => {
-        arrowPos.x = -arrowPos.x;
-        setIcon(icon, .007, arrowPos);
-        mockGroup.add(icon);
-      }, '');
-
       // Needs to be rotated because of how the file imported
       bubbleGroup.rotation.x = THREE.MathUtils.degToRad(90);
 
-      bubbleGroup.add(descriptionGroup, mockGroup);
+      bubbleGroup.add(descriptionGroup);
     },
     // on progress
     undefined,

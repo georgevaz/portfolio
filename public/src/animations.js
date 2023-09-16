@@ -4,6 +4,7 @@ import colors from './_colors.js';
 import text from './textLoader.js';
 import ollie from './ollieLoader.js';
 import bubble from './bubbleLoader.js';
+import mockUp from './mockUp.js';
 
 // Colors
 const { black, white, grayDark, gray, grayLight } = colors
@@ -16,6 +17,8 @@ const { olliePaws, ollieBody, table } = ollie;
 
 // Bubble
 const { BUBBLESCALE, bubbles } = bubble;
+
+const { addMockDiv, removeMockDiv } = mockUp;
 
 let introAnimationFinished = false;
 
@@ -31,10 +34,8 @@ const separateObject = object => {
   let titles = object.children.filter(child => child.name === 'titleText');
   let descriptions = object.getObjectByName("description").children.filter(child => child.name === 'descriptionText');
   let descriptionIcons = object.getObjectByName("description").children.filter(child => child.name === 'icon');
-  let mocks = object.getObjectByName('mock').children.filter(child => child.name === 'portfolioMock');
-  let mockIcons = object.getObjectByName('mock').children.filter(child => child.name === 'icon');
 
-  return { titles, descriptions, descriptionIcons, mocks, mockIcons };
+  return { titles, descriptions, descriptionIcons };
 };
 
 const applyOpacityTween = (prop, arrayOfObjects, arrayOfGroupedIcons) => {
@@ -113,7 +114,7 @@ const introAnimation = () => {
                       bubbles.forEach(bubble => {
                         bubble.children.forEach(child => {
                           // change opacity for the entire bubble except description and icons, which will only appear when clicked
-                          if(child.name !== 'description' && child.name !== 'mock') tweenObject(child.material, onOpacityProp, 250, TWEEN.Easing.Linear.None, 500);
+                          if(child.name !== 'description') tweenObject(child.material, onOpacityProp, 250, TWEEN.Easing.Linear.None, 500);
                         });
                       });
                       introAnimationFinished = true;
@@ -129,7 +130,7 @@ const introAnimation = () => {
 };
 
 const bubbleClickAnimation = (object, isClicked) => {
-  const { titles, descriptions, descriptionIcons, mocks, mockIcons } = separateObject(object);
+  const { titles, descriptions, descriptionIcons } = separateObject(object);
 
   if(isClicked){
     object.idleTween.stop();
@@ -163,8 +164,8 @@ const bubbleClickAnimation = (object, isClicked) => {
       tweenObject(title.position, title.originalPosition, 200, TWEEN.Easing.Back.Out, 200);
     });
 
-    applyOpacityTween(offOpacityProp, [descriptions, mocks], [descriptionIcons, mockIcons]);
-
+    applyOpacityTween(offOpacityProp, [descriptions], [descriptionIcons]);
+    if(document.getElementsByClassName('mockContainer').length) removeMockDiv();
     tweenObject(object.scale, bubbleTweenOffScaleProp, 200, TWEEN.Easing.Back.Out, 200);
     tweenObject(object.position, object.originalPosition, 200, TWEEN.Easing.Back.Out, 200);
   };
@@ -179,18 +180,16 @@ const bubbleIdleAnimation = object => {
 };
 
 const bubbleStateChangeAnimation = (object, isClicked) => {
-  const { titles, descriptions, descriptionIcons, mocks, mockIcons } = separateObject(object);
+  const { titles, descriptions, descriptionIcons } = separateObject(object);
   
   if(isClicked){
-    applyOpacityTween(onOpacityProp, [mocks], [mockIcons]);
     applyOpacityTween(offOpacityProp, [titles, descriptions], [descriptionIcons]);
-
+    addMockDiv();
     tweenObject(object.scale, bubbleTweenMockScaleProp, 200, TWEEN.Easing.Back.Out, 200);
     tweenObject(object.position, bubbleTweenMockPositionProp, 200, TWEEN.Easing.Back.Out, 200);
   } else {
-    applyOpacityTween(offOpacityProp, [mocks], [mockIcons]);
     applyOpacityTween(onOpacityProp, [titles, descriptions], [descriptionIcons]);
-
+    removeMockDiv();
     tweenObject(object.scale, bubbleTweenOnScaleProp, 200, TWEEN.Easing.Back.Out, 200);
     tweenObject(object.position, bubbleTweenOnPositionProp, 200, TWEEN.Easing.Back.Out, 200);
   };
