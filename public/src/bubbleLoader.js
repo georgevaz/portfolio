@@ -25,7 +25,7 @@ const bubbles = [];
 const BUBBLESCALE = [.3, .3, .3];
 
 // This is mainly for ease of use during development
-const startingOpacity = 0;
+const startingOpacity = 1;
 
 let titleIsMulti = false;
 
@@ -128,7 +128,7 @@ const setIcon = (icon, scale, position) => {
   icon.children.forEach(mesh => mesh.material.opacity = startingOpacity)
 };
 
-const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) => {
+const loadBubble = (xPos, yPos, project) => {
   
   // Parent Group
   const bubbleGroup = new THREE.Group();
@@ -136,6 +136,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
   const descriptionGroup = new THREE.Group();
 
   bubbleGroup.name = 'bubble';
+  bubbleGroup.images = project.images;
   descriptionGroup.name = 'description';
 
   loader.load('./assets/bubble.glb', // url
@@ -175,7 +176,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
 
       // add title
       populateBubbleText(
-        projectName,
+        project.name,
         bubbleGroup,
         {
           maxLength: 10,
@@ -198,7 +199,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
 
       // add description
       populateBubbleText(
-        projectDescription,
+        project.description,
         descriptionGroup,
         {
           maxLength: 20,
@@ -220,7 +221,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
       );
 
       // add icons
-      const projectLinksKeys = Object.keys(projectLinks);
+      const projectLinksKeys = Object.keys(project.links);
       let iconPos = new THREE.Vector3(projectLinksKeys.length * -.38, .55, -2.2);
       
       // every bubble will have the search icon, so that will go first
@@ -235,7 +236,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
 
           for(let i = 0; i < projectLinksKeys.length; i++){
             createIcon(
-              projectLinks[projectLinksKeys[i]].icon, 
+              project.links[projectLinksKeys[i]].icon, 
               projectLinksKeys[i], 
               (icon) => {
                 setIcon(icon, .007, iconPos);
@@ -243,7 +244,7 @@ const loadBubble = (xPos, yPos, projectName, projectDescription, projectLinks) =
                 descriptionGroup.add(icon);
                 iconPos.x += .75;
               }, 
-              projectLinks[projectLinksKeys[i]].url
+              project.links[projectLinksKeys[i]].url
             );
           };
         }, 
@@ -277,13 +278,13 @@ const populateBubbles = projects => {
     const projectLinks = projects[Object.keys(projects)[i]].links;
 
     if(i === 0) {
-      bubbles.push(loadBubble(0, 0, projectName, projectDescription, projectLinks))
+      bubbles.push(loadBubble(0, 0, projects[Object.keys(projects)[i]]))
       row++;
     } else if(i % 2 === 0) {
-      bubbles.push(loadBubble(row + xConst, row * (row * yConst), projectName, projectDescription, projectLinks))
+      bubbles.push(loadBubble(row + xConst, row * (row * yConst), projects[Object.keys(projects)[i]]))
       row++;
     } else {
-      bubbles.push(loadBubble(-(row + xConst), row * (row * yConst), projectName, projectDescription, projectLinks))
+      bubbles.push(loadBubble(-(row + xConst), row * (row * yConst), projects[Object.keys(projects)[i]]))
     };
   };
 };

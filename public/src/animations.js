@@ -184,12 +184,16 @@ const bubbleStateChangeAnimation = (object, isClicked) => {
   
   if(isClicked){
     applyOpacityTween(offOpacityProp, [titles, descriptions], [descriptionIcons]);
-    addMockDiv();
+
+    addMockDiv(object.images);
+    
     tweenObject(object.scale, bubbleTweenMockScaleProp, 200, TWEEN.Easing.Back.Out, 200);
     tweenObject(object.position, bubbleTweenMockPositionProp, 200, TWEEN.Easing.Back.Out, 200);
   } else {
     applyOpacityTween(onOpacityProp, [titles, descriptions], [descriptionIcons]);
+    
     removeMockDiv();
+    
     tweenObject(object.scale, bubbleTweenOnScaleProp, 200, TWEEN.Easing.Back.Out, 200);
     tweenObject(object.position, bubbleTweenOnPositionProp, 200, TWEEN.Easing.Back.Out, 200);
   };

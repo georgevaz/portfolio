@@ -147,7 +147,6 @@ const shootRaycast = e => {
 
 const onClick = e => {
   const intersects = shootRaycast(e);
-
   if (intersects.length > 0) {
     for (let i = 0; i < intersects.length; i++) {
 
@@ -185,14 +184,17 @@ const onClick = e => {
           controls.enableDamping = false; // I have to disable damping before reseting/disable controls in the case of damping occuring when user clicks, it will finish the current damp before turning off otherwise
           controls.reset();
           controls.enabled = false;
-        } else if(intersects[i].object.parent.iconType === 'exit'){
-          bubbleStateChangeAnimation(previousBubble, false);
-
-          // resume controls
-          controls.enableDamping = true;
-          controls.enabled = true;
         } else window.open(intersects[i].object.parent.link);
         break;
+      };
+
+      // exit from portfolio mockups
+      if(e.srcElement.id === 'exit'){
+        bubbleStateChangeAnimation(previousBubble, false);
+
+        // resume controls
+        controls.enableDamping = true;
+        controls.enabled = true;
       };
     };
 
