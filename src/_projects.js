@@ -17,12 +17,22 @@ const projects = {
         icon: githubIcon,
       },
     },
+    images: [
+      'public/assets/images/zukeeper-0.gif',
+      'public/assets/images/zukeeper-1.gif',
+      'public/assets/images/zukeeper-2.gif',
+      'public/assets/images/zukeeper-3.gif',
+      'public/assets/images/zukeeper-4.png',
+    ],
   },
   'armoire': {
     name: 'Armoire',
     description: 'Closet Management Application',
     links: {
     },
+    images: [
+
+    ],
   },
   'pet-friend-finder': {
     name: 'Pet Friend Finder',
@@ -37,6 +47,9 @@ const projects = {
         icon: githubIcon,
       }
     },
+    images: [
+
+    ],
   },
   'crop-dust': {
     name: 'Crop Dust',
@@ -51,6 +64,9 @@ const projects = {
         icon: videoIcon,
       },
     },
+    images: [
+
+    ],
   },
   'tube-disasters': {
     name: 'Tube Disasters',
@@ -65,6 +81,9 @@ const projects = {
         icon: videoIcon,
       },
     },
+    images: [
+
+    ],
   },
 };
 

@@ -9,7 +9,7 @@ const { black, white, grayDark, gray, grayLight } = colors
 // Loader
 const iconLoader = new SVGLoader();
 
-const createIcon = (icon, name, callback, link) => {
+const createIcon = (icon, type, callback, link) => {
   let boundingX;
   let boundingY;
 
@@ -20,6 +20,7 @@ const createIcon = (icon, name, callback, link) => {
       const group = new THREE.Group();
       group.name = 'icon';
       group.link = link;
+      group.iconType = type
 
       for(let i = 0; i < paths.length; i++){
         const path = paths[i];
@@ -37,7 +38,6 @@ const createIcon = (icon, name, callback, link) => {
           const geometry = new THREE.ShapeGeometry(shape);
           const mesh = new THREE.Mesh(geometry, material);
 
-          mesh.name = name;
           geometry.center();
 
           // measure the height and width of icon to use on invisible cube later
