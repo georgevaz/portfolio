@@ -147,6 +147,17 @@ const shootRaycast = e => {
 
 const onClick = e => {
   const intersects = shootRaycast(e);
+
+  // exit from portfolio mockups
+  // check for this first because this is not a three.js object, thus does not require raycasting checks
+  if(e.srcElement.className === 'exit'){
+    bubbleStateChangeAnimation(previousBubble, false);
+
+    // resume controls
+    controls.enableDamping = true;
+    controls.enabled = true;
+  };
+
   if (intersects.length > 0) {
     for (let i = 0; i < intersects.length; i++) {
 
@@ -186,15 +197,6 @@ const onClick = e => {
           controls.enabled = false;
         } else window.open(intersects[i].object.parent.link);
         break;
-      };
-
-      // exit from portfolio mockups
-      if(e.srcElement.id === 'exit'){
-        bubbleStateChangeAnimation(previousBubble, false);
-
-        // resume controls
-        controls.enableDamping = true;
-        controls.enabled = true;
       };
     };
 

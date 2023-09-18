@@ -165,7 +165,9 @@ const bubbleClickAnimation = (object, isClicked) => {
     });
 
     applyOpacityTween(offOpacityProp, [descriptions], [descriptionIcons]);
+
     if(document.getElementsByClassName('mockContainer').length) removeMockDiv();
+
     tweenObject(object.scale, bubbleTweenOffScaleProp, 200, TWEEN.Easing.Back.Out, 200);
     tweenObject(object.position, object.originalPosition, 200, TWEEN.Easing.Back.Out, 200);
   };
@@ -192,7 +194,7 @@ const bubbleStateChangeAnimation = (object, isClicked) => {
   } else {
     applyOpacityTween(onOpacityProp, [titles, descriptions], [descriptionIcons]);
     
-    removeMockDiv();
+    if(document.getElementsByClassName('mockContainer').length) removeMockDiv();
     
     tweenObject(object.scale, bubbleTweenOnScaleProp, 200, TWEEN.Easing.Back.Out, 200);
     tweenObject(object.position, bubbleTweenOnPositionProp, 200, TWEEN.Easing.Back.Out, 200);

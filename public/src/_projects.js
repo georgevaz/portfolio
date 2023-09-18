@@ -30,6 +30,9 @@ const projects = {
     description: 'Closet Management Application',
     links: {
     },
+    images: [
+
+    ],
   },
   'pet-friend-finder': {
     name: 'Pet Friend Finder',
@@ -44,6 +47,9 @@ const projects = {
         icon: githubIcon,
       }
     },
+    images: [
+
+    ],
   },
   'crop-dust': {
     name: 'Crop Dust',
@@ -58,6 +64,9 @@ const projects = {
         icon: videoIcon,
       },
     },
+    images: [
+
+    ],
   },
   'tube-disasters': {
     name: 'Tube Disasters',
@@ -72,6 +81,9 @@ const projects = {
         icon: videoIcon,
       },
     },
+    images: [
+
+    ],
   },
 };
 
