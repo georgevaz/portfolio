@@ -18,11 +18,11 @@ const projects = {
       },
     },
     images: [
-      'public/assets/images/zukeeper-0.gif',
-      'public/assets/images/zukeeper-1.gif',
-      'public/assets/images/zukeeper-2.gif',
-      'public/assets/images/zukeeper-3.gif',
-      'public/assets/images/zukeeper-4.png',
+      './public/assets/images/zukeeper-0.gif',
+      './public/assets/images/zukeeper-1.gif',
+      './public/assets/images/zukeeper-2.gif',
+      './public/assets/images/zukeeper-3.gif',
+      './public/assets/images/zukeeper-4.png',
     ],
   },
   'armoire': {
