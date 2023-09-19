@@ -1,20 +1,18 @@
-import projects from './_projects.js';
-
 const container = document.createElement('div');
 container.className = 'mockContainer';
 
 let mock = `
     <div class="imageContainer">
       <div class="left" id="left">
-        <img class="left" src="public/assets/left.svg">
+        <img class="left" src="./public/assets/left.svg">
       </div>
       <img class="mockImage" id="image">
       <div class="right" id="right">
-        <img class="right" src="public/assets/right.svg">
+        <img class="right" src="./public/assets/right.svg">
       </div>
     </div>
     <div class="exit">
-      <img class="exit" src="public/assets/exit.svg">
+      <img class="exit" src="./public/assets/exit.svg">
     </div>
   `;
 
