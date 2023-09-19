@@ -65,7 +65,10 @@ const projects = {
       },
     },
     images: [
-
+      './assets/images/cropdust-0.png',
+      './assets/images/cropdust-1.png',
+      './assets/images/cropdust-2.png',
+      './assets/images/cropdust-3.png',
     ],
   },
   'tube-disasters': {
@@ -82,7 +85,10 @@ const projects = {
       },
     },
     images: [
-
+      './assets/images/tubedisasters-0.png',
+      './assets/images/tubedisasters-1.png',
+      './assets/images/tubedisasters-2.png',
+      './assets/images/tubedisasters-3.png',
     ],
   },
 };
