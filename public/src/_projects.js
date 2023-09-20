@@ -24,6 +24,7 @@ const projects = {
       './assets/images/zukeeper-3.gif',
       './assets/images/zukeeper-4.png',
     ],
+    imageClass: 'desktopImage',
   },
   'armoire': {
     name: 'Armoire',
@@ -31,8 +32,11 @@ const projects = {
     links: {
     },
     images: [
-
+      './assets/images/armoire-0.png',
+      './assets/images/armoire-1.png',
+      './assets/images/armoire-2.png',
     ],
+    imageClass: 'mobileImage',
   },
   'pet-friend-finder': {
     name: 'Pet Friend Finder',
@@ -50,6 +54,7 @@ const projects = {
     images: [
 
     ],
+    imageClass: 'desktopImage',
   },
   'crop-dust': {
     name: 'Crop Dust',
@@ -70,6 +75,7 @@ const projects = {
       './assets/images/cropdust-2.png',
       './assets/images/cropdust-3.png',
     ],
+    imageClass: 'desktopImage',
   },
   'tube-disasters': {
     name: 'Tube Disasters',
@@ -90,6 +96,7 @@ const projects = {
       './assets/images/tubedisasters-2.png',
       './assets/images/tubedisasters-3.png',
     ],
+    imageClass: 'desktopImage',
   },
 };
 

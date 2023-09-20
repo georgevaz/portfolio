@@ -25,11 +25,18 @@
 
 .mockImage {
     border: .5em solid black;
-    border-radius: 1em;
     box-shadow: .3em .3em .5em rgba(0, 0, 0, .75);
     margin: 0 4em 0 4em;
     width: 70%;
     height: auto;
+}
+
+.desktopImage {
+    border-radius: 1em;
+}
+
+.mobileImage {
+    border-radius: 2em;
 }
 
 .exit, .left, .right {
