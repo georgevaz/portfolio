@@ -16,24 +16,25 @@ let mock = `
     </div>
   `;
 
-const addMockDiv = (images) => {
-  let totalImageCount = images.length;
+const addMockDiv = (object) => {
+  let totalImageCount = object.images.length;
   let index = 0;
 
   document.body.appendChild(container);
   container.innerHTML = mock;
 
   const image = document.getElementById('image');
-  image.src = images[index];
+  image.src = object.images[index];
+  image.classList.add(object.imageClass)
 
   document.getElementById('left').addEventListener('click', () => {
     index === 0 ? index = totalImageCount - 1 : index--;
-    image.src = images[index];
+    image.src = object.images[index];
   });
 
   document.getElementById('right').addEventListener('click', () => {
     index === totalImageCount - 1 ? index = 0 : index++;
-    image.src = images[index];
+    image.src = object.images[index];
   });
 };
 
