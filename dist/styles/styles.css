@@ -20,16 +20,24 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding: 1em;
+    padding: 1rem;
 }
 
 .mockImage {
-    border: .5em solid black;
-    border-radius: 1em;
-    box-shadow: .3em .3em .5em rgba(0, 0, 0, .75);
-    margin: 0 4em 0 4em;
+    border: 1vw solid black;
+    box-shadow: .3rem .3rem .5rem rgba(0, 0, 0, .75);
+    margin: 0 4rem 0 4rem;
+}
+
+.desktopImage {
+    border-radius: 2.5vw;
     width: 70%;
     height: auto;
+}
+
+.mobileImage {
+    border-radius: calc(5vw / 2);
+    height: 50vw;
 }
 
 .exit, .left, .right {

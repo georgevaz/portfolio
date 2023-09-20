@@ -136,7 +136,10 @@ const loadBubble = (xPos, yPos, project) => {
   const descriptionGroup = new THREE.Group();
 
   bubbleGroup.name = 'bubble';
+  
   bubbleGroup.images = project.images;
+  bubbleGroup.imageClass = project.imageClass;
+
   descriptionGroup.name = 'description';
 
   loader.load('./assets/bubble.glb', // url
@@ -273,10 +276,6 @@ const populateBubbles = projects => {
   const numOfBubbles = Object.keys(projects).length;
 
   for(let i = 0; i < numOfBubbles; i++){
-    const projectName = projects[Object.keys(projects)[i]].name;
-    const projectDescription = projects[Object.keys(projects)[i]].description;
-    const projectLinks = projects[Object.keys(projects)[i]].links;
-
     if(i === 0) {
       bubbles.push(loadBubble(0, 0, projects[Object.keys(projects)[i]]))
       row++;
