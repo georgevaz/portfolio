@@ -24,18 +24,20 @@
 }
 
 .mockImage {
-    border: 1vw solid black;
     box-shadow: .3rem .3rem .5rem rgba(0, 0, 0, .75);
     margin: 0 4rem 0 4rem;
 }
 
 .desktopImage {
-    border-radius: 2.5vw;
+    border: .7vw solid black;
+    border-radius: 1.25vw;
     width: 70%;
     height: auto;
+    max-height: 60vh;
 }
 
 .mobileImage {
+    border: 1vw solid black;
     border-radius: calc(5vw / 2);
     height: 50vw;
 }
