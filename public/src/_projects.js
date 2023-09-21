@@ -52,7 +52,11 @@ const projects = {
       }
     },
     images: [
-
+      './assets/images/petfriendfinder-0.png',
+      './assets/images/petfriendfinder-1.png',
+      './assets/images/petfriendfinder-2.png',
+      './assets/images/petfriendfinder-3.png',
+      './assets/images/petfriendfinder-4.png',
     ],
     imageClass: 'desktopImage',
   },
