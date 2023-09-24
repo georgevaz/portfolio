@@ -1,4 +1,5 @@
-import TWEEN, { Tween } from '@tweenjs/tween.js';
+import * as THREE from 'three';
+import TWEEN from '@tweenjs/tween.js';
 
 import colors from './_colors.js';
 import text from './textLoader.js';
@@ -21,6 +22,8 @@ const { BUBBLESCALE, bubbles } = bubble;
 const { addMockDiv, removeMockDiv } = mockUp;
 
 let introAnimationFinished = false;
+
+let hamburgerClicked = false;
 
 const tweenObject = (property, propChange, timing, easeType, delay=0) => {
   return new TWEEN.Tween(property)
@@ -201,6 +204,17 @@ const bubbleStateChangeAnimation = (object, isClicked) => {
   };
 };
 
+const hamburgerClickAnimation = (object) => {
+
+  hamburgerClicked = !hamburgerClicked;
+  if(hamburgerClicked){
+    tweenObject(object.rotation, { z: THREE.MathUtils.degToRad(90) }, 200, TWEEN.Easing.Back.Out, 200);
+  } else {
+    tweenObject(object.rotation, { z: THREE.MathUtils.degToRad(0) }, 200, TWEEN.Easing.Back.Out, 200);
+  };
+  
+};
+
 const ollieBarkAnimation = scene => {
   if(introAnimationFinished){
     createText(
@@ -235,5 +249,6 @@ export default {
   bubbleClickAnimation,
   bubbleIdleAnimation,
   bubbleStateChangeAnimation,
+  hamburgerClickAnimation,
   ollieBarkAnimation,
 };

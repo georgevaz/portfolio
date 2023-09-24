@@ -59,6 +59,9 @@ const createIcon = (icon, type, callback, link) => {
         visible: false
       });
       const cube = new THREE.Mesh(geometry, material);
+      
+      cube.name = 'clickCube';
+
       group.add(cube)
 
       callback(group);

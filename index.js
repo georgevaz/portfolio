@@ -8,6 +8,7 @@ import projects from './public/src/_projects.js';
 import textLoader from './public/src/textLoader.js';
 import ollieLoader from './public/src/ollieLoader.js';
 import bubbleLoader from './public/src/bubbleLoader.js';
+import hamburgerLoader from './public/src/hamburgerLoader.js';
 import animations from './public/src/animations.js';
 
 // Colors
@@ -23,7 +24,9 @@ const { ollieGroup, ollieLeftEye, ollieRightEye, table, tableBottom } = ollieLoa
 const { bubbles, BUBBLESCALE, populateBubbles } = bubbleLoader;
 
 // Animation
-const { introAnimation, bubbleClickAnimation, bubbleIdleAnimation, bubbleStateChangeAnimation, ollieBarkAnimation } = animations;
+const { introAnimation, bubbleClickAnimation, bubbleIdleAnimation, bubbleStateChangeAnimation, hamburgerClickAnimation,ollieBarkAnimation } = animations;
+
+const { hamburger } = hamburgerLoader;
 
 let camera, aspectRatio;
 let scene, renderer, light, controls;
@@ -78,8 +81,9 @@ const init = () => {
     raycaster = new THREE.Raycaster();
     pointer = new THREE.Vector2();
 
+    
     populateBubbles(projects);
-    scene.add(textGroup, ollieGroup, table, tableBottom, ...bubbles);
+    scene.add(textGroup, ollieGroup, table, tableBottom, ...bubbles, hamburger);
 
     // Set event listeners
     window.addEventListener('click', onClick);
@@ -175,8 +179,8 @@ const onClick = e => {
         break;
       };
 
-      // if a bubble is enlarged and after we iterate through all objects and none of the intersected objects are bubbles, shrink it
-      if(previousBubble && i >= intersects.length - 1){
+      // if a bubble is enlarged and after we iterate through all objects and none of the intersected objects are bubbles or we click on the hamburger, shrink it
+      if(previousBubble && (i >= intersects.length - 1 || intersects[i].object.parent.iconType === 'hamburger')){
         bubbleClickAnimation(previousBubble, false);
         previousBubble = undefined;
       };
@@ -195,6 +199,8 @@ const onClick = e => {
           controls.enableDamping = false; // I have to disable damping before reseting/disable controls in the case of damping occuring when user clicks, it will finish the current damp before turning off otherwise
           controls.reset();
           controls.enabled = false;
+        } else if(intersects[i].object.parent.iconType === 'hamburger'){ // clicking on hamburger icon
+          hamburgerClickAnimation(intersects[i].object.parent);
         } else window.open(intersects[i].object.parent.link);
         break;
       };
@@ -217,12 +223,12 @@ const onMouseMove = e => {
   const intersects = shootRaycast(e);
   
   if (intersects.length > 0) {
-    for (let i = 0; i < intersects.length; i++){
-      if(intersects[i].object.parent.name === 'icon' && intersects[i].object.material.opacity >= 1){
+    // only need to see the first intersected option to find out if it is an icon or not
+      if(intersects[0].object.parent.name === 'icon' && intersects[0].object.material.opacity >= 1){
         document.body.style.cursor = 'pointer';
-        break;
-      } else document.body.style.cursor = '';
-    };
+      } else {
+        document.body.style.cursor = '';
+      };
   } else document.body.style.cursor = '';
 };
 

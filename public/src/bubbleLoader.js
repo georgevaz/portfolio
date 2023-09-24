@@ -115,11 +115,11 @@ const populateBubbleText = (bubbleText, group, textAttributes, callback, callbac
   };
 };
 
-const setIcon = (icon, scale, position) => {
+const setBubbleIcon = (icon, scale, position) => {
   // SVG default size is huge
   icon.scale.set(scale, scale, scale)
   
-  // Needs to be rotated because of how the file imported
+  // Needs to be rotated because of how the file imported within the bubble
   icon.rotation.x = THREE.MathUtils.degToRad(90);
 
   // Needs to be positioned
@@ -232,7 +232,7 @@ const loadBubble = (xPos, yPos, project) => {
         searchIcon, 
         'portfolioMocks', 
         (icon) => {
-          setIcon(icon, .007, iconPos);
+          setBubbleIcon(icon, .007, iconPos);
 
           descriptionGroup.add(icon);
           iconPos.x += .75;
@@ -242,7 +242,7 @@ const loadBubble = (xPos, yPos, project) => {
               project.links[projectLinksKeys[i]].icon, 
               projectLinksKeys[i], 
               (icon) => {
-                setIcon(icon, .007, iconPos);
+                setBubbleIcon(icon, .007, iconPos);
                 
                 descriptionGroup.add(icon);
                 iconPos.x += .75;
