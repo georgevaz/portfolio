@@ -26,7 +26,8 @@ const { bubbles, BUBBLESCALE, populateBubbles } = bubbleLoader;
 // Animation
 const { introAnimation, bubbleClickAnimation, bubbleIdleAnimation, bubbleStateChangeAnimation, hamburgerClickAnimation,ollieBarkAnimation } = animations;
 
-const { hamburger } = hamburgerLoader;
+// Hamburger
+const { hamburgerGroup } = hamburgerLoader;
 
 let camera, aspectRatio;
 let scene, renderer, light, controls;
@@ -81,9 +82,8 @@ const init = () => {
     raycaster = new THREE.Raycaster();
     pointer = new THREE.Vector2();
 
-    
     populateBubbles(projects);
-    scene.add(textGroup, ollieGroup, table, tableBottom, ...bubbles, hamburger);
+    scene.add(textGroup, ollieGroup, table, tableBottom, ...bubbles, hamburgerGroup);
 
     // Set event listeners
     window.addEventListener('click', onClick);

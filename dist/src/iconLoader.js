@@ -20,7 +20,7 @@ const createIcon = (icon, type, callback, link) => {
       const group = new THREE.Group();
       group.name = 'icon';
       group.link = link;
-      group.iconType = type
+      group.iconType = type;
 
       for(let i = 0; i < paths.length; i++){
         const path = paths[i];
@@ -59,6 +59,9 @@ const createIcon = (icon, type, callback, link) => {
         visible: false
       });
       const cube = new THREE.Mesh(geometry, material);
+      
+      cube.name = 'clickCube';
+
       group.add(cube)
 
       callback(group);
