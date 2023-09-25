@@ -5,7 +5,7 @@ const icons = {
   videoIcon: './assets/video.svg',
   resumeIcon: './assets/file.svg',
   linkedInIcon: './assets/linkedin.svg',
-  hamburgerIcon: './assets/hamburger.svg',
+  dogboneIcon: './assets/dogbone.svg',
   leftIcon: './assets/left.svg',
   rightIcon: './assets/right.svg',
   exitIcon: './assets/exit.svg'

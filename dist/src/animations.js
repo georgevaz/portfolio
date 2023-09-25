@@ -166,7 +166,7 @@ const bubbleClickAnimation = (object, isClicked) => {
         z: title.lineSpace ? -3.65 + (i * .6 * title.lineSpace) : -3.5,
       }, 200, TWEEN.Easing.Back.Out, 200)
     });
-    applyOpacityTween(onOpacityProp, [descriptions], [descriptionIcons])
+    applyOpacityTween(onOpacityProp, [descriptions], [descriptionIcons]);
 
     tweenObject(object.scale, bubbleTweenOnScaleProp, 200, TWEEN.Easing.Back.Out, 200);
     tweenObject(object.position, bubbleTweenOnPositionProp, 200, TWEEN.Easing.Back.Out, 200);
@@ -180,7 +180,7 @@ const bubbleClickAnimation = (object, isClicked) => {
         y: 1,
         z: 1,
       }, 200, TWEEN.Easing.Back.Out, 200);
-      tweenObject(title.material, onOpacityProp, 200, TWEEN.Easing.Back.Out, 200)
+      tweenObject(title.material, onOpacityProp, 200, TWEEN.Easing.Back.Out, 200);
       tweenObject(title.position, title.originalPosition, 200, TWEEN.Easing.Back.Out, 200);
     });
 
@@ -229,9 +229,9 @@ const hamburgerClickAnimation = object => {
     tweenObject(object.rotation, { z: THREE.MathUtils.degToRad(90) }, 200, TWEEN.Easing.Back.Out, 200);
     iconGroup.children.forEach((icon, i) => {
       if(icon.iconType !== 'hamburger'){
-        tweenObject(icon.position, { x: -(i * .4) }, 500, TWEEN.Easing.Back.Out, 200);
+        tweenObject(icon.position, { x: -(i * 0.45) }, 500, TWEEN.Easing.Back.Out, 200);
         icon.children.forEach(mesh => {
-          tweenObject(mesh.material, { opacity: 1 }, 500, TWEEN.Easing.Back.Out, 200)
+          tweenObject(mesh.material, { opacity: 1 }, 500, TWEEN.Easing.Back.Out, 200);
         });
       };
     });
@@ -241,7 +241,7 @@ const hamburgerClickAnimation = object => {
       if(icon.iconType !== 'hamburger'){
         tweenObject(icon.position, { x: 0 }, 500, TWEEN.Easing.Back.Out, 200);
         icon.children.forEach(mesh => {
-          tweenObject(mesh.material, { opacity: 0 }, 500, TWEEN.Easing.Back.Out, 200)
+          tweenObject(mesh.material, { opacity: 0 }, 500, TWEEN.Easing.Back.Out, 200);
         });
       };
     });
