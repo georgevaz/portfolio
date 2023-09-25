@@ -4,7 +4,7 @@ import icons from './_icons.js';
 import iconLoader from './iconLoader.js';
 
 // Icons
-const { resumeIcon, githubIcon, linkedInIcon, hamburgerIcon } = icons;
+const { resumeIcon, githubIcon, linkedInIcon, dogboneIcon } = icons;
 
 // Icon Loader
 const { createIcon } = iconLoader
@@ -43,24 +43,10 @@ const setHamburgerIcons = (icon, scale, position) => {
 
 const loadHamburgerIcons = () => {
   createIcon(
-    hamburgerIcon,
+    dogboneIcon,
     'hamburger',
     (icon) => {
-      // the hamburger icon is peculiar because it is technically 3 separate pieces
-      // calculating the bounding area of this is a bit harder than the previous icons because of it
-      // the fourth child in this icon group is the actual clickable area that needs to be altered specifically for this icon
-      let y = -15;
-      icon.children.forEach(section => {
-        if(section.name === 'clickCube') {
-          // need to set the clickable area here
-          section.scale.set(section.scale.x + .5, 10, section.scale.z);
-        } else {
-          section.position.set(0, y, 0);
-          y += 15;
-        };
-      });
-
-      setHamburgerIcons(icon, .008, new THREE.Vector3(0, 0, .01))
+      setHamburgerIcons(icon, .008, new THREE.Vector3(0, 0, .01));
       hamburgerGroup.add(icon);
     },
     undefined
@@ -71,8 +57,7 @@ const loadHamburgerIcons = () => {
       linkIcons[key].icon,
       key,
       (icon) => {
-        setHamburgerIcons(icon, .005, new THREE.Vector3(0, 0, 0))
-
+        setHamburgerIcons(icon, .007, new THREE.Vector3(0, 0, 0));
         hamburgerGroup.add(icon);
       },
       linkIcons[key].link,
