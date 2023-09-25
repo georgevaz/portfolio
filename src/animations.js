@@ -1,10 +1,12 @@
-import TWEEN, { Tween } from '@tweenjs/tween.js';
+import * as THREE from 'three';
+import TWEEN from '@tweenjs/tween.js';
 
 import colors from './_colors.js';
 import text from './textLoader.js';
 import ollie from './ollieLoader.js';
 import bubble from './bubbleLoader.js';
 import mockUp from './mockUp.js';
+import hamburgerLoader from './hamburgerLoader.js';
 
 // Colors
 const { black, white, grayDark, gray, grayLight } = colors
@@ -18,9 +20,15 @@ const { olliePaws, ollieBody, table } = ollie;
 // Bubble
 const { BUBBLESCALE, bubbles } = bubble;
 
+// Hamburger
+const { hamburgerGroup } = hamburgerLoader;
+
+// Mockup
 const { addMockDiv, removeMockDiv } = mockUp;
 
 let introAnimationFinished = false;
+
+let hamburgerClicked = false;
 
 const tweenObject = (property, propChange, timing, easeType, delay=0) => {
   return new TWEEN.Tween(property)
@@ -111,12 +119,24 @@ const introAnimation = () => {
                   () => tweenObject(textGroup.children[3].material, onOpacityProp, 1000, TWEEN.Easing.Linear.None, 500)
                   .onComplete(
                     () => {
+
+                      // This shows the bubbles
                       bubbles.forEach(bubble => {
                         bubble.children.forEach(child => {
                           // change opacity for the entire bubble except description and icons, which will only appear when clicked
                           if(child.name !== 'description') tweenObject(child.material, onOpacityProp, 250, TWEEN.Easing.Linear.None, 500);
                         });
                       });
+
+                      // This shows the hamburger
+                      hamburgerGroup.children.forEach(icon => {
+                        if(icon.iconType === 'hamburger'){
+                          icon.children.forEach(mesh => {
+                            if(icon.name !== 'clickCube')tweenObject(mesh.material, onOpacityProp, 250, TWEEN.Easing.Linear.None, 500);
+                          });
+                        };
+                      });
+
                       introAnimationFinished = true;
                     }
                   )
@@ -201,6 +221,33 @@ const bubbleStateChangeAnimation = (object, isClicked) => {
   };
 };
 
+const hamburgerClickAnimation = object => {
+  const iconGroup = object.parent;
+  hamburgerClicked = !hamburgerClicked;
+
+  if(hamburgerClicked){
+    tweenObject(object.rotation, { z: THREE.MathUtils.degToRad(90) }, 200, TWEEN.Easing.Back.Out, 200);
+    iconGroup.children.forEach((icon, i) => {
+      if(icon.iconType !== 'hamburger'){
+        tweenObject(icon.position, { x: -(i * .4) }, 500, TWEEN.Easing.Back.Out, 200);
+        icon.children.forEach(mesh => {
+          tweenObject(mesh.material, { opacity: 1 }, 500, TWEEN.Easing.Back.Out, 200)
+        });
+      };
+    });
+  } else {
+    tweenObject(object.rotation, { z: THREE.MathUtils.degToRad(0) }, 200, TWEEN.Easing.Back.Out, 200);
+    iconGroup.children.forEach((icon, i) => {
+      if(icon.iconType !== 'hamburger'){
+        tweenObject(icon.position, { x: 0 }, 500, TWEEN.Easing.Back.Out, 200);
+        icon.children.forEach(mesh => {
+          tweenObject(mesh.material, { opacity: 0 }, 500, TWEEN.Easing.Back.Out, 200)
+        });
+      };
+    });
+  };
+};
+
 const ollieBarkAnimation = scene => {
   if(introAnimationFinished){
     createText(
@@ -235,5 +282,6 @@ export default {
   bubbleClickAnimation,
   bubbleIdleAnimation,
   bubbleStateChangeAnimation,
+  hamburgerClickAnimation,
   ollieBarkAnimation,
 };
