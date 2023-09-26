@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npx vite",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "vite build",
+    "build": "vite build && echo 'www.georgevazquez.com' >> ./dist/CNAME",
     "deploy": "gh-pages -d dist"
   },
   "keywords": [],
