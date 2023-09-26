@@ -25,6 +25,9 @@ const fillColor = grayLight;
 // Font Color
 const fontColor = black;
 
+// Icon Color
+const iconColor = black;
+
 // Loader
 const loader = new GLTFLoader();
 
@@ -238,6 +241,7 @@ const loadBubble = (xPos, yPos, project) => {
       createIcon(
         searchIcon, 
         'portfolioMocks', 
+        iconColor,
         (icon) => {
           setBubbleIcon(icon, .007, iconPos);
 
@@ -248,6 +252,7 @@ const loadBubble = (xPos, yPos, project) => {
             createIcon(
               project.links[projectLinksKeys[i]].icon, 
               projectLinksKeys[i], 
+              iconColor,
               (icon) => {
                 setBubbleIcon(icon, .007, iconPos);
                 

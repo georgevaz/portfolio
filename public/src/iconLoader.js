@@ -1,18 +1,10 @@
 import * as THREE from 'three';
 import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
 
-import colors from './_colors.js';
-
-// Colors
-const { black, white, grayDark, gray, grayLight, red, blue, yellow } = colors;
-
-// Icon Colors
-const iconColor = black;
-
 // Loader
 const iconLoader = new SVGLoader();
 
-const createIcon = (icon, type, callback, link) => {
+const createIcon = (icon, type, color, callback, link) => {
   let boundingX;
   let boundingY;
 
@@ -28,7 +20,7 @@ const createIcon = (icon, type, callback, link) => {
       for(let i = 0; i < paths.length; i++){
         const path = paths[i];
         const material = new THREE.MeshPhongMaterial({
-          color: iconColor,
+          color,
           side: THREE.DoubleSide,
           depthWrite: true,
           transparent: true
@@ -50,13 +42,13 @@ const createIcon = (icon, type, callback, link) => {
           boundingY = boundingY > geometry.boundingBox.max.y * 2 ? boundingY : geometry.boundingBox.max.y * 2;
 
           group.add(mesh);
-        }
+        };
       };
 
       // invisible cube to register clicking
       const geometry = new THREE.BoxGeometry(boundingX, boundingY, 5);
       const material = new THREE.MeshBasicMaterial({
-        color: black, // no need for actual color but it is here in case we need to switch it on to view for any reason
+        color, // no need for actual color but it is here in case we need to switch it on to view for any reason
         transparent: true,
         opacity: 0,
         visible: false
