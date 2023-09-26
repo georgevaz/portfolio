@@ -35,7 +35,7 @@ const bubbles = [];
 const BUBBLESCALE = [.3, .3, .3];
 
 // This is mainly for ease of use during development
-const startingOpacity = 1;
+const startingOpacity = 0;
 
 let titleIsMulti = false;
 

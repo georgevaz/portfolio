@@ -54,7 +54,7 @@ const loadHamburgerIcons = () => {
     'hamburger',
     iconColor,
     (icon) => {
-      setHamburgerIcons(icon, .008, new THREE.Vector3(0, 0, .01));
+      setHamburgerIcons(icon, .008, new THREE.Vector3(0, 0, .03));
       hamburgerGroup.add(icon);
     },
     undefined,
