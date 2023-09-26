@@ -12,7 +12,7 @@ import hamburgerLoader from './public/src/hamburgerLoader.js';
 import animations from './public/src/animations.js';
 
 // Colors
-const { black, white, grayDark, gray, grayLight } = colors
+const { black, white, grayDark, gray, grayLight, red, blue, yellow } = colors;
 
 // Text
 const { textGroup } = textLoader;
@@ -29,6 +29,9 @@ const { introAnimation, bubbleClickAnimation, bubbleIdleAnimation, bubbleStateCh
 // Hamburger
 const { hamburgerGroup } = hamburgerLoader;
 
+// Object Colors
+const sceneColor = grayLight;
+
 let camera, aspectRatio;
 let scene, renderer, light, controls;
 let raycaster, pointer;
@@ -41,7 +44,7 @@ const init = () => {
   if (WebGL.isWebGLAvailable()) {
     // Set Scene
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(grayLight);
+    scene.background = new THREE.Color(sceneColor);
 
     // Set Camera Properties
     aspectRatio = window.innerWidth / window.innerHeight;

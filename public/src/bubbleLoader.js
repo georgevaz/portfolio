@@ -7,7 +7,7 @@ import textLoader from './textLoader.js';
 import iconLoader from './iconLoader.js';
 
 // Colors
-const { black, white, grayDark, gray, grayLight } = colors;
+const { black, white, grayDark, gray, grayLight, red, blue, yellow } = colors;
 
 // Icons
 const { githubIcon, browserIcon, searchIcon, videoIcon, leftIcon, rightIcon, exitIcon } = icons;
@@ -18,6 +18,13 @@ const { STRATOS, ROBOTO, h1, h2, createText } = textLoader;
 // Icon Loader
 const { createIcon } = iconLoader
 
+// Object Colors
+const outlineColor = black;
+const fillColor = grayLight;
+
+// Font Color
+const fontColor = black;
+
 // Loader
 const loader = new GLTFLoader();
 
@@ -25,7 +32,7 @@ const bubbles = [];
 const BUBBLESCALE = [.3, .3, .3];
 
 // This is mainly for ease of use during development
-const startingOpacity = 0;
+const startingOpacity = 1;
 
 let titleIsMulti = false;
 
@@ -37,7 +44,7 @@ const populateBubbleText = (bubbleText, group, textAttributes, callback, callbac
   const { maxLength, singleLineZPos, multiLineZPos, tracking } = textAttributes;
   const { fontType, fontSize, fontThickness, xPos, yPos, textColor, name } = callbackParams;
 
-  const setText = (text) => {
+  const setText = text => {
     text.position.z = textZPos;
 
     if(lineSpace){
@@ -144,15 +151,15 @@ const loadBubble = (xPos, yPos, project) => {
 
   loader.load('./assets/bubble.glb', // url
     // on load
-    (gltf) => {
+    gltf => {
       const bubble = gltf.scene;
 
       // Resetting the material in order to add transparency and tween its opacity later
       // Each child is getting a brand new insantiated material because if they share the same instance of it, 
       // when it gets tweened later, it tweens all objects with that instance.
       bubble.children.forEach(child => {
-        if(child.name.slice(-4) === 'Fill') child.material = new THREE.MeshStandardMaterial({ color: grayLight });
-        else child.material = new THREE.MeshStandardMaterial({ color: black });
+        if(child.name.slice(-4) === 'Fill') child.material = new THREE.MeshStandardMaterial({ color: fillColor });
+        else child.material = new THREE.MeshStandardMaterial({ color: outlineColor });
         child.material.transparent = true;
         child.material.opacity = startingOpacity;
       });
@@ -194,7 +201,7 @@ const loadBubble = (xPos, yPos, project) => {
           fontThickness: 0,
           xPos: 0, 
           yPos: .5, 
-          textColor: black,
+          textColor: fontColor,
           name: 'titleText',
           startingOpacity
         },
@@ -217,7 +224,7 @@ const loadBubble = (xPos, yPos, project) => {
           fontThickness: 0,
           xPos: 0, 
           yPos: .5, 
-          textColor: black,
+          textColor: fontColor,
           name: 'descriptionText',
           startingOpacity
         },
@@ -262,7 +269,7 @@ const loadBubble = (xPos, yPos, project) => {
     // on progress
     undefined,
     // on error
-    (error) => {
+    error => {
       console.error(error);
     },
   );
