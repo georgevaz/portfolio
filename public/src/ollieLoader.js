@@ -8,7 +8,10 @@ const { black, white, grayDark, gray, grayLight, red, blue, yellow } = colors;
 
 // Object Colors
 const tableColor = black;
-const tableBoxColor = grayLight;
+const tableBoxColor = grayLight; // this has to match the background color of the scene
+const darkFillColor = grayDark;
+const lightFillColor = white;
+const outlineColor = black;
 
 // Loader
 const loader = new GLTFLoader();
@@ -46,7 +49,27 @@ const loadOllie = () => {
     // on load
     gltf => {
       const ollie = gltf.scene;
+      // pull materials out from imported model's objects to be able to change colors when needed
+      // need to clone materials so we can assign appropriately
+      let darkFillMaterial = ollie.getObjectByName("Left_Ear_Fill").material.clone();
+      let lightFillMaterial = ollie.getObjectByName("Left_Ear_Fill").material.clone();
+      let outlineMaterial = ollie.getObjectByName("Left_Ear_Fill").material.clone();
       
+      darkFillMaterial.color.setHex(darkFillColor);
+      lightFillMaterial.color.setHex(lightFillColor);
+      outlineMaterial.color.setHex(outlineColor);
+
+      // assign the new materials
+      ollie.children.forEach(mesh => {
+        mesh.name.indexOf('Fill') > -1 || mesh.name.indexOf('Background') > -1? 
+          mesh.name.indexOf('Beard') > -1 || mesh.name.indexOf('Eyebrow') > -1 || mesh.name.indexOf('Paw') > -1 ?
+            mesh.material = lightFillMaterial
+            :
+            mesh.material = darkFillMaterial
+          :
+          mesh.material = outlineMaterial;
+      });
+
       // group setup
       ollieLeftEar.add(
         ollie.getObjectByName("Left_Ear"), 
