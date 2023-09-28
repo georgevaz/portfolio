@@ -5,7 +5,7 @@ import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import colors from './_colors.js';
 
 // Colors
-const { black, white, grayDark, gray, grayLight } = colors
+const { black, white, grayDark, gray, grayLight, red, cream } = colors;
 
 // Font Loader
 const fontLoader = new FontLoader();
@@ -25,7 +25,10 @@ const fontThickness = 0.1;
 const textGroup = new THREE.Group();
 
 // Callback
-const addToGroup = (text) => textGroup.add(text);
+const addToGroup = text => textGroup.add(text);
+
+// Font Color
+const fontColor = grayDark; // the color in the text seems to be darker, using this color to match the other objects
 
 const loadFont = () => {
   createText(
@@ -36,7 +39,7 @@ const loadFont = () => {
       xPos: -3.5, 
       yPos: 3.5, 
       textCopy: "Hi, I'm George", 
-      textColor: grayDark
+      textColor: fontColor,
     }, 
     addToGroup
   );
@@ -49,7 +52,7 @@ const loadFont = () => {
       xPos: -3.68, 
       yPos: 3, 
       textCopy: "I’m a software engineer", 
-      textColor: grayDark
+      textColor: fontColor,
     }, 
     addToGroup
   );
@@ -62,7 +65,7 @@ const loadFont = () => {
       xPos: 3.23, 
       yPos: -3, 
       textCopy: "and this is Ollie!", 
-      textColor: grayDark
+      textColor: fontColor,
     },
     addToGroup
   );
@@ -75,7 +78,7 @@ const loadFont = () => {
       xPos: 2.3, 
       yPos: -3.5, 
       textCopy: "he’s a good boy", 
-      textColor: grayDark
+      textColor: fontColor,
     },
     addToGroup
   );
@@ -85,7 +88,7 @@ const createText = (textAttributes, callback, name='text', opacity=0) => {
   const { fontType, fontThickness, fontSize, xPos, yPos, textCopy, textColor } = textAttributes;
   fontLoader.load(fontType, // url
     //on load
-    (font) => {
+    font => {
       const geometry = new TextGeometry(textCopy, {
         font,
         size: fontSize,
@@ -116,7 +119,7 @@ const createText = (textAttributes, callback, name='text', opacity=0) => {
     // on progress
     undefined,
     // on error,
-    (error) => {
+    error => {
       console.log(error)
     },
   );

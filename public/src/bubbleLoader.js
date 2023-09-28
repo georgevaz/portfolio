@@ -7,7 +7,7 @@ import textLoader from './textLoader.js';
 import iconLoader from './iconLoader.js';
 
 // Colors
-const { black, white, grayDark, gray, grayLight, red, blue, yellow } = colors;
+const { black, white, grayDark, gray, grayLight, red, cream } = colors;
 
 // Icons
 const { githubIcon, browserIcon, searchIcon, videoIcon, leftIcon, rightIcon, exitIcon } = icons;
@@ -20,7 +20,7 @@ const { createIcon } = iconLoader
 
 // Object Colors
 const outlineColor = black;
-const fillColor = grayLight;
+const fillColor = cream;
 
 // Font Color
 const fontColor = black;

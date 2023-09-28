@@ -5,7 +5,7 @@ import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import colors from './_colors.js';
 
 // Colors
-const { black, white, grayDark, gray, grayLight, red, blue, yellow } = colors;
+const { black, white, grayDark, gray, grayLight, red, cream } = colors;
 
 // Font Loader
 const fontLoader = new FontLoader();
@@ -28,7 +28,7 @@ const textGroup = new THREE.Group();
 const addToGroup = text => textGroup.add(text);
 
 // Font Color
-const fontColor = grayDark;
+const fontColor = grayDark; // the color in the text seems to be darker, using this color to match the other objects
 
 const loadFont = () => {
   createText(

@@ -5,13 +5,14 @@ import icons from './_icons.js';
 import iconLoader from './iconLoader.js';
 
 // Colors
-const { black, white, grayDark, gray, grayLight, red, blue, yellow } = colors;
+const { black, white, grayDark, gray, grayLight, red, cream } = colors;
 
 // Icons
 const { resumeIcon, githubIcon, linkedInIcon, dogboneIcon } = icons;
 
 // Icon Color
 const iconColor = black;
+const hamburgerColor = red;
 
 // Icon Loader
 const { createIcon } = iconLoader
@@ -52,7 +53,7 @@ const loadHamburgerIcons = () => {
   createIcon(
     dogboneIcon,
     'hamburger',
-    iconColor,
+    hamburgerColor,
     (icon) => {
       setHamburgerIcons(icon, .008, new THREE.Vector3(0, 0, .03));
       hamburgerGroup.add(icon);

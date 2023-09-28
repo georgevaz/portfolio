@@ -4,13 +4,13 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import colors from './_colors.js';
 
 // Colors
-const { black, white, grayDark, gray, grayLight, red, blue, yellow } = colors;
+const { black, white, grayDark, gray, grayLight, red, cream } = colors;
 
 // Object Colors
 const tableColor = black;
-const tableBoxColor = grayLight; // this has to match the background color of the scene
-const darkFillColor = grayDark;
-const lightFillColor = white;
+const tableBoxColor = cream; // this has to match the background color of the scene
+const darkFillColor = gray;
+const lightFillColor = cream;
 const outlineColor = black;
 
 // Loader
@@ -53,11 +53,10 @@ const loadOllie = () => {
       // need to clone materials so we can assign appropriately
       let darkFillMaterial = ollie.getObjectByName("Left_Ear_Fill").material.clone();
       let lightFillMaterial = ollie.getObjectByName("Left_Ear_Fill").material.clone();
-      let outlineMaterial = ollie.getObjectByName("Left_Ear_Fill").material.clone();
+      let outlineMaterial = new THREE.MeshPhongMaterial({ color: black });
       
       darkFillMaterial.color.setHex(darkFillColor);
       lightFillMaterial.color.setHex(lightFillColor);
-      outlineMaterial.color.setHex(outlineColor);
 
       // assign the new materials
       ollie.children.forEach(mesh => {

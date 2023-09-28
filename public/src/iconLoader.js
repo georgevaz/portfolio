@@ -32,7 +32,7 @@ const createIcon = (icon, type, color, callback, link) => {
           const shape = shapes[j];
           const geometry = new THREE.ExtrudeGeometry(shape,
             {
-              depth: 5,
+              depth: 6,
               bevelEnabled: false
             });
           const mesh = new THREE.Mesh(geometry, material);

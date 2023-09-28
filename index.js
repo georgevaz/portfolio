@@ -12,7 +12,7 @@ import hamburgerLoader from './public/src/hamburgerLoader.js';
 import animations from './public/src/animations.js';
 
 // Colors
-const { black, white, grayDark, gray, grayLight, red, blue, yellow } = colors;
+const { black, white, grayDark, gray, grayLight, red, cream} = colors;
 
 // Text
 const { textGroup } = textLoader;
@@ -30,7 +30,7 @@ const { introAnimation, bubbleClickAnimation, bubbleIdleAnimation, bubbleStateCh
 const { hamburgerGroup } = hamburgerLoader;
 
 // Object Colors
-const sceneColor = grayLight;
+const sceneColor = cream;
 
 let camera, aspectRatio;
 let scene, renderer, light, controls;

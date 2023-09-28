@@ -9,7 +9,7 @@ import mockUp from './mockUp.js';
 import hamburgerLoader from './hamburgerLoader.js';
 
 // Colors
-const { black, white, grayDark, gray, grayLight, red, blue, yellow } = colors;
+const { black, white, grayDark, gray, grayLight, red, cream } = colors;
 
 // Text
 const { STRATOS, h1, h2, textGroup, createText } = text;

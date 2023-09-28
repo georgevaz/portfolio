@@ -29,7 +29,7 @@
 }
 
 .desktopImage {
-    border: .7vw solid black;
+    border: .7vw solid #3F454B;
     border-radius: 1.25vw;
     width: 70%;
     height: auto;
@@ -37,7 +37,7 @@
 }
 
 .mobileImage {
-    border: 1vw solid black;
+    border: 1vw solid #3F454B;
     border-radius: calc(5vw / 2);
     height: 50vw;
     max-height: 70vh;
