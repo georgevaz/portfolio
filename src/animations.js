@@ -9,7 +9,7 @@ import mockUp from './mockUp.js';
 import hamburgerLoader from './hamburgerLoader.js';
 
 // Colors
-const { black, white, grayDark, gray, grayLight } = colors
+const { black, white, grayDark, gray, grayLight, red, cream } = colors;
 
 // Text
 const { STRATOS, h1, h2, textGroup, createText } = text;
@@ -25,6 +25,9 @@ const { hamburgerGroup } = hamburgerLoader;
 
 // Mockup
 const { addMockDiv, removeMockDiv } = mockUp;
+
+// Text Colors
+const textColor = black;
 
 let introAnimationFinished = false;
 
@@ -258,7 +261,7 @@ const ollieBarkAnimation = scene => {
         xPos: Math.random() * (Math.round(Math.random()) ? 1 : -1) - .35, 
         yPos: 0, 
         textCopy: Math.round(Math.random()) ? 'woof' : 'bark', 
-        textColor: black,
+        textColor,
       }, 
       (text) => {
         text.material.opacity = 1;

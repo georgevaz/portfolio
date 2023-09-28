@@ -1,10 +1,18 @@
 import * as THREE from 'three';
 
+import colors from './_colors.js';
 import icons from './_icons.js';
 import iconLoader from './iconLoader.js';
 
+// Colors
+const { black, white, grayDark, gray, grayLight, red, cream } = colors;
+
 // Icons
 const { resumeIcon, githubIcon, linkedInIcon, dogboneIcon } = icons;
+
+// Icon Color
+const iconColor = black;
+const hamburgerColor = red;
 
 // Icon Loader
 const { createIcon } = iconLoader
@@ -45,17 +53,19 @@ const loadHamburgerIcons = () => {
   createIcon(
     dogboneIcon,
     'hamburger',
+    hamburgerColor,
     (icon) => {
-      setHamburgerIcons(icon, .008, new THREE.Vector3(0, 0, .01));
+      setHamburgerIcons(icon, .008, new THREE.Vector3(0, 0, .03));
       hamburgerGroup.add(icon);
     },
-    undefined
+    undefined,
   );
 
   Object.keys(linkIcons).forEach(key => {
     createIcon(
       linkIcons[key].icon,
       key,
+      iconColor,
       (icon) => {
         setHamburgerIcons(icon, .007, new THREE.Vector3(0, 0, 0));
         hamburgerGroup.add(icon);

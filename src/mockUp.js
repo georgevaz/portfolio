@@ -4,7 +4,7 @@ container.className = 'mockContainer';
 let mock = `
     <div class="imageContainer">
       <div class="left" id="left">
-        <img class="left" src="./assets/left.svg">
+        <img class="left svg-icon" src="./assets/left.svg">
       </div>
       <img class="mockImage" id="image">
       <div class="right" id="right">

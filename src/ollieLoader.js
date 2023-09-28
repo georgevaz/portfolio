@@ -4,7 +4,14 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import colors from './_colors.js';
 
 // Colors
-const { black, white, grayDark, gray, grayLight } = colors
+const { black, white, grayDark, gray, grayLight, red, cream } = colors;
+
+// Object Colors
+const tableColor = black;
+const tableBoxColor = cream; // this has to match the background color of the scene
+const darkFillColor = gray;
+const lightFillColor = cream;
+const outlineColor = black;
 
 // Loader
 const loader = new GLTFLoader();
@@ -30,8 +37,8 @@ table.name = 'table';
 
 // This box gives an illusion of Ollie not appearing until animation begins
 const geometry = new THREE.BoxGeometry( 2.9, 3, .4 );
-const material = new THREE.MeshBasicMaterial( { color: grayLight } );
-const tableBottom = new THREE.Mesh( geometry, material );
+const material = new THREE.MeshBasicMaterial({ color: tableBoxColor });
+const tableBottom = new THREE.Mesh(geometry, material);
 tableBottom.name = 'tableBottom'
 tableBottom.position.x = -.35;
 tableBottom.position.y = -3.97;
@@ -40,9 +47,28 @@ tableBottom.position.z = -.3;
 const loadOllie = () => {
   loader.load('./assets/ollie.glb', // url
     // on load
-    (gltf) => {
+    gltf => {
       const ollie = gltf.scene;
+      // pull materials out from imported model's objects to be able to change colors when needed
+      // need to clone materials so we can assign appropriately
+      let darkFillMaterial = ollie.getObjectByName("Left_Ear_Fill").material.clone();
+      let lightFillMaterial = ollie.getObjectByName("Left_Ear_Fill").material.clone();
+      let outlineMaterial = new THREE.MeshPhongMaterial({ color: black });
       
+      darkFillMaterial.color.setHex(darkFillColor);
+      lightFillMaterial.color.setHex(lightFillColor);
+
+      // assign the new materials
+      ollie.children.forEach(mesh => {
+        mesh.name.indexOf('Fill') > -1 || mesh.name.indexOf('Background') > -1? 
+          mesh.name.indexOf('Beard') > -1 || mesh.name.indexOf('Eyebrow') > -1 || mesh.name.indexOf('Paw') > -1 ?
+            mesh.material = lightFillMaterial
+            :
+            mesh.material = darkFillMaterial
+          :
+          mesh.material = outlineMaterial;
+      });
+
       // group setup
       ollieLeftEar.add(
         ollie.getObjectByName("Left_Ear"), 
@@ -120,14 +146,14 @@ const loadOllie = () => {
       ollieBody.position.y = -.17;
       
       // Resetting the table material in order to add transparency and tween its opacity later
-      table.children[0].material = new THREE.MeshStandardMaterial({ color: black });
+      table.children[0].material = new THREE.MeshStandardMaterial({ color: tableColor });
       table.children[0].material.transparent = true;
       table.children[0].material.opacity = 0;
     },
     // on progress
     undefined,
     // on error
-    (error) => {
+    error => {
       console.error(error);
     },
   );
