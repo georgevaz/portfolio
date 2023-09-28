@@ -24,7 +24,14 @@ const { ollieGroup, ollieLeftEye, ollieRightEye, table, tableBottom } = ollieLoa
 const { bubbles, BUBBLESCALE, populateBubbles } = bubbleLoader;
 
 // Animation
-const { introAnimation, bubbleClickAnimation, bubbleIdleAnimation, bubbleStateChangeAnimation, hamburgerClickAnimation,ollieBarkAnimation } = animations;
+const { 
+  introAnimation, 
+  bubbleClickAnimation, 
+  bubbleIdleAnimation, 
+  bubbleStateChangeAnimation, 
+  hamburgerClickAnimation,
+  iconHoverAnimation,
+  ollieBarkAnimation } = animations;
 
 // Hamburger
 const { hamburgerGroup } = hamburgerLoader;
@@ -37,6 +44,9 @@ let scene, renderer, light, controls;
 let raycaster, pointer;
 
 let previousBubble;
+
+let hoverObject;
+let currentHoverIcon = {};
 
 const CAMFOV = 60;
 
@@ -224,15 +234,41 @@ const onClick = e => {
 
 const onMouseMove = e => {
   const intersects = shootRaycast(e);
-  
+
   if (intersects.length > 0) {
-    // only need to see the first intersected option to find out if it is an icon or not
-      if(intersects[0].object.parent.name === 'icon' && intersects[0].object.material.opacity >= 1){
-        document.body.style.cursor = 'pointer';
-      } else {
-        document.body.style.cursor = '';
+    // only need to see the first intersected option
+    hoverObject = intersects[0].object;
+
+    // TODO tidy this section up
+    if(hoverObject.parent.name === 'icon' && hoverObject.material.opacity >= 1){
+      if(!intersects[0].object.parent.isHovered){
+        if(currentHoverIcon.object && currentHoverIcon.object != hoverObject.parent){
+          currentHoverIcon.isHovered = false;
+          iconHoverAnimation(currentHoverIcon.object, currentHoverIcon.isHovered);
+        };
+        if(!currentHoverIcon.isHovered){
+          currentHoverIcon.isHovered = true;
+          currentHoverIcon.object = intersects[0].object.parent;
+          iconHoverAnimation(currentHoverIcon.object, currentHoverIcon.isHovered);
+        };
       };
-  } else document.body.style.cursor = '';
+      document.body.style.cursor = 'pointer';
+    } else {
+      if(currentHoverIcon.object && currentHoverIcon.object != hoverObject.parent){
+        currentHoverIcon.isHovered = false;
+        iconHoverAnimation(currentHoverIcon.object, currentHoverIcon.isHovered);
+        currentHoverIcon.object = undefined;
+      };
+      document.body.style.cursor = '';
+    };
+  } else {
+    if(currentHoverIcon.object && currentHoverIcon.isHovered){
+      currentHoverIcon.isHovered = false;
+      iconHoverAnimation(currentHoverIcon.object, currentHoverIcon.isHovered);
+      currentHoverIcon.object = undefined;
+    };
+    document.body.style.cursor = '';
+  };
 };
 
 init(); // Initialize

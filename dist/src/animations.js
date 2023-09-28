@@ -251,6 +251,11 @@ const hamburgerClickAnimation = object => {
   };
 };
 
+const iconHoverAnimation = (object, hover) => {
+  if(hover) tweenObject(object.scale, { x: object.defaultScale.x * 1.25, y: object.defaultScale.y * 1.25, z: object.defaultScale.z * 1.25 }, 300, TWEEN.Easing.Back.Out,)
+  else tweenObject(object.scale, { x: object.defaultScale.x, y: object.defaultScale.y, z: object.defaultScale.z }, 300, TWEEN.Easing.Back.Out,)
+};
+
 const ollieBarkAnimation = scene => {
   if(introAnimationFinished){
     createText(
@@ -286,5 +291,6 @@ export default {
   bubbleIdleAnimation,
   bubbleStateChangeAnimation,
   hamburgerClickAnimation,
+  iconHoverAnimation,
   ollieBarkAnimation,
 };

@@ -64,6 +64,10 @@ const createIcon = (icon, type, color, callback, link) => {
       group.add(cube);
 
       callback(group);
+      
+      // Copying the scale in which the icon is instantiated to reference later when animating
+      group.defaultScale = {};
+      Object.assign(group.defaultScale, group.scale);
     },
     // on progress
     undefined,
