@@ -46,7 +46,7 @@ const setHamburgerIcons = (icon, scale, position) => {
   // Needs to be positioned
   icon.position.set(position.x, position.y, position.z);
 
-  icon.children.forEach(mesh => mesh.material.opacity = 0)
+  icon.children.forEach(mesh => mesh.material.opacity = 0);
 };
 
 const loadHamburgerIcons = () => {
