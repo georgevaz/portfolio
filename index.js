@@ -178,8 +178,8 @@ const onClick = e => {
     controls.enabled = true;
   };
 
-  if (intersects.length > 0) {
-    for (let i = 0; i < intersects.length; i++) {
+  if(intersects.length > 0){
+    for(let i = 0; i < intersects.length; i++){
 
       // find out the parent (group) of object intersecting and also check if it is completely in view (animation completed)
       if(intersects[i].object.parent.name === 'bubble' && intersects[i].object.material.opacity >= 1) {
@@ -238,11 +238,21 @@ const onClick = e => {
 const onMouseMove = e => {
   const intersects = shootRaycast(e);
 
-  if (intersects.length > 0) {
+  if(intersects.length > 0){
     // only need to see the first intersected option
     hoverObject = intersects[0].object;
 
-    // TODO tidy this section up
+    // change cursor to pointer
+    for(let i = 0; i < intersects.length; i++){
+      if(
+        ((intersects[i].object.parent.name === 'icon' || (intersects[i].object.parent.name === 'bubble' && !previousBubble)) 
+        && intersects[i].object.material.opacity >= 1)
+        ){
+        document.body.style.cursor = 'pointer';
+        break;
+      } else document.body.style.cursor = ''; 
+    };
+
     if(hoverObject.parent.name === 'icon' && hoverObject.material.opacity >= 1){
       // Check if object the cursor is not assigned yet
       if(intersects[0].object.parent != currentHoverIcon.object){
@@ -255,13 +265,11 @@ const onMouseMove = e => {
           iconHover(currentHoverIcon, true, intersects[0].object.parent);
         };
       };
-      document.body.style.cursor = 'pointer';
     } else {
       // if cursor is not on an icon but there is a icon that was previously hovered
       if(currentHoverIcon.object && currentHoverIcon.object != hoverObject.parent){
         iconHover(currentHoverIcon, false);
       };
-      document.body.style.cursor = '';
     };
   } else {
     // if there was a previously hovered icon and it was currently hovered
