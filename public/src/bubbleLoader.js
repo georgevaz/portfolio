@@ -37,83 +37,9 @@ const BUBBLESCALE = [.3, .3, .3];
 // This is mainly for ease of use during development
 const startingOpacity = 0;
 
-let titleIsMulti = false;
-
-// Function to set text
-const populateBubbleText = (bubbleText, group, textAttributes, callback, callbackParams) => {
-  let textZPos;
-  let lineSpace;
-  let currentLine;
-  const { maxLength, singleLineZPos, multiLineZPos, tracking } = textAttributes;
-  const { name } = callbackParams;
-  
-  const setText = text => {
-    text.position.z = textZPos;
-
-    if(lineSpace){
-      textZPos += lineSpace
-
-      // Determine line spacing for tweening later
-      text.lineSpace = lineSpace;
-    };
-    
-    // Need to keep tabs on the original positioning for tweening
-    text.originalPosition = {
-      x: text.position.x,
-      y: text.position.y,
-      z: text.position.z,
-    };
-
-    // Making the text geometry a small font size often has the letters too close to each other
-    // In the case of the description text, it does not look good
-    // When loading the text by default, I set the font size to 1 and then to reduce the "font size", 
-    // I can alter the scale instead
-    // I don't like this block of code being here but it seems to work best since it is in a callback
-    if(text.name === 'descriptionText'){
-      text.scale.x = .15;
-      text.scale.y = .15;
-      text.scale.z = .15;
-    };
-
-    text.rotation.x = THREE.MathUtils.degToRad(270);
-    
-    group.add(text);
-  };
-
-  if(bubbleText.length <= maxLength) {
-    textZPos = singleLineZPos;
-    callback(
-      { ...callbackParams,
-      textCopy: bubbleText }, 
-      setText, 
-      name,
-      startingOpacity
-    );
-  } else {
-    textZPos = multiLineZPos;
-    lineSpace = tracking;
-    const bubbleTextSplit = bubbleText.split(' ');
-    titleIsMulti = true;
-    while(bubbleTextSplit.length){
-      currentLine = bubbleTextSplit.shift();
-      while(bubbleTextSplit.length && currentLine.length + bubbleTextSplit[0].length <= maxLength){
-        currentLine += ' ' + bubbleTextSplit.shift();
-      };
-      callback(
-        { ...callbackParams,
-        textCopy: currentLine }, 
-        setText, 
-        name,
-        startingOpacity
-      );
-      currentLine = '';
-    };
-  };
-};
-
 const setBubbleIcon = (icon, scale, position) => {
   // SVG default size is huge
-  icon.scale.set(scale, scale, scale)
+  icon.scale.set(scale, scale, scale);
   
   // Needs to be rotated because of how the file imported within the bubble
   icon.rotation.x = THREE.MathUtils.degToRad(90);
@@ -121,11 +47,12 @@ const setBubbleIcon = (icon, scale, position) => {
   // Needs to be positioned
   icon.position.set(position.x, position.y, position.z);
 
-  icon.children.forEach(mesh => mesh.material.opacity = startingOpacity)
+  icon.children.forEach(mesh => mesh.material.opacity = startingOpacity);
 };
 
 const loadBubble = (xPos, yPos, project) => {
-  
+  let titleIsMulti = false;
+
   // Parent Group
   const bubbleGroup = new THREE.Group();
 
@@ -137,6 +64,78 @@ const loadBubble = (xPos, yPos, project) => {
   bubbleGroup.imageClass = project.imageClass;
 
   descriptionGroup.name = 'description';
+
+  // Function to set text
+  const populateBubbleText = (bubbleText, group, textAttributes, callback, callbackParams) => {
+    let textZPos;
+    let lineSpace;
+    let currentLine;
+    const { maxLength, singleLineZPos, multiLineZPos, tracking } = textAttributes;
+    const { name } = callbackParams;
+
+    const setText = text => {
+      text.position.z = textZPos;
+
+      if(lineSpace){
+        textZPos += lineSpace;
+
+        // Determine line spacing for tweening later
+        text.lineSpace = lineSpace;
+      };
+      
+      // Need to keep tabs on the original positioning for tweening
+      text.originalPosition = {
+        x: text.position.x,
+        y: text.position.y,
+        z: text.position.z,
+      };
+
+      // Making the text geometry a small font size often has the letters too close to each other
+      // In the case of the description text, it does not look good
+      // When loading the text by default, I set the font size to 1 and then to reduce the "font size", 
+      // I can alter the scale instead
+      // I don't like this block of code being here but it seems to work best since it is in a callback
+      if(text.name === 'descriptionText'){
+        text.scale.x = .15;
+        text.scale.y = .15;
+        text.scale.z = .15;
+      };
+
+      text.rotation.x = THREE.MathUtils.degToRad(270);
+
+      group.add(text);
+    };
+
+    if(bubbleText.length <= maxLength) {
+      textZPos = singleLineZPos;
+      callback(
+        { ...callbackParams,
+        textCopy: bubbleText }, 
+        setText, 
+        name,
+        startingOpacity
+      );
+    } else {
+      textZPos = multiLineZPos;
+      lineSpace = tracking;
+      const bubbleTextSplit = bubbleText.split(' ');
+      titleIsMulti = true;
+      while(bubbleTextSplit.length){
+        currentLine = bubbleTextSplit.shift();
+        while(bubbleTextSplit.length && currentLine.length + bubbleTextSplit[0].length <= maxLength){
+          currentLine += ' ' + bubbleTextSplit.shift();
+        };
+        callback(
+          { ...callbackParams,
+          textCopy: currentLine }, 
+          setText, 
+          name,
+          startingOpacity
+        );
+        currentLine = '';
+      };
+    };
+  };
 
   loader.load('./assets/bubble.glb', // url
     // on load
@@ -228,7 +227,7 @@ const loadBubble = (xPos, yPos, project) => {
         searchIcon, 
         'portfolioMocks', 
         iconColor,
-        (icon) => {
+        icon => {
           setBubbleIcon(icon, .007, iconPos);
 
           descriptionGroup.add(icon);
@@ -239,7 +238,7 @@ const loadBubble = (xPos, yPos, project) => {
               project.links[projectLinksKeys[i]].icon, 
               projectLinksKeys[i], 
               iconColor,
-              (icon) => {
+              icon => {
                 setBubbleIcon(icon, .007, iconPos);
                 
                 descriptionGroup.add(icon);
@@ -275,13 +274,13 @@ const populateBubbles = projects => {
 
   for(let i = 0; i < numOfBubbles; i++){
     if(i === 0) {
-      bubbles.push(loadBubble(0, 0, projects[Object.keys(projects)[i]]))
+      bubbles.push(loadBubble(0, 0, projects[Object.keys(projects)[i]]));
       row++;
     } else if(i % 2 === 0) {
-      bubbles.push(loadBubble(row + xConst, row * (row * yConst), projects[Object.keys(projects)[i]]))
+      bubbles.push(loadBubble(row + xConst, row * (row * yConst), projects[Object.keys(projects)[i]]));
       row++;
     } else {
-      bubbles.push(loadBubble(-(row + xConst), row * (row * yConst), projects[Object.keys(projects)[i]]))
+      bubbles.push(loadBubble(-(row + xConst), row * (row * yConst), projects[Object.keys(projects)[i]]));
     };
   };
 };
