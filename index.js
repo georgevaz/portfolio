@@ -46,7 +46,10 @@ let raycaster, pointer;
 let previousBubble;
 
 let hoverObject;
-let currentHoverIcon = {};
+let currentHoverIcon = {
+  object: undefined,
+  isHovered: false
+};
 
 const CAMFOV = 60;
 
@@ -241,34 +244,40 @@ const onMouseMove = e => {
 
     // TODO tidy this section up
     if(hoverObject.parent.name === 'icon' && hoverObject.material.opacity >= 1){
-      if(!intersects[0].object.parent.isHovered){
+      // Check if object the cursor is not assigned yet
+      if(intersects[0].object.parent != currentHoverIcon.object){
+        // if an icon has been hovered already and if it isn't the one the cursor is on
         if(currentHoverIcon.object && currentHoverIcon.object != hoverObject.parent){
-          currentHoverIcon.isHovered = false;
-          iconHoverAnimation(currentHoverIcon.object, currentHoverIcon.isHovered);
+          iconHover(currentHoverIcon, false);
         };
+        // check if the current assigned icon is not being hovered
         if(!currentHoverIcon.isHovered){
-          currentHoverIcon.isHovered = true;
-          currentHoverIcon.object = intersects[0].object.parent;
-          iconHoverAnimation(currentHoverIcon.object, currentHoverIcon.isHovered);
+          iconHover(currentHoverIcon, true, intersects[0].object.parent);
         };
       };
       document.body.style.cursor = 'pointer';
     } else {
+      // if cursor is not on an icon but there is a icon that was previously hovered
       if(currentHoverIcon.object && currentHoverIcon.object != hoverObject.parent){
-        currentHoverIcon.isHovered = false;
-        iconHoverAnimation(currentHoverIcon.object, currentHoverIcon.isHovered);
-        currentHoverIcon.object = undefined;
+        iconHover(currentHoverIcon, false);
       };
       document.body.style.cursor = '';
     };
   } else {
+    // if there was a previously hovered icon and it was currently hovered
     if(currentHoverIcon.object && currentHoverIcon.isHovered){
-      currentHoverIcon.isHovered = false;
-      iconHoverAnimation(currentHoverIcon.object, currentHoverIcon.isHovered);
-      currentHoverIcon.object = undefined;
+      iconHover(currentHoverIcon, false);
     };
     document.body.style.cursor = '';
   };
+};
+
+const iconHover = (currentHoverIcon, isHovered, object=undefined) => {
+  currentHoverIcon.isHovered = isHovered;
+  if(object) currentHoverIcon.object = object;
+  iconHoverAnimation(currentHoverIcon.object, currentHoverIcon.isHovered);
+
+  if(!object) currentHoverIcon.object = object;
 };
 
 init(); // Initialize
