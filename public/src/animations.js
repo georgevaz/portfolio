@@ -52,15 +52,15 @@ const separateObject = object => {
 const applyOpacityTween = (prop, arrayOfObjects, arrayOfGroupedIcons) => {
   arrayOfObjects.forEach(object => {
     object.forEach(child => {
-      tweenObject(child.material, prop, 200, TWEEN.Easing.Back.Out, 200);
+      tweenObject(child.material, prop, 200, TWEEN.Easing.Back.Out);
     });
   });
 
-  // icons are special because they are grouped thus needing to dive further
+  // icons are special because they are grouped thus needing to access its children further
   arrayOfGroupedIcons.forEach(groupedIcons => {
     groupedIcons.forEach(icon => {
       icon.children.forEach(mesh => {
-        tweenObject(mesh.material, prop, 200, TWEEN.Easing.Back.Out, 200);
+        tweenObject(mesh.material, prop, 200, TWEEN.Easing.Back.Out);
       });
     });
   });
@@ -164,15 +164,15 @@ const bubbleClickAnimation = (object, isClicked) => {
         x: titleScale,
         y: titleScale,
         z: titleScale,
-      }, 200, TWEEN.Easing.Back.Out, 200)
+      }, 200, TWEEN.Easing.Back.Out)
       tweenObject(title.position, {
         z: title.lineSpace ? -3.65 + (i * .6 * title.lineSpace) : -3.5,
-      }, 200, TWEEN.Easing.Back.Out, 200)
+      }, 200, TWEEN.Easing.Back.Out)
     });
     applyOpacityTween(onOpacityProp, [descriptions], [descriptionIcons]);
 
-    tweenObject(object.scale, bubbleTweenOnScaleProp, 200, TWEEN.Easing.Back.Out, 200);
-    tweenObject(object.position, bubbleTweenOnPositionProp, 200, TWEEN.Easing.Back.Out, 200);
+    tweenObject(object.scale, bubbleTweenOnScaleProp, 200, TWEEN.Easing.Back.Out);
+    tweenObject(object.position, bubbleTweenOnPositionProp, 200, TWEEN.Easing.Back.Out);
 
   } else {
     object.idleTween.start();
@@ -183,23 +183,23 @@ const bubbleClickAnimation = (object, isClicked) => {
         y: 1,
         z: 1,
       }, 200, TWEEN.Easing.Back.Out, 200);
-      tweenObject(title.material, onOpacityProp, 200, TWEEN.Easing.Back.Out, 200);
-      tweenObject(title.position, title.originalPosition, 200, TWEEN.Easing.Back.Out, 200);
+      tweenObject(title.material, onOpacityProp, 200, TWEEN.Easing.Back.Out);
+      tweenObject(title.position, title.originalPosition, 200, TWEEN.Easing.Back.Out);
     });
 
     applyOpacityTween(offOpacityProp, [descriptions], [descriptionIcons]);
 
     if(document.getElementsByClassName('mockContainer').length) removeMockDiv();
 
-    tweenObject(object.scale, bubbleTweenOffScaleProp, 200, TWEEN.Easing.Back.Out, 200);
-    tweenObject(object.position, object.originalPosition, 200, TWEEN.Easing.Back.Out, 200);
+    tweenObject(object.scale, bubbleTweenOffScaleProp, 200, TWEEN.Easing.Back.Out);
+    tweenObject(object.position, object.originalPosition, 200, TWEEN.Easing.Back.Out);
   };
 };
 
 const bubbleIdleAnimation = object => {
   let randomTiming = Math.floor(Math.random() * (5000 - 3000 + 1) + 3000);
   // store the tween into the bubble object to access later (start/stop)
-  object.idleTween = tweenObject(object.position, {y: object.position.y - .1}, randomTiming, TWEEN.Easing.Sinusoidal.InOut, 200)
+  object.idleTween = tweenObject(object.position, {y: object.position.y - .1}, randomTiming, TWEEN.Easing.Sinusoidal.InOut)
   .repeat(Infinity)
   .yoyo(true);
 };
@@ -212,15 +212,15 @@ const bubbleStateChangeAnimation = (object, isClicked) => {
 
     addMockDiv(object);
     
-    tweenObject(object.scale, bubbleTweenMockScaleProp, 200, TWEEN.Easing.Back.Out, 200);
-    tweenObject(object.position, bubbleTweenMockPositionProp, 200, TWEEN.Easing.Back.Out, 200);
+    tweenObject(object.scale, bubbleTweenMockScaleProp, 200, TWEEN.Easing.Back.Out);
+    tweenObject(object.position, bubbleTweenMockPositionProp, 200, TWEEN.Easing.Back.Out);
   } else {
     applyOpacityTween(onOpacityProp, [titles, descriptions], [descriptionIcons]);
     
     if(document.getElementsByClassName('mockContainer').length) removeMockDiv();
     
-    tweenObject(object.scale, bubbleTweenOnScaleProp, 200, TWEEN.Easing.Back.Out, 200);
-    tweenObject(object.position, bubbleTweenOnPositionProp, 200, TWEEN.Easing.Back.Out, 200);
+    tweenObject(object.scale, bubbleTweenOnScaleProp, 200, TWEEN.Easing.Back.Out);
+    tweenObject(object.position, bubbleTweenOnPositionProp, 200, TWEEN.Easing.Back.Out);
   };
 };
 
@@ -229,22 +229,22 @@ const hamburgerClickAnimation = object => {
   hamburgerClicked = !hamburgerClicked;
 
   if(hamburgerClicked){
-    tweenObject(object.rotation, { z: THREE.MathUtils.degToRad(90) }, 200, TWEEN.Easing.Back.Out, 200);
+    tweenObject(object.rotation, { z: THREE.MathUtils.degToRad(90) }, 200, TWEEN.Easing.Back.Out);
     iconGroup.children.forEach((icon, i) => {
       if(icon.iconType !== 'hamburger'){
-        tweenObject(icon.position, { x: -(i * 0.45) }, 500, TWEEN.Easing.Back.Out, 200);
+        tweenObject(icon.position, { x: -(i * 0.45) }, 500, TWEEN.Easing.Back.Out);
         icon.children.forEach(mesh => {
-          tweenObject(mesh.material, { opacity: 1 }, 500, TWEEN.Easing.Back.Out, 200);
+          tweenObject(mesh.material, { opacity: 1 }, 500, TWEEN.Easing.Back.Out);
         });
       };
     });
   } else {
-    tweenObject(object.rotation, { z: THREE.MathUtils.degToRad(0) }, 200, TWEEN.Easing.Back.Out, 200);
+    tweenObject(object.rotation, { z: THREE.MathUtils.degToRad(0) }, 200, TWEEN.Easing.Back.Out);
     iconGroup.children.forEach((icon, i) => {
       if(icon.iconType !== 'hamburger'){
-        tweenObject(icon.position, { x: 0 }, 500, TWEEN.Easing.Back.Out, 200);
+        tweenObject(icon.position, { x: 0 }, 500, TWEEN.Easing.Back.Out);
         icon.children.forEach(mesh => {
-          tweenObject(mesh.material, { opacity: 0 }, 500, TWEEN.Easing.Back.Out, 200);
+          tweenObject(mesh.material, { opacity: 0 }, 500, TWEEN.Easing.Back.Out);
         });
       };
     });
