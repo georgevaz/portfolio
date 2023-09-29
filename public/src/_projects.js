@@ -40,7 +40,7 @@ const projects = {
   },
   'pet-friend-finder': {
     name: 'Pet Friend Finder',
-    description: 'Shelter Dog Searching Application',
+    description: 'Shelter Dog Search Application',
     links: {
       website: {
         url: 'https://georgevaz.github.io/pet-friend-finder/',
