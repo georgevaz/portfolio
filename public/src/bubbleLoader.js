@@ -45,8 +45,8 @@ const populateBubbleText = (bubbleText, group, textAttributes, callback, callbac
   let lineSpace;
   let currentLine;
   const { maxLength, singleLineZPos, multiLineZPos, tracking } = textAttributes;
-  const { fontType, fontSize, fontThickness, xPos, yPos, textColor, name } = callbackParams;
-
+  const { name } = callbackParams;
+  
   const setText = text => {
     text.position.z = textZPos;
 
@@ -83,15 +83,8 @@ const populateBubbleText = (bubbleText, group, textAttributes, callback, callbac
   if(bubbleText.length <= maxLength) {
     textZPos = singleLineZPos;
     callback(
-      {
-      fontType, 
-      fontSize,
-      fontThickness,
-      xPos, 
-      yPos, 
-      textCopy: bubbleText, 
-      textColor
-      }, 
+      { ...callbackParams,
+      textCopy: bubbleText }, 
       setText, 
       name,
       startingOpacity
@@ -107,15 +100,8 @@ const populateBubbleText = (bubbleText, group, textAttributes, callback, callbac
         currentLine += ' ' + bubbleTextSplit.shift();
       };
       callback(
-        {
-        fontType, 
-        fontSize,
-        fontThickness,
-        xPos, 
-        yPos, 
-        textCopy: currentLine, 
-        textColor
-        }, 
+        { ...callbackParams,
+        textCopy: currentLine }, 
         setText, 
         name,
         startingOpacity
