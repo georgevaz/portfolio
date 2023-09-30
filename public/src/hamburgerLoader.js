@@ -57,22 +57,23 @@ const loadHamburgerIcons = () => {
     (icon) => {
       setHamburgerIcons(icon, .008, new THREE.Vector3(0, 0, .03));
       hamburgerGroup.add(icon);
+      // Load the icons within the callback so that we make sure the hamburger icon loads first before the rest
+      Object.keys(linkIcons).forEach(key => {
+        createIcon(
+          linkIcons[key].icon,
+          key,
+          iconColor,
+          (icon) => {
+            setHamburgerIcons(icon, .007, new THREE.Vector3(0, 0, 0));
+            hamburgerGroup.add(icon);
+          },
+          linkIcons[key].link,
+        );
+      });
     },
     undefined,
   );
 
-  Object.keys(linkIcons).forEach(key => {
-    createIcon(
-      linkIcons[key].icon,
-      key,
-      iconColor,
-      (icon) => {
-        setHamburgerIcons(icon, .007, new THREE.Vector3(0, 0, 0));
-        hamburgerGroup.add(icon);
-      },
-      linkIcons[key].link,
-    );
-  });
 };
 
 loadHamburgerIcons();
