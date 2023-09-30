@@ -240,7 +240,7 @@ const hamburgerClickAnimation = object => {
     });
   } else {
     tweenObject(object.rotation, { z: THREE.MathUtils.degToRad(0) }, 200, TWEEN.Easing.Back.Out);
-    iconGroup.children.forEach((icon, i) => {
+    iconGroup.children.forEach(icon => {
       if(icon.iconType !== 'hamburger'){
         tweenObject(icon.position, { x: 0 }, 500, TWEEN.Easing.Back.Out);
         icon.children.forEach(mesh => {
