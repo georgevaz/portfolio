@@ -39,10 +39,19 @@ table.name = 'table';
 const geometry = new THREE.BoxGeometry( 2.9, 3, .4 );
 const material = new THREE.MeshBasicMaterial({ color: tableBoxColor });
 const tableBottom = new THREE.Mesh(geometry, material);
-tableBottom.name = 'tableBottom'
+tableBottom.name = 'tableBottom';
 tableBottom.position.x = -.35;
 tableBottom.position.y = -3.97;
 tableBottom.position.z = -.3;
+
+// Eyes center points, roughly based on world position
+const leftEyeCenter = new THREE.Vector2(-0.1327014218009479, -0.10897435897435903);
+const rightEyeCenter = new THREE.Vector2(0.014218009478673022, -0.10897435897435903);
+
+const eyePosThreshold = {
+  x: 0.1,
+  y: 0.05,
+}
 
 const loadOllie = () => {
   loader.load('./assets/ollie.glb', // url
@@ -53,7 +62,7 @@ const loadOllie = () => {
       // need to clone materials so we can assign appropriately
       let darkFillMaterial = ollie.getObjectByName("Left_Ear_Fill").material.clone();
       let lightFillMaterial = ollie.getObjectByName("Left_Ear_Fill").material.clone();
-      let outlineMaterial = new THREE.MeshPhongMaterial({ color: black });
+      let outlineMaterial = new THREE.MeshPhongMaterial({ color: outlineColor });
       
       darkFillMaterial.color.setHex(darkFillColor);
       lightFillMaterial.color.setHex(lightFillColor);
@@ -159,6 +168,20 @@ const loadOllie = () => {
   );
 };
 
+const moveEyes = pointer => {
+  changeEyePosition(pointer, leftEyeCenter, ollieLeftEye);
+  changeEyePosition(pointer, rightEyeCenter, ollieRightEye);
+};
+
+const changeEyePosition = (pointer, eyeCenterPos, ollieEye) => {
+  let xPos = pointer.x - eyeCenterPos.x;
+  let yPos = eyeCenterPos.y - pointer.y;
+  if(xPos < eyePosThreshold.x && xPos > -eyePosThreshold.x) ollieEye.position.x = xPos;
+  else ollieEye.position.x = xPos < 0 ? -eyePosThreshold.x : eyePosThreshold.x;
+  if(yPos < eyePosThreshold.y && yPos > -eyePosThreshold.y) ollieEye.position.z = yPos;
+  else ollieEye.position.z = yPos < 0 ? -eyePosThreshold.y : eyePosThreshold.y;
+};
+
 loadOllie();
 
 export default {
@@ -168,5 +191,6 @@ export default {
   ollieRightEye,
   ollieBody,
   table,
-  tableBottom
+  tableBottom,
+  moveEyes
 }

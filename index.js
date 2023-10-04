@@ -12,13 +12,13 @@ import hamburgerLoader from './public/src/hamburgerLoader.js';
 import animations from './public/src/animations.js';
 
 // Colors
-const { black, white, grayDark, gray, grayLight, red, cream} = colors;
+const { black, white, grayDark, gray, grayLight, red, cream } = colors;
 
 // Text
 const { textGroup } = textLoader;
 
 // Ollie
-const { ollieGroup, ollieLeftEye, ollieRightEye, table, tableBottom } = ollieLoader;
+const { ollieGroup, ollieLeftEye, ollieRightEye, table, tableBottom, moveEyes } = ollieLoader;
 
 // Bubble
 const { bubbles, BUBBLESCALE, populateBubbles } = bubbleLoader;
@@ -238,6 +238,8 @@ const onClick = e => {
 const onMouseMove = e => {
   const intersects = shootRaycast(e);
 
+  moveEyes(pointer);
+
   if(intersects.length > 0){
     // only need to see the first intersected option
     hoverObject = intersects[0].object;
@@ -294,7 +296,7 @@ init(); // Initialize
 // Always errors out unless it starts 5-6 frames after init
 setTimeout(() => {
   introAnimation();
-  bubbles.forEach(bubble => bubbleIdleAnimation(bubble))
+  bubbles.forEach(bubble => bubbleIdleAnimation(bubble));
 }, 1000);
 
 update(); // Start update loop
