@@ -45,8 +45,7 @@ tableBottom.position.y = -3.97;
 tableBottom.position.z = -.3;
 
 // Eyes center points, roughly based on world position
-const leftEyeCenter = new THREE.Vector2(-0.1327014218009479, -0.10897435897435903);
-const rightEyeCenter = new THREE.Vector2(0.014218009478673022, -0.10897435897435903);
+const eyeCenterPoint = new THREE.Vector2(-0.05924170616113744, -0.10897435897435903);
 
 const eyePosThreshold = {
   x: 0.1,
@@ -169,13 +168,13 @@ const loadOllie = () => {
 };
 
 const moveEyes = pointer => {
-  changeEyePosition(pointer, leftEyeCenter, ollieLeftEye);
-  changeEyePosition(pointer, rightEyeCenter, ollieRightEye);
+  changeEyePosition(pointer, ollieLeftEye);
+  changeEyePosition(pointer, ollieRightEye);
 };
 
-const changeEyePosition = (pointer, eyeCenterPos, ollieEye) => {
-  let xPos = pointer.x - eyeCenterPos.x;
-  let yPos = eyeCenterPos.y - pointer.y;
+const changeEyePosition = (pointer, ollieEye) => {
+  let xPos = pointer.x - eyeCenterPoint.x;
+  let yPos = eyeCenterPoint.y - pointer.y;
   if(xPos < eyePosThreshold.x && xPos > -eyePosThreshold.x) ollieEye.position.x = xPos;
   else ollieEye.position.x = xPos < 0 ? -eyePosThreshold.x : eyePosThreshold.x;
   if(yPos < eyePosThreshold.y && yPos > -eyePosThreshold.y) ollieEye.position.z = yPos;
