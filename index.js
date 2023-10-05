@@ -53,6 +53,10 @@ let currentHoverIcon = {
 
 const CAMFOV = 60;
 
+// Mobile Safari doesn't open external tabs/windows. Doing a check to see if user is on Safari via mobile device
+const isMobileDevice = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+const isSafari = /Safari/.test(navigator.userAgent);
+
 const init = () => {
   if (WebGL.isWebGLAvailable()) {
     // Set Scene
@@ -217,7 +221,9 @@ const onClick = e => {
           controls.enabled = false;
         } else if(intersects[i].object.parent.iconType === 'hamburger'){ // clicking on hamburger icon
           hamburgerClickAnimation(intersects[i].object.parent);
-        } else window.open(intersects[i].object.parent.link);
+        } else {
+          isMobileDevice && isSafari ? window.location.href = intersects[i].object.parent.link : window.open(intersects[i].object.parent.link);
+        }
         break;
       };
     };
