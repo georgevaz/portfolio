@@ -11,4 +11,5 @@ https://www.georgevazquez.com/
 ## Future Features
 * Ollie model acts more dynamically based on user interactions
     * Floppy ears
+* Text descriptors under icons
 * Alternative, non-Three.JS version
