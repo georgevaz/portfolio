@@ -13,3 +13,4 @@ https://www.georgevazquez.com/
     * Floppy ears
 * Text descriptors under icons
 * Alternative, non-Three.JS version
+* Optimization improvements with loaders
