@@ -3,7 +3,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 import { black, grayDark, gray, red, cream } from './_colors.js';
 import icons from './_icons.js';
-import textLoader from './textLoader.js';
+import textLoader from './text.js';
 import iconLoader from './iconLoader.js';
 
 // Icons

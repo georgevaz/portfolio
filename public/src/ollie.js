@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { loadGLTF } from './GLTFLoader.js';
+import { loadGLTF } from './_GLTFLoader.js';
 
 import { black, grayDark, gray, red, cream } from './_colors.js';
 

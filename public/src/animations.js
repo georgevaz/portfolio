@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import TWEEN from '@tweenjs/tween.js';
 
 import { black, grayDark, gray, red, cream } from './_colors.js';
-import text from './textLoader.js';
+import text from './text.js';
 import ollie from './ollie.js';
 import bubble from './bubbleLoader.js';
 import mockUp from './mockUp.js';

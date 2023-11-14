@@ -1,11 +1,8 @@
 import * as THREE from 'three';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
-import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 
 import { black, grayDark, gray, red, cream } from './_colors.js';
-
-// Font Loader
-const fontLoader = new FontLoader();
+import { loadFont } from './_fontLoader.js';
 
 // Font Paths
 const STRATOS = './fonts/Stratos_Regular.json';
@@ -26,18 +23,6 @@ const addToGroup = text => textGroup.add(text);
 
 // Font Color
 const fontColor = grayDark; // the color in the text seems to be darker, using this color to match the other objects
-
-const loadFont = async fontURL => {
-  const result = await fontLoader.loadAsync(fontURL, //url
-  // on load
-  font => font,
-  // on progress
-  undefined,
-  // on error
-  error => console.log(error)
-  );
-  return result;
-};
 
 // Loaded Font
 let loadedFont = await loadFont(STRATOS);
