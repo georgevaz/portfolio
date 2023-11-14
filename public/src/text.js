@@ -24,11 +24,12 @@ const addToGroup = text => textGroup.add(text);
 // Font Color
 const fontColor = grayDark; // the color in the text seems to be darker, using this color to match the other objects
 
-// Loaded Font
-let loadedFont = await loadFont(STRATOS);
-
-const createText = (textAttributes, callback, name='text', opacity=0) => {
+const createText = async (textAttributes, callback, name='text', opacity=0) => {
   const { fontType, fontThickness, fontSize, xPos, yPos, textCopy, textColor } = textAttributes;
+  
+  // Loaded Font
+  let loadedFont = await loadFont(fontType);
+  
   const geometry = new TextGeometry(textCopy, {
     font: loadedFont,
     size: fontSize,
