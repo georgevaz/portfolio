@@ -2,10 +2,7 @@ import * as THREE from 'three';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 
-import colors from './_colors.js';
-
-// Colors
-const { black, white, grayDark, gray, grayLight, red, cream } = colors;
+import { black, grayDark, gray, red, cream } from './_colors.js';
 
 // Font Loader
 const fontLoader = new FontLoader();

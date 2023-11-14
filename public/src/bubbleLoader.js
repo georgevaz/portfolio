@@ -1,13 +1,10 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-import colors from './_colors.js';
+import { black, grayDark, gray, red, cream } from './_colors.js';
 import icons from './_icons.js';
 import textLoader from './textLoader.js';
 import iconLoader from './iconLoader.js';
-
-// Colors
-const { black, white, grayDark, gray, grayLight, red, cream } = colors;
 
 // Icons
 const { githubIcon, browserIcon, searchIcon, videoIcon, leftIcon, rightIcon, exitIcon } = icons;

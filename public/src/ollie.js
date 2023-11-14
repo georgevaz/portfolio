@@ -1,10 +1,7 @@
 import * as THREE from 'three';
 import { loadGLTF } from './GLTFLoader.js';
 
-import colors from './_colors.js';
-
-// Colors
-const { black, white, grayDark, gray, grayLight, red, cream } = colors;
+import { black, grayDark, gray, red, cream } from './_colors.js';
 
 // Object Colors
 const tableColor = black;

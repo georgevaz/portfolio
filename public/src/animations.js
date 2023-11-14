@@ -1,15 +1,12 @@
 import * as THREE from 'three';
 import TWEEN from '@tweenjs/tween.js';
 
-import colors from './_colors.js';
+import { black, grayDark, gray, red, cream } from './_colors.js';
 import text from './textLoader.js';
 import ollie from './ollie.js';
 import bubble from './bubbleLoader.js';
 import mockUp from './mockUp.js';
 import hamburgerLoader from './hamburgerLoader.js';
-
-// Colors
-const { black, white, grayDark, gray, grayLight, red, cream } = colors;
 
 // Text
 const { STRATOS, h1, h2, textGroup, createText } = text;
