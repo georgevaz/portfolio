@@ -30,7 +30,7 @@ const addToGroup = text => textGroup.add(text);
 // Font Color
 const fontColor = grayDark; // the color in the text seems to be darker, using this color to match the other objects
 
-const loadFont = async (fontURL) => {
+const loadFont = async fontURL => {
   const result = await fontLoader.loadAsync(fontURL, //url
   // on load
   font => font,
