@@ -30,7 +30,52 @@ const addToGroup = text => textGroup.add(text);
 // Font Color
 const fontColor = grayDark; // the color in the text seems to be darker, using this color to match the other objects
 
-const loadFont = () => {
+const loadFont = async (fontURL) => {
+  const result = await fontLoader.loadAsync(fontURL, //url
+  // on load
+  font => font,
+  // on progress
+  undefined,
+  // on error
+  error => console.log(error)
+  );
+  return result;
+};
+
+// Loaded Font
+let loadedFont = await loadFont(STRATOS);
+
+const createText = (textAttributes, callback, name='text', opacity=0) => {
+  const { fontType, fontThickness, fontSize, xPos, yPos, textCopy, textColor } = textAttributes;
+  const geometry = new TextGeometry(textCopy, {
+    font: loadedFont,
+    size: fontSize,
+    height: fontThickness,
+    curveSegments: 12,
+    bevelEnabled: true,
+    bevelThickness: .01,
+    bevelSize: .01,
+    bevelOffset: 0,
+    bevelSegments: 5
+  });
+  const material = new THREE.MeshPhongMaterial({ 
+    color: textColor,
+    transparent: true,
+    opacity: opacity
+  });
+  const text = new THREE.Mesh(geometry, material);
+  text.name = name;
+  text.textCopy = textCopy;
+
+  // center the text, and then move it
+  geometry.center();
+  text.position.x = xPos;
+  text.position.y = yPos;
+
+  callback(text);
+};
+
+const loadStartingFont = () => {
   createText(
     {
       fontType: STRATOS, 
@@ -84,48 +129,7 @@ const loadFont = () => {
   );
 };
 
-const createText = (textAttributes, callback, name='text', opacity=0) => {
-  const { fontType, fontThickness, fontSize, xPos, yPos, textCopy, textColor } = textAttributes;
-  fontLoader.load(fontType, // url
-    //on load
-    font => {
-      const geometry = new TextGeometry(textCopy, {
-        font,
-        size: fontSize,
-        height: fontThickness,
-        curveSegments: 12,
-        bevelEnabled: true,
-        bevelThickness: .01,
-        bevelSize: .01,
-        bevelOffset: 0,
-        bevelSegments: 5
-      });
-      const material = new THREE.MeshPhongMaterial({ 
-        color: textColor,
-        transparent: true,
-        opacity: opacity
-      });
-      const text = new THREE.Mesh(geometry, material);
-      text.name = name;
-      text.textCopy = textCopy;
-
-      // center the text, and then move it
-      geometry.center();
-      text.position.x = xPos;
-      text.position.y = yPos;
-
-      callback(text);
-    },
-    // on progress
-    undefined,
-    // on error,
-    error => {
-      console.log(error)
-    },
-  );
-};
-
-loadFont();
+loadStartingFont();
 
 export default {
   STRATOS,
@@ -133,4 +137,4 @@ export default {
   h1, h2,
   textGroup,
   createText
-}
+};
