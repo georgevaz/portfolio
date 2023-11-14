@@ -2,11 +2,11 @@ import * as THREE from 'three';
 import TWEEN from '@tweenjs/tween.js';
 
 import { black, grayDark, gray, red, cream } from './_colors.js';
-import text from './text.js';
+import text from './createText.js';
 import ollie from './ollie.js';
 import bubble from './bubbleLoader.js';
 import mockUp from './mockUp.js';
-import hamburgerLoader from './hamburgerLoader.js';
+import hamburgerLoader from './hamburger.js';
 
 // Text
 const { STRATOS, h1, h2, textGroup, createText } = text;

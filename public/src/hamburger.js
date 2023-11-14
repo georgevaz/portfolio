@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 import { black, grayDark, gray, red, cream } from './_colors.js';
 import icons from './_icons.js';
-import iconLoader from './iconLoader.js';
+import { createIcon } from './createIcon.js';
 
 // Icons
 const { resumeIcon, githubIcon, linkedInIcon, dogboneIcon } = icons;
@@ -10,9 +10,6 @@ const { resumeIcon, githubIcon, linkedInIcon, dogboneIcon } = icons;
 // Icon Color
 const iconColor = black;
 const hamburgerColor = red;
-
-// Icon Loader
-const { createIcon } = iconLoader
 
 let hamburgerGroup = new THREE.Group();
 hamburgerGroup.position.set(4.25, 3.5, 0);
@@ -51,7 +48,7 @@ const loadHamburgerIcons = () => {
     dogboneIcon,
     'hamburger',
     hamburgerColor,
-    (icon) => {
+    icon => {
       setHamburgerIcons(icon, .008, new THREE.Vector3(0, 0, .03));
       hamburgerGroup.add(icon);
       // Load the icons within the callback so that we make sure the hamburger icon loads first before the rest
@@ -60,7 +57,7 @@ const loadHamburgerIcons = () => {
           linkIcons[key].icon,
           key,
           iconColor,
-          (icon) => {
+          icon => {
             setHamburgerIcons(icon, .007, new THREE.Vector3(0, 0, 0));
             hamburgerGroup.add(icon);
           },
@@ -70,7 +67,6 @@ const loadHamburgerIcons = () => {
     },
     undefined,
   );
-
 };
 
 loadHamburgerIcons();
