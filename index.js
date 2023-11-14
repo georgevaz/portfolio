@@ -6,7 +6,7 @@ import TWEEN from '@tweenjs/tween.js';
 import colors from './public/src/_colors.js';
 import projects from './public/src/_projects.js';
 import textLoader from './public/src/textLoader.js';
-import ollieLoader from './public/src/ollieLoader.js';
+import ollieLoader from './public/src/ollie.js';
 import bubbleLoader from './public/src/bubbleLoader.js';
 import hamburgerLoader from './public/src/hamburgerLoader.js';
 import animations from './public/src/animations.js';
