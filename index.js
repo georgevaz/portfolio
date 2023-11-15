@@ -5,33 +5,18 @@ import TWEEN from '@tweenjs/tween.js';
 
 import { black, grayDark, gray, red, cream } from './public/src/_colors.js';
 import projects from './public/src/_projects.js';
-import textLoader from './public/src/createText.js';
-import ollieLoader from './public/src/ollie.js';
-import bubbleLoader from './public/src/bubbleLoader.js';
-import hamburgerLoader from './public/src/hamburger.js';
-import animations from './public/src/animations.js';
-
-// Text
-const { textGroup } = textLoader;
-
-// Ollie
-const { ollieGroup, ollieLeftEye, ollieRightEye, table, tableBottom, moveEyes } = ollieLoader;
-
-// Bubble
-const { bubbles, BUBBLESCALE, populateBubbles } = bubbleLoader;
-
-// Animation
-const { 
+import { textGroup } from './public/src/createText.js';
+import { ollieGroup, ollieLeftEye, ollieRightEye, table, tableBottom, moveEyes } from './public/src/ollie.js';
+import { bubbles, BUBBLESCALE, populateBubbles } from './public/src/bubbleLoader.js';
+import { hamburgerGroup } from './public/src/hamburger.js';
+import { 
   introAnimation, 
   bubbleClickAnimation, 
   bubbleIdleAnimation, 
   bubbleStateChangeAnimation, 
   hamburgerClickAnimation,
   iconHoverAnimation,
-  ollieBarkAnimation } = animations;
-
-// Hamburger
-const { hamburgerGroup } = hamburgerLoader;
+  ollieBarkAnimation } from './public/src/animations.js';
 
 // Object Colors
 const sceneColor = cream;

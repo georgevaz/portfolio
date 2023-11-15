@@ -2,26 +2,11 @@ import * as THREE from 'three';
 import TWEEN from '@tweenjs/tween.js';
 
 import { black, grayDark, gray, red, cream } from './_colors.js';
-import text from './createText.js';
-import ollie from './ollie.js';
-import bubble from './bubbleLoader.js';
-import mockUp from './mockUp.js';
-import hamburgerLoader from './hamburger.js';
-
-// Text
-const { STRATOS, h1, h2, textGroup, createText } = text;
-
-// Ollie
-const { olliePaws, ollieBody, table } = ollie;
-
-// Bubble
-const { BUBBLESCALE, bubbles } = bubble;
-
-// Hamburger
-const { hamburgerGroup } = hamburgerLoader;
-
-// Mockup
-const { addMockDiv, removeMockDiv } = mockUp;
+import { STRATOS, h1, h2, textGroup, createText } from './createText.js';
+import { olliePaws, ollieBody, table } from './ollie.js';
+import { BUBBLESCALE, bubbles } from './bubbleLoader.js';
+import { addMockDiv, removeMockDiv } from './mockUp.js';
+import { hamburgerGroup } from './hamburger.js';
 
 // Text Colors
 const textColor = black;
@@ -282,7 +267,7 @@ const ollieBarkAnimation = scene => {
   };
 };
 
-export default {
+export {
   introAnimation,
   bubbleClickAnimation,
   bubbleIdleAnimation,

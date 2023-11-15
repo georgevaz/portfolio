@@ -114,7 +114,7 @@ const loadStartingFont = () => {
 
 loadStartingFont();
 
-export default {
+export {
   STRATOS,
   ROBOTO,
   h1, h2,

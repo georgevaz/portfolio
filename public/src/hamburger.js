@@ -1,17 +1,14 @@
 import * as THREE from 'three';
 
 import { black, grayDark, gray, red, cream } from './_colors.js';
-import icons from './_icons.js';
+import { resumeIcon, githubIcon, linkedInIcon, dogboneIcon } from './_icons.js';
 import { createIcon } from './createIcon.js';
-
-// Icons
-const { resumeIcon, githubIcon, linkedInIcon, dogboneIcon } = icons;
 
 // Icon Color
 const iconColor = black;
 const hamburgerColor = red;
 
-let hamburgerGroup = new THREE.Group();
+export let hamburgerGroup = new THREE.Group();
 hamburgerGroup.position.set(4.25, 3.5, 0);
 hamburgerGroup.name = 'hamburger';
 
@@ -70,5 +67,3 @@ const loadHamburgerIcons = () => {
 };
 
 loadHamburgerIcons();
-
-export default { hamburgerGroup };

@@ -2,15 +2,9 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 import { black, grayDark, gray, red, cream } from './_colors.js';
-import icons from './_icons.js';
-import textLoader from './createText.js';
+import { githubIcon, browserIcon, searchIcon, videoIcon, leftIcon, rightIcon, exitIcon } from './_icons.js';
+import { STRATOS, ROBOTO, h1, h2, createText } from './createText.js';
 import { createIcon } from './createIcon.js';
-
-// Icons
-const { githubIcon, browserIcon, searchIcon, videoIcon, leftIcon, rightIcon, exitIcon } = icons;
-
-// Text Loader
-const { STRATOS, ROBOTO, h1, h2, createText } = textLoader;
 
 // Object Colors
 const outlineColor = black;
@@ -279,7 +273,7 @@ const populateBubbles = projects => {
   };
 };
 
-export default {
+export {
   bubbles,
   BUBBLESCALE,
   populateBubbles

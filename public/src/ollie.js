@@ -169,7 +169,7 @@ const changeEyePosition = (pointer, ollieEye) => {
 
 loadOllie();
 
-export default {
+export {
   ollieGroup,
   olliePaws,
   ollieLeftEye,
