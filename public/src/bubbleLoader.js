@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 import { black, grayDark, gray, red, cream } from './_colors.js';
+import projects from './_projects.js';
 import { githubIcon, browserIcon, searchIcon, videoIcon, leftIcon, rightIcon, exitIcon } from './_icons.js';
 import { STRATOS, ROBOTO, h1, h2, createText } from './createText.js';
 import { createIcon } from './createIcon.js';
@@ -129,7 +130,6 @@ const loadBubble = (xPos, yPos, project) => {
     // on load
     gltf => {
       const bubble = gltf.scene;
-
       // Resetting the material in order to add transparency and tween its opacity later
       // Each child is getting a brand new insantiated material because if they share the same instance of it, 
       // when it gets tweened later, it tweens all objects with that instance.
@@ -273,8 +273,6 @@ const populateBubbles = projects => {
   };
 };
 
-export {
-  bubbles,
-  BUBBLESCALE,
-  populateBubbles
-};
+populateBubbles(projects);
+
+export { bubbles, BUBBLESCALE };

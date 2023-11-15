@@ -4,10 +4,9 @@ import WebGL from 'three/addons/capabilities/WebGL.js';
 import TWEEN from '@tweenjs/tween.js';
 
 import { black, grayDark, gray, red, cream } from './public/src/_colors.js';
-import projects from './public/src/_projects.js';
 import { textGroup } from './public/src/createText.js';
 import { ollieGroup, ollieLeftEye, ollieRightEye, table, tableBottom, moveEyes } from './public/src/ollie.js';
-import { bubbles, BUBBLESCALE, populateBubbles } from './public/src/bubbleLoader.js';
+import { bubbles, BUBBLESCALE } from './public/src/bubbleLoader.js';
 import { hamburgerGroup } from './public/src/hamburger.js';
 import { 
   introAnimation, 
@@ -84,7 +83,6 @@ const init = () => {
     raycaster = new THREE.Raycaster();
     pointer = new THREE.Vector2();
 
-    populateBubbles(projects);
     scene.add(textGroup, ollieGroup, table, tableBottom, ...bubbles, hamburgerGroup);
 
     // Set event listeners
