@@ -87,6 +87,7 @@ const introAnimation = () => {
                       });
 
                       introAnimationFinished = true;
+                      bubbles.forEach(bubble => bubbleIdleAnimation(bubble));
                     }
                   )
                 )
@@ -146,6 +147,12 @@ const bubbleIdleAnimation = object => {
   let randomTiming = Math.floor(Math.random() * (5000 - 3000 + 1) + 3000);
   // store the tween into the bubble object to access later (start/stop)
   object.idleTween = tweenObject(object.position, {y: object.position.y - .1}, randomTiming, TWEEN.Easing.Sinusoidal.InOut)
+  .repeat(Infinity)
+  .yoyo(true);
+};
+
+const ollieIdleAnimation = object => {
+  object.idleTween = tweenObject(object.position, {y: object.position.y - 5}, 1000, TWEEN.Easing.Sinusoidal.InOut)
   .repeat(Infinity)
   .yoyo(true);
 };

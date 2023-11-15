@@ -279,6 +279,5 @@ const iconHover = (currentHoverIcon, isHovered, object=undefined) => {
 init(); // Initialize
 
 introAnimation();
-bubbles.forEach(bubble => bubbleIdleAnimation(bubble));
 
 update(); // Start update loop
