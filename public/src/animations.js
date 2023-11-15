@@ -7,6 +7,16 @@ import { olliePaws, ollieBody, table } from './ollie.js';
 import { BUBBLESCALE, bubbles } from './bubble.js';
 import { addMockDiv, removeMockDiv } from './mockUp.js';
 import { hamburgerGroup } from './hamburger.js';
+import { 
+  onOpacityProp, 
+  offOpacityProp, 
+  bubbleTweenOnScaleProp, 
+  bubbleTweenOffScaleProp, 
+  bubbleTweenOnPositionProp,
+  bubbleTweenMockScaleProp,
+  bubbleTweenMockPositionProp,
+  tweenObject 
+} from './tween.js';
 
 // Text Colors
 const textColor = black;
@@ -14,14 +24,6 @@ const textColor = black;
 let introAnimationFinished = false;
 
 let hamburgerClicked = false;
-
-const tweenObject = (property, propChange, timing, easeType, delay=0) => {
-  return new TWEEN.Tween(property)
-    .to(propChange, timing)
-    .easing(easeType)
-    .delay(delay)
-    .start()
-};
 
 const separateObject = object => {
   let titles = object.children.filter(child => child.name === 'titleText');
@@ -46,44 +48,6 @@ const applyOpacityTween = (prop, arrayOfObjects, arrayOfGroupedIcons) => {
       });
     });
   });
-};
-
-const onOpacityProp = {
-  opacity: 1,
-};
-
-const offOpacityProp = {
-  opacity: 0,
-};
-
-const bubbleTweenOffScaleProp = {
-  x: BUBBLESCALE[0],
-  y: BUBBLESCALE[1],
-  z: BUBBLESCALE[2],
-};
-
-const bubbleTweenOnScaleProp = {
-  x: 2,
-  y: 2,
-  z: 2,
-};
-
-const bubbleTweenOnPositionProp = {
-  x: 0,
-  y: -6, // -4
-  z: 0.25,
-};
-
-const bubbleTweenMockScaleProp = {
-  x: 3,
-  y: 3,
-  z: 3,
-};
-
-const bubbleTweenMockPositionProp = {
-  x: 0,
-  y: -9,
-  z: 0.25,
 };
 
 const introAnimation = () => {

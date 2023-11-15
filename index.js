@@ -5,7 +5,7 @@ import TWEEN from '@tweenjs/tween.js';
 
 import { black, grayDark, gray, red, cream } from './public/src/_colors.js';
 import { textGroup } from './public/src/createText.js';
-import { ollieGroup, ollieLeftEye, ollieRightEye, table, tableBottom, moveEyes } from './public/src/ollie.js';
+import { ollieGroup, ollieLeftEye, ollieRightEye, table, tableBottom, moveEyes, ollieBody } from './public/src/ollie.js';
 import { bubbles, BUBBLESCALE } from './public/src/bubble.js';
 import { hamburgerGroup } from './public/src/hamburger.js';
 import { 
@@ -278,11 +278,7 @@ const iconHover = (currentHoverIcon, isHovered, object=undefined) => {
 
 init(); // Initialize
 
-// Needs to wait for fonts to load first, 1 second seems to suffice
-// Always errors out unless it starts 5-6 frames after init
-setTimeout(() => {
-  introAnimation();
-  bubbles.forEach(bubble => bubbleIdleAnimation(bubble));
-}, 1000);
+introAnimation();
+bubbles.forEach(bubble => bubbleIdleAnimation(bubble));
 
 update(); // Start update loop
