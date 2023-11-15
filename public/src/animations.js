@@ -4,7 +4,7 @@ import TWEEN from '@tweenjs/tween.js';
 import { black, grayDark, gray, red, cream } from './_colors.js';
 import { STRATOS, h1, h2, textGroup, createText } from './createText.js';
 import { olliePaws, ollieBody, table } from './ollie.js';
-import { BUBBLESCALE, bubbles } from './bubbleLoader.js';
+import { BUBBLESCALE, bubbles } from './bubble.js';
 import { addMockDiv, removeMockDiv } from './mockUp.js';
 import { hamburgerGroup } from './hamburger.js';
 

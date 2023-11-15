@@ -6,7 +6,7 @@ import TWEEN from '@tweenjs/tween.js';
 import { black, grayDark, gray, red, cream } from './public/src/_colors.js';
 import { textGroup } from './public/src/createText.js';
 import { ollieGroup, ollieLeftEye, ollieRightEye, table, tableBottom, moveEyes } from './public/src/ollie.js';
-import { bubbles, BUBBLESCALE } from './public/src/bubbleLoader.js';
+import { bubbles, BUBBLESCALE } from './public/src/bubble.js';
 import { hamburgerGroup } from './public/src/hamburger.js';
 import { 
   introAnimation, 

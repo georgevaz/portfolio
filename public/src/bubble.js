@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { loadGLTF } from './_GLTFLoader.js';
 
 import { black, grayDark, gray, red, cream } from './_colors.js';
 import projects from './_projects.js';
@@ -17,8 +17,8 @@ const fontColor = black;
 // Icon Color
 const iconColor = black;
 
-// Loader
-const loader = new GLTFLoader();
+// Load bubble
+const gltf = await loadGLTF('./assets/bubble.glb');
 
 const bubbles = [];
 const BUBBLESCALE = [.3, .3, .3];
@@ -126,131 +126,121 @@ const loadBubble = (xPos, yPos, project) => {
     };
   };
 
-  loader.load('./assets/bubble.glb', // url
-    // on load
-    gltf => {
-      const bubble = gltf.scene;
-      // Resetting the material in order to add transparency and tween its opacity later
-      // Each child is getting a brand new insantiated material because if they share the same instance of it, 
-      // when it gets tweened later, it tweens all objects with that instance.
-      bubble.children.forEach(child => {
-        if(child.name.slice(-4) === 'Fill') child.material = new THREE.MeshStandardMaterial({ color: fillColor });
-        else child.material = new THREE.MeshStandardMaterial({ color: outlineColor });
-        child.material.transparent = true;
-        child.material.opacity = startingOpacity;
-      });
+  const bubble = gltf.scene.clone(); // need to clone the bubble here to make separate instances of it
+  
+  // Resetting the material in order to add transparency and tween its opacity later
+  // Each child is getting a brand new insantiated material because if they share the same instance of it, 
+  // when it gets tweened later, it tweens all objects with that instance.
+  bubble.children.forEach(child => {
+    if(child.name.slice(-4) === 'Fill') child.material = new THREE.MeshStandardMaterial({ color: fillColor });
+    else child.material = new THREE.MeshStandardMaterial({ color: outlineColor });
+    child.material.transparent = true;
+    child.material.opacity = startingOpacity;
+  });
 
-      // group setup   
-      bubbleGroup.add(
-        bubble.getObjectByName("Big_Bubble"), 
-        bubble.getObjectByName("Big_Bubble_Fill")
-      );
+  // group setup   
+  bubbleGroup.add(
+    bubble.getObjectByName("Big_Bubble"), 
+    bubble.getObjectByName("Big_Bubble_Fill")
+  );
 
-      bubbleGroup.scale.set(...BUBBLESCALE);
-      
-      // Needs to be offset a bit from center
-      bubbleGroup.position.x = xPos -.32;
-      bubbleGroup.position.y = yPos + 0.5;
-      bubbleGroup.position.z = -0.6;
+  bubbleGroup.scale.set(...BUBBLESCALE);
+  
+  // Needs to be offset a bit from center
+  bubbleGroup.position.x = xPos -.32;
+  bubbleGroup.position.y = yPos + 0.5;
+  bubbleGroup.position.z = -0.6;
 
-      // Need to keep tabs on the original positioning for tweening
-      bubbleGroup.originalPosition = {
-        x: bubbleGroup.position.x,
-        y: bubbleGroup.position.y,
-        z: bubbleGroup.position.z,
-      };
+  // Need to keep tabs on the original positioning for tweening
+  bubbleGroup.originalPosition = {
+    x: bubbleGroup.position.x,
+    y: bubbleGroup.position.y,
+    z: bubbleGroup.position.z,
+  };
 
-      // add title
-      populateBubbleText(
-        project.name,
-        bubbleGroup,
-        {
-          maxLength: 10,
-          singleLineZPos: -3, 
-          multiLineZPos: -3.35,
-          tracking: .75
-        }, 
-        createText,
-        {
-          fontType: STRATOS, 
-          fontSize: h1,
-          fontThickness: 0,
-          xPos: 0, 
-          yPos: .5, 
-          textColor: fontColor,
-          name: 'titleText',
-          startingOpacity
-        },
-      );
-
-      // add description
-      populateBubbleText(
-        project.description,
-        descriptionGroup,
-        {
-          maxLength: 20,
-          singleLineZPos: titleIsMulti ? -2.8 : -3, 
-          multiLineZPos: titleIsMulti ? -2.8 : -3,
-          tracking: .2
-        }, 
-        createText,
-        {
-          fontType: ROBOTO, 
-          fontSize: 1,
-          fontThickness: 0,
-          xPos: 0, 
-          yPos: .5, 
-          textColor: fontColor,
-          name: 'descriptionText',
-          startingOpacity
-        },
-      );
-
-      // add icons
-      const projectLinksKeys = Object.keys(project.links);
-      let iconPos = new THREE.Vector3(projectLinksKeys.length * -.38, .55, -2.2);
-      
-      // every bubble will have the search icon, so that will go first
-      createIcon(
-        searchIcon, 
-        'portfolioMocks', 
-        iconColor,
-        icon => {
-          setBubbleIcon(icon, .007, iconPos);
-
-          descriptionGroup.add(icon);
-          iconPos.x += .75;
-
-          for(let i = 0; i < projectLinksKeys.length; i++){
-            createIcon(
-              project.links[projectLinksKeys[i]].icon, 
-              projectLinksKeys[i], 
-              iconColor,
-              icon => {
-                setBubbleIcon(icon, .007, iconPos);
-                
-                descriptionGroup.add(icon);
-                iconPos.x += .75;
-              }, 
-              project.links[projectLinksKeys[i]].url
-            );
-          };
-        }, 
-        ''
-      );
-
-      // Needs to be rotated because of how the file imported
-      bubbleGroup.rotation.x = THREE.MathUtils.degToRad(90);
-
-      bubbleGroup.add(descriptionGroup);
-    },
-    // on progress
-    undefined,
-    // on error
-    error => {
-      console.error(error);
+  // add title
+  populateBubbleText(
+    project.name,
+    bubbleGroup,
+    {
+      maxLength: 10,
+      singleLineZPos: -3, 
+      multiLineZPos: -3.35,
+      tracking: .75
+    }, 
+    createText,
+    {
+      fontType: STRATOS, 
+      fontSize: h1,
+      fontThickness: 0,
+      xPos: 0, 
+      yPos: .5, 
+      textColor: fontColor,
+      name: 'titleText',
+      startingOpacity
     },
   );
+
+  // add description
+  populateBubbleText(
+    project.description,
+    descriptionGroup,
+    {
+      maxLength: 20,
+      singleLineZPos: titleIsMulti ? -2.8 : -3, 
+      multiLineZPos: titleIsMulti ? -2.8 : -3,
+      tracking: .2
+    }, 
+    createText,
+    {
+      fontType: ROBOTO, 
+      fontSize: 1,
+      fontThickness: 0,
+      xPos: 0, 
+      yPos: .5, 
+      textColor: fontColor,
+      name: 'descriptionText',
+      startingOpacity
+    },
+  );
+
+  // add icons
+  const projectLinksKeys = Object.keys(project.links);
+  let iconPos = new THREE.Vector3(projectLinksKeys.length * -.38, .55, -2.2);
+  
+  // every bubble will have the search icon, so that will go first
+  createIcon(
+    searchIcon, 
+    'portfolioMocks', 
+    iconColor,
+    icon => {
+      setBubbleIcon(icon, .007, iconPos);
+
+      descriptionGroup.add(icon);
+      iconPos.x += .75;
+
+      for(let i = 0; i < projectLinksKeys.length; i++){
+        createIcon(
+          project.links[projectLinksKeys[i]].icon, 
+          projectLinksKeys[i], 
+          iconColor,
+          icon => {
+            setBubbleIcon(icon, .007, iconPos);
+            
+            descriptionGroup.add(icon);
+            iconPos.x += .75;
+          }, 
+          project.links[projectLinksKeys[i]].url
+        );
+      };
+    }, 
+    ''
+  );
+
+  // Needs to be rotated because of how the file imported
+  bubbleGroup.rotation.x = THREE.MathUtils.degToRad(90);
+
+  bubbleGroup.add(descriptionGroup);
   return bubbleGroup;
 };
 
