@@ -10,9 +10,6 @@ const darkFillColor = gray;
 const lightFillColor = cream;
 const outlineColor = black;
 
-// Load Ollie
-const gltf = await loadGLTF('./assets/ollie.glb');
-
 // Ollie Group
 const ollieGroup = new THREE.Group();
 const ollieLeftEar = new THREE.Group();
@@ -49,7 +46,10 @@ const eyePosThreshold = {
   y: 0.05,
 };
 
-const loadOllie = () => {
+const loadOllie = async () => {
+  // Load Ollie
+  const gltf = await loadGLTF('./assets/ollie.glb');
+
   const ollie = gltf.scene;
   // pull materials out from imported model's objects to be able to change colors when needed
   // need to clone materials so we can assign appropriately
@@ -167,8 +167,6 @@ const changeEyePosition = (pointer, ollieEye) => {
   else ollieEye.position.z = yPos < 0 ? -eyePosThreshold.y : eyePosThreshold.y;
 };
 
-loadOllie();
-
 export {
   ollieGroup,
   olliePaws,
@@ -177,5 +175,6 @@ export {
   ollieBody,
   table,
   tableBottom,
-  moveEyes
+  moveEyes,
+  loadOllie
 };

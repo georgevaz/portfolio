@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import { loadGLTF } from './_GLTFLoader.js';
 
 import { black, grayDark, gray, red, cream } from './_colors.js';
-import projects from './_projects.js';
 import { githubIcon, browserIcon, searchIcon, videoIcon, leftIcon, rightIcon, exitIcon } from './_icons.js';
 import { STRATOS, ROBOTO, h1, h2, createText } from './createText.js';
 import { createIcon } from './createIcon.js';
@@ -263,6 +262,4 @@ const populateBubbles = projects => {
   };
 };
 
-populateBubbles(projects);
-
-export { bubbles, BUBBLESCALE };
+export { bubbles, BUBBLESCALE, populateBubbles };

@@ -4,9 +4,10 @@ import WebGL from 'three/addons/capabilities/WebGL.js';
 import TWEEN from '@tweenjs/tween.js';
 
 import { black, grayDark, gray, red, cream } from './public/src/_colors.js';
+import projects from './public/src/_projects.js';
 import { textGroup } from './public/src/createText.js';
-import { ollieGroup, ollieLeftEye, ollieRightEye, table, tableBottom, moveEyes, ollieBody } from './public/src/ollie.js';
-import { bubbles, BUBBLESCALE } from './public/src/bubble.js';
+import { ollieGroup, ollieLeftEye, ollieRightEye, table, tableBottom, moveEyes, ollieBody, loadOllie } from './public/src/ollie.js';
+import { bubbles, BUBBLESCALE, populateBubbles } from './public/src/bubble.js';
 import { hamburgerGroup } from './public/src/hamburger.js';
 import { 
   introAnimation, 
@@ -81,6 +82,11 @@ const init = () => {
     // Set Raycasting
     raycaster = new THREE.Raycaster();
     pointer = new THREE.Vector2();
+
+    // Create Models
+    loadOllie();
+    populateBubbles(projects);
+    
 
     scene.add(textGroup, ollieGroup, table, tableBottom, ...bubbles, hamburgerGroup);
 
