@@ -16,9 +16,6 @@ const fontColor = black;
 // Icon Color
 const iconColor = black;
 
-// Load bubble
-const gltf = await loadGLTF('./assets/bubble.glb');
-
 const bubbles = [];
 const BUBBLESCALE = [.3, .3, .3];
 
@@ -38,7 +35,7 @@ const setBubbleIcon = (icon, scale, position) => {
   icon.children.forEach(mesh => mesh.material.opacity = startingOpacity);
 };
 
-const loadBubble = (xPos, yPos, project) => {
+const loadBubble = async (xPos, yPos, project) => {
   let titleIsMulti = false;
 
   // Parent Group
@@ -124,6 +121,8 @@ const loadBubble = (xPos, yPos, project) => {
       };
     };
   };
+  // Load bubble
+  const gltf = await loadGLTF('./assets/bubble.glb');
 
   const bubble = gltf.scene.clone(); // need to clone the bubble here to make separate instances of it
   
@@ -243,7 +242,7 @@ const loadBubble = (xPos, yPos, project) => {
   return bubbleGroup;
 };
 
-const populateBubbles = projects => {
+const populateBubbles = async projects => {
   let row = 0;
   const xConst = 1.5;
   const yConst = -.55;
@@ -251,13 +250,13 @@ const populateBubbles = projects => {
 
   for(let i = 0; i < numOfBubbles; i++){
     if(i === 0) {
-      bubbles.push(loadBubble(0, 0, projects[Object.keys(projects)[i]]));
+      bubbles.push(await loadBubble(0, 0, projects[Object.keys(projects)[i]]));
       row++;
     } else if(i % 2 === 0) {
-      bubbles.push(loadBubble(row + xConst, row * (row * yConst), projects[Object.keys(projects)[i]]));
+      bubbles.push(await loadBubble(row + xConst, row * (row * yConst), projects[Object.keys(projects)[i]]));
       row++;
     } else {
-      bubbles.push(loadBubble(-(row + xConst), row * (row * yConst), projects[Object.keys(projects)[i]]));
+      bubbles.push(await loadBubble(-(row + xConst), row * (row * yConst), projects[Object.keys(projects)[i]]));
     };
   };
 };

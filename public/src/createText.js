@@ -29,7 +29,7 @@ const createText = async (textAttributes, callback, name='text', opacity=0) => {
   
   // Loaded Font
   let loadedFont = await loadFont(fontType);
-  
+
   const geometry = new TextGeometry(textCopy, {
     font: loadedFont,
     size: fontSize,
@@ -58,7 +58,7 @@ const createText = async (textAttributes, callback, name='text', opacity=0) => {
   callback(text);
 };
 
-const loadStartingFont = () => {
+const loadStartingText = () => {
   createText(
     {
       fontType: STRATOS, 
@@ -112,12 +112,11 @@ const loadStartingFont = () => {
   );
 };
 
-loadStartingFont();
-
 export {
   STRATOS,
   ROBOTO,
   h1, h2,
   textGroup,
-  createText
+  createText,
+  loadStartingText
 };

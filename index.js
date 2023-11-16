@@ -5,7 +5,7 @@ import TWEEN from '@tweenjs/tween.js';
 
 import { black, grayDark, gray, red, cream } from './public/src/_colors.js';
 import projects from './public/src/_projects.js';
-import { textGroup } from './public/src/createText.js';
+import { textGroup, loadStartingText } from './public/src/createText.js';
 import { ollieGroup, ollieLeftEye, ollieRightEye, table, tableBottom, moveEyes, ollieBody, loadOllie } from './public/src/ollie.js';
 import { bubbles, BUBBLESCALE, populateBubbles } from './public/src/bubble.js';
 import { hamburgerGroup } from './public/src/hamburger.js';
@@ -38,7 +38,7 @@ const CAMFOV = 60;
 const isMobileDevice = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 const isSafari = /Safari/.test(navigator.userAgent);
 
-const init = () => {
+const init = async () => {
   if (WebGL.isWebGLAvailable()) {
     // Set Scene
     scene = new THREE.Scene();
@@ -84,10 +84,10 @@ const init = () => {
     pointer = new THREE.Vector2();
 
     // Create Models
-    loadOllie();
-    populateBubbles(projects);
+    await loadStartingText();
+    await loadOllie();
+    await populateBubbles(projects);
     
-
     scene.add(textGroup, ollieGroup, table, tableBottom, ...bubbles, hamburgerGroup);
 
     // Set event listeners
@@ -97,6 +97,8 @@ const init = () => {
 
     // Handles resizing of window
     window.addEventListener('resize', onWindowResize);
+
+    introAnimation();
 
   } else {
     const warning = WebGL.getWebGLErrorMessage();
@@ -282,7 +284,5 @@ const iconHover = (currentHoverIcon, isHovered, object=undefined) => {
 };
 
 init(); // Initialize
-
-introAnimation();
 
 update(); // Start update loop
