@@ -93,7 +93,7 @@ const introAnimation = () => {
                         Math.floor(Math.random() * (5000 - 3000 + 1) + 3000)
                         )
                       );
-                      idleAnimation(ollieBody, {z: ollieBody.position.z + 0.1}, 4000);
+                      idleAnimation(ollieBody, {z: ollieBody.position.z + 0.1}, 1000);
                     }
                   )
                 )
