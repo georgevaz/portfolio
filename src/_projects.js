@@ -1,9 +1,6 @@
-import icons from './_icons.js';
+import { githubIcon, browserIcon, searchIcon, videoIcon } from './_icons.js';
 
-// Icons
-const { githubIcon, browserIcon, searchIcon, videoIcon } = icons;
-
-const projects = {
+export default {
   'zukeeper': {
     name: 'Zukeeper',
     description: 'Developer Tools for Zustand',
@@ -103,5 +100,3 @@ const projects = {
     imageClass: 'desktopImage',
   },
 };
-
-export default projects;

@@ -1,14 +1,10 @@
-const icons = {
-  githubIcon: './assets/github.svg',
-  browserIcon: './assets/browser.svg',
-  searchIcon: './assets/search.svg',
-  videoIcon: './assets/video.svg',
-  resumeIcon: './assets/file.svg',
-  linkedInIcon: './assets/linkedin.svg',
-  dogboneIcon: './assets/dogbone.svg',
-  leftIcon: './assets/left.svg',
-  rightIcon: './assets/right.svg',
-  exitIcon: './assets/exit.svg'
-};
-
-export default icons;
+export const githubIcon = './assets/github.svg';
+export const browserIcon = './assets/browser.svg';
+export const searchIcon = './assets/search.svg';
+export const videoIcon = './assets/video.svg';
+export const resumeIcon = './assets/file.svg';
+export const linkedInIcon = './assets/linkedin.svg';
+export const dogboneIcon = './assets/dogbone.svg';
+export const leftIcon = './assets/left.svg';
+export const rightIcon = './assets/right.svg';
+export const exitIcon = './assets/exit.svg';

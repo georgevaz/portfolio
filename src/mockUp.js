@@ -42,4 +42,4 @@ const removeMockDiv = () => {
   document.body.removeChild(container);
 };
 
-export default { addMockDiv, removeMockDiv };
+export { addMockDiv, removeMockDiv };

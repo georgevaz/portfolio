@@ -1,30 +1,22 @@
 import * as THREE from 'three';
 import TWEEN from '@tweenjs/tween.js';
 
-import colors from './_colors.js';
-import text from './textLoader.js';
-import ollie from './ollieLoader.js';
-import bubble from './bubbleLoader.js';
-import mockUp from './mockUp.js';
-import hamburgerLoader from './hamburgerLoader.js';
-
-// Colors
-const { black, white, grayDark, gray, grayLight, red, cream } = colors;
-
-// Text
-const { STRATOS, h1, h2, textGroup, createText } = text;
-
-// Ollie
-const { olliePaws, ollieBody, table } = ollie;
-
-// Bubble
-const { BUBBLESCALE, bubbles } = bubble;
-
-// Hamburger
-const { hamburgerGroup } = hamburgerLoader;
-
-// Mockup
-const { addMockDiv, removeMockDiv } = mockUp;
+import { black, grayDark, gray, red, cream } from './_colors.js';
+import { STRATOS, h1, h2, textGroup, createText } from './createText.js';
+import { olliePaws, ollieBody, table, ollieGroup } from './ollie.js';
+import { BUBBLESCALE, bubbles } from './bubble.js';
+import { addMockDiv, removeMockDiv } from './mockUp.js';
+import { hamburgerGroup } from './hamburger.js';
+import { 
+  onOpacityProp, 
+  offOpacityProp, 
+  bubbleTweenOnScaleProp, 
+  bubbleTweenOffScaleProp, 
+  bubbleTweenOnPositionProp,
+  bubbleTweenMockScaleProp,
+  bubbleTweenMockPositionProp,
+  tweenObject 
+} from './tween.js';
 
 // Text Colors
 const textColor = black;
@@ -32,14 +24,6 @@ const textColor = black;
 let introAnimationFinished = false;
 
 let hamburgerClicked = false;
-
-const tweenObject = (property, propChange, timing, easeType, delay=0) => {
-  return new TWEEN.Tween(property)
-    .to(propChange, timing)
-    .easing(easeType)
-    .delay(delay)
-    .start()
-};
 
 const separateObject = object => {
   let titles = object.children.filter(child => child.name === 'titleText');
@@ -66,46 +50,8 @@ const applyOpacityTween = (prop, arrayOfObjects, arrayOfGroupedIcons) => {
   });
 };
 
-const onOpacityProp = {
-  opacity: 1,
-};
-
-const offOpacityProp = {
-  opacity: 0,
-};
-
-const bubbleTweenOffScaleProp = {
-  x: BUBBLESCALE[0],
-  y: BUBBLESCALE[1],
-  z: BUBBLESCALE[2],
-};
-
-const bubbleTweenOnScaleProp = {
-  x: 2,
-  y: 2,
-  z: 2,
-};
-
-const bubbleTweenOnPositionProp = {
-  x: 0,
-  y: -6, // -4
-  z: 0.25,
-};
-
-const bubbleTweenMockScaleProp = {
-  x: 3,
-  y: 3,
-  z: 3,
-};
-
-const bubbleTweenMockPositionProp = {
-  x: 0,
-  y: -9,
-  z: 0.25,
-};
-
 const introAnimation = () => {
-  tweenObject(textGroup.children[0].material, onOpacityProp, 1000, TWEEN.Easing.Linear.None, 500)
+  tweenObject(textGroup.children[0].material, onOpacityProp, 1000, TWEEN.Easing.Linear.None, 1000)
     .onComplete(
       () => tweenObject(textGroup.children[1].material, onOpacityProp, 1000, TWEEN.Easing.Linear.None, 500)
       .onComplete(
@@ -141,6 +87,13 @@ const introAnimation = () => {
                       });
 
                       introAnimationFinished = true;
+                      bubbles.forEach(bubble => idleAnimation(
+                        bubble, 
+                        {y: bubble.position.y - 0.1}, 
+                        Math.floor(Math.random() * (5000 - 3000 + 1) + 3000)
+                        )
+                      );
+                      idleAnimation(ollieBody, {z: ollieBody.position.z + 0.1}, 1000);
                     }
                   )
                 )
@@ -196,10 +149,9 @@ const bubbleClickAnimation = (object, isClicked) => {
   };
 };
 
-const bubbleIdleAnimation = object => {
-  let randomTiming = Math.floor(Math.random() * (5000 - 3000 + 1) + 3000);
+const idleAnimation = (object, prop, timing) => {
   // store the tween into the bubble object to access later (start/stop)
-  object.idleTween = tweenObject(object.position, {y: object.position.y - .1}, randomTiming, TWEEN.Easing.Sinusoidal.InOut)
+  object.idleTween = tweenObject(object.position, prop, timing, TWEEN.Easing.Sinusoidal.InOut)
   .repeat(Infinity)
   .yoyo(true);
 };
@@ -285,10 +237,10 @@ const ollieBarkAnimation = scene => {
   };
 };
 
-export default {
+export {
   introAnimation,
   bubbleClickAnimation,
-  bubbleIdleAnimation,
+  idleAnimation,
   bubbleStateChangeAnimation,
   hamburgerClickAnimation,
   iconHoverAnimation,
