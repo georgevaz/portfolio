@@ -11,7 +11,6 @@ import { hamburgerGroup } from './public/src/hamburger.js';
 import { 
   introAnimation, 
   bubbleClickAnimation, 
-  bubbleIdleAnimation, 
   bubbleStateChangeAnimation, 
   hamburgerClickAnimation,
   iconHoverAnimation,

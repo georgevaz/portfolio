@@ -3,7 +3,7 @@ import TWEEN from '@tweenjs/tween.js';
 
 import { black, grayDark, gray, red, cream } from './_colors.js';
 import { STRATOS, h1, h2, textGroup, createText } from './createText.js';
-import { olliePaws, ollieBody, table } from './ollie.js';
+import { olliePaws, ollieBody, table, ollieGroup } from './ollie.js';
 import { BUBBLESCALE, bubbles } from './bubble.js';
 import { addMockDiv, removeMockDiv } from './mockUp.js';
 import { hamburgerGroup } from './hamburger.js';
@@ -51,7 +51,7 @@ const applyOpacityTween = (prop, arrayOfObjects, arrayOfGroupedIcons) => {
 };
 
 const introAnimation = () => {
-  tweenObject(textGroup.children[0].material, onOpacityProp, 1000, TWEEN.Easing.Linear.None, 500)
+  tweenObject(textGroup.children[0].material, onOpacityProp, 1000, TWEEN.Easing.Linear.None, 1000)
     .onComplete(
       () => tweenObject(textGroup.children[1].material, onOpacityProp, 1000, TWEEN.Easing.Linear.None, 500)
       .onComplete(
@@ -87,7 +87,13 @@ const introAnimation = () => {
                       });
 
                       introAnimationFinished = true;
-                      bubbles.forEach(bubble => bubbleIdleAnimation(bubble));
+                      bubbles.forEach(bubble => idleAnimation(
+                        bubble, 
+                        {y: bubble.position.y - 0.1}, 
+                        Math.floor(Math.random() * (5000 - 3000 + 1) + 3000)
+                        )
+                      );
+                      idleAnimation(ollieBody, {z: ollieBody.position.z + 0.1}, 4000);
                     }
                   )
                 )
@@ -143,16 +149,9 @@ const bubbleClickAnimation = (object, isClicked) => {
   };
 };
 
-const bubbleIdleAnimation = object => {
-  let randomTiming = Math.floor(Math.random() * (5000 - 3000 + 1) + 3000);
+const idleAnimation = (object, prop, timing) => {
   // store the tween into the bubble object to access later (start/stop)
-  object.idleTween = tweenObject(object.position, {y: object.position.y - .1}, randomTiming, TWEEN.Easing.Sinusoidal.InOut)
-  .repeat(Infinity)
-  .yoyo(true);
-};
-
-const ollieIdleAnimation = object => {
-  object.idleTween = tweenObject(object.position, {y: object.position.y - 5}, 1000, TWEEN.Easing.Sinusoidal.InOut)
+  object.idleTween = tweenObject(object.position, prop, timing, TWEEN.Easing.Sinusoidal.InOut)
   .repeat(Infinity)
   .yoyo(true);
 };
@@ -241,7 +240,7 @@ const ollieBarkAnimation = scene => {
 export {
   introAnimation,
   bubbleClickAnimation,
-  bubbleIdleAnimation,
+  idleAnimation,
   bubbleStateChangeAnimation,
   hamburgerClickAnimation,
   iconHoverAnimation,
