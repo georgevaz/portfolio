@@ -4,7 +4,7 @@ import { loadGLTF } from './_GLTFLoader.js';
 import { black, grayDark, gray, red, cream } from './_colors.js';
 import { githubIcon, browserIcon, searchIcon, videoIcon, leftIcon, rightIcon, exitIcon } from './_icons.js';
 import { STRATOS, ROBOTO, h1, h2, createText } from './createText.js';
-import { createIcon } from './createIcon.js';
+import { createIcon, setIcon } from './createIcon.js';
 
 // Object Colors
 const outlineColor = black;
@@ -21,19 +21,6 @@ const BUBBLESCALE = [.3, .3, .3];
 
 // This is mainly for ease of use during development
 const startingOpacity = 0;
-
-const setBubbleIcon = (icon, scale, position) => {
-  // SVG default size is huge
-  icon.scale.set(scale, scale, scale);
-  
-  // Needs to be rotated because of how the file imported within the bubble
-  icon.rotation.x = THREE.MathUtils.degToRad(90);
-
-  // Needs to be positioned
-  icon.position.set(position.x, position.y, position.z);
-
-  icon.children.forEach(mesh => mesh.material.opacity = startingOpacity);
-};
 
 const loadBubble = async (xPos, yPos, project) => {
   let titleIsMulti = false;
@@ -212,7 +199,7 @@ const loadBubble = async (xPos, yPos, project) => {
     'portfolioMocks', 
     iconColor,
     icon => {
-      setBubbleIcon(icon, .007, iconPos);
+      setIcon(icon, .007, iconPos, startingOpacity, 90);
 
       descriptionGroup.add(icon);
       iconPos.x += .75;
@@ -223,7 +210,7 @@ const loadBubble = async (xPos, yPos, project) => {
           projectLinksKeys[i], 
           iconColor,
           icon => {
-            setBubbleIcon(icon, .007, iconPos);
+            setIcon(icon, .007, iconPos, startingOpacity, 90);
             
             descriptionGroup.add(icon);
             iconPos.x += .75;

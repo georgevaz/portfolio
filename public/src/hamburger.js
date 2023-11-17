@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 import { black, grayDark, gray, red, cream } from './_colors.js';
 import { resumeIcon, githubIcon, linkedInIcon, dogboneIcon } from './_icons.js';
-import { createIcon } from './createIcon.js';
+import { createIcon, setIcon } from './createIcon.js';
 
 // Icon Color
 const iconColor = black;
@@ -27,26 +27,13 @@ const linkIcons = {
   },
 }
 
-const setHamburgerIcons = (icon, scale, position) => {
-  // SVG default size is huge
-  icon.scale.set(scale, scale, scale)
-  
-  // Needs to be rotated because of how the file imported
-  icon.rotation.x = THREE.MathUtils.degToRad(180);
-
-  // Needs to be positioned
-  icon.position.set(position.x, position.y, position.z);
-
-  icon.children.forEach(mesh => mesh.material.opacity = 0);
-};
-
-const loadHamburgerIcons = () => {
+export const loadHamburgerIcons = () => {
   createIcon(
     dogboneIcon,
     'hamburger',
     hamburgerColor,
     icon => {
-      setHamburgerIcons(icon, .008, new THREE.Vector3(0, 0, .03));
+      setIcon(icon, 0.008, new THREE.Vector3(0, 0, .03), 0, 180);
       hamburgerGroup.add(icon);
       // Load the icons within the callback so that we make sure the hamburger icon loads first before the rest
       Object.keys(linkIcons).forEach(key => {
@@ -55,7 +42,7 @@ const loadHamburgerIcons = () => {
           key,
           iconColor,
           icon => {
-            setHamburgerIcons(icon, .007, new THREE.Vector3(0, 0, 0));
+            setIcon(icon, 0.007, new THREE.Vector3(0, 0, 0), 0, 180);
             hamburgerGroup.add(icon);
           },
           linkIcons[key].link,
@@ -65,5 +52,3 @@ const loadHamburgerIcons = () => {
     undefined,
   );
 };
-
-loadHamburgerIcons();

@@ -8,7 +8,7 @@ import projects from './public/src/_projects.js';
 import { textGroup, loadStartingText } from './public/src/createText.js';
 import { ollieGroup, ollieLeftEye, ollieRightEye, table, tableBottom, moveEyes, ollieBody, loadOllie } from './public/src/ollie.js';
 import { bubbles, BUBBLESCALE, populateBubbles } from './public/src/bubble.js';
-import { hamburgerGroup } from './public/src/hamburger.js';
+import { hamburgerGroup, loadHamburgerIcons } from './public/src/hamburger.js';
 import { 
   introAnimation, 
   bubbleClickAnimation, 
@@ -86,6 +86,7 @@ const init = async () => {
     // Create Models
     await loadStartingText();
     await loadOllie();
+    await loadHamburgerIcons();
     await populateBubbles(projects);
     
     scene.add(textGroup, ollieGroup, table, tableBottom, ...bubbles, hamburgerGroup);

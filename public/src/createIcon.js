@@ -66,3 +66,16 @@ export const createIcon = async (iconURL, type, color, callback, link) => {
   group.defaultScale = {};
   Object.assign(group.defaultScale, group.scale);
 };
+
+export const setIcon = (icon, scale, position, opacity, radians) => {
+  // SVG default size is huge
+  icon.scale.set(scale, scale, scale);
+  
+  // Needs to be rotated because of how the file imported within the bubble
+  icon.rotation.x = THREE.MathUtils.degToRad(radians);
+
+  // Needs to be positioned
+  icon.position.set(position.x, position.y, position.z);
+
+  icon.children.forEach(mesh => mesh.material.opacity = opacity);
+};
