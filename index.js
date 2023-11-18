@@ -6,7 +6,7 @@ import TWEEN from '@tweenjs/tween.js';
 import { black, grayDark, gray, red, cream } from './public/src/_colors.js';
 import projects from './public/src/_projects.js';
 import { textGroup, loadStartingText } from './public/src/createText.js';
-import { ollieGroup, ollieLeftEye, ollieRightEye, table, tableBottom, moveEyes, ollieBody, loadOllie } from './public/src/ollie.js';
+import { Ollie } from './public/src/ollie.js';
 import { bubbles, BUBBLESCALE, populateBubbles } from './public/src/bubble.js';
 import { Hamburger } from './public/src/hamburger.js';
 import { 
@@ -36,6 +36,7 @@ const CAMFOV = 60;
 
 // Object classes
 const hamburger = new Hamburger();
+const ollie = new Ollie();
 
 // Mobile Safari doesn't open external tabs/windows. Doing a check to see if user is on Safari via mobile device
 const isMobileDevice = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -88,11 +89,11 @@ const init = async () => {
 
     // Create Models
     await loadStartingText();
-    await loadOllie();
+    await ollie.loadOllie();
     await hamburger.loadHamburgerIcons();
     await populateBubbles(projects);
     
-    scene.add(textGroup, ollieGroup, table, tableBottom, ...bubbles, hamburger.hamburgerGroup);
+    scene.add(textGroup, ollie.ollieGroup, ollie.table, ollie.tableBottom, ...bubbles, hamburger.hamburgerGroup);
 
     // Set event listeners
     window.addEventListener('click', onClick);
@@ -102,7 +103,7 @@ const init = async () => {
     // Handles resizing of window
     window.addEventListener('resize', onWindowResize);
 
-    introAnimation(hamburger.hamburgerGroup);
+    introAnimation(hamburger.hamburgerGroup, ollie);
 
   } else {
     const warning = WebGL.getWebGLErrorMessage();
@@ -235,7 +236,7 @@ const onClick = e => {
 const onMouseMove = e => {
   const intersects = shootRaycast(e);
 
-  moveEyes(pointer);
+  ollie.moveEyes(pointer);
 
   if(intersects.length > 0){
     // only need to see the first intersected option

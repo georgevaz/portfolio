@@ -3,7 +3,6 @@ import TWEEN from '@tweenjs/tween.js';
 
 import { black, grayDark, gray, red, cream } from './_colors.js';
 import { STRATOS, h1, h2, textGroup, createText } from './createText.js';
-import { olliePaws, ollieBody, table, ollieGroup } from './ollie.js';
 import { BUBBLESCALE, bubbles } from './bubble.js';
 import { addMockDiv, removeMockDiv } from './mockUp.js';
 import { 
@@ -49,18 +48,18 @@ const applyOpacityTween = (prop, arrayOfObjects, arrayOfGroupedIcons) => {
   });
 };
 
-const introAnimation = (hamburgerGroup) => {
+const introAnimation = (hamburgerGroup, ollie) => {
   tweenObject(textGroup.children[0].material, onOpacityProp, 1000, TWEEN.Easing.Linear.None, 1000)
     .onComplete(
       () => tweenObject(textGroup.children[1].material, onOpacityProp, 1000, TWEEN.Easing.Linear.None, 500)
       .onComplete(
-        () => tweenObject(table.children[0].material, onOpacityProp, 1000, TWEEN.Easing.Linear.None, 200)
+        () => tweenObject(ollie.table.children[0].material, onOpacityProp, 1000, TWEEN.Easing.Linear.None, 200)
         .onComplete(
-          () => tweenObject(olliePaws.position, {z: 0.15}, 1000, TWEEN.Easing.Exponential.Out, 250)
+          () => tweenObject(ollie.olliePaws.position, {z: 0.15}, 1000, TWEEN.Easing.Exponential.Out, 250)
           .onComplete(
-            () => tweenObject(ollieBody.position, {z: 0.05}, 700, TWEEN.Easing.Cubic.Out, 200)
+            () => tweenObject(ollie.ollieBody.position, {z: 0.05}, 700, TWEEN.Easing.Cubic.Out, 200)
             .onComplete(
-              () => tweenObject(ollieBody.position, {z: 0.15}, 500, TWEEN.Easing.Bounce.Out)
+              () => tweenObject(ollie.ollieBody.position, {z: 0.15}, 500, TWEEN.Easing.Bounce.Out)
               .onComplete(
                 () => tweenObject(textGroup.children[2].material, onOpacityProp, 1000, TWEEN.Easing.Linear.None, 500)
                 .onComplete(
@@ -92,7 +91,7 @@ const introAnimation = (hamburgerGroup) => {
                         Math.floor(Math.random() * (5000 - 3000 + 1) + 3000)
                         )
                       );
-                      idleAnimation(ollieBody, {z: ollieBody.position.z + 0.1}, 1000);
+                      idleAnimation(ollie.ollieBody, {z: ollie.ollieBody.position.z + 0.1}, 1000);
                     }
                   )
                 )
