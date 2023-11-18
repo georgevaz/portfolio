@@ -6,7 +6,6 @@ import { STRATOS, h1, h2, textGroup, createText } from './createText.js';
 import { olliePaws, ollieBody, table, ollieGroup } from './ollie.js';
 import { BUBBLESCALE, bubbles } from './bubble.js';
 import { addMockDiv, removeMockDiv } from './mockUp.js';
-import { hamburgerGroup } from './hamburger.js';
 import { 
   onOpacityProp, 
   offOpacityProp, 
@@ -50,7 +49,7 @@ const applyOpacityTween = (prop, arrayOfObjects, arrayOfGroupedIcons) => {
   });
 };
 
-const introAnimation = () => {
+const introAnimation = (hamburgerGroup) => {
   tweenObject(textGroup.children[0].material, onOpacityProp, 1000, TWEEN.Easing.Linear.None, 1000)
     .onComplete(
       () => tweenObject(textGroup.children[1].material, onOpacityProp, 1000, TWEEN.Easing.Linear.None, 500)

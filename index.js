@@ -8,7 +8,7 @@ import projects from './public/src/_projects.js';
 import { textGroup, loadStartingText } from './public/src/createText.js';
 import { ollieGroup, ollieLeftEye, ollieRightEye, table, tableBottom, moveEyes, ollieBody, loadOllie } from './public/src/ollie.js';
 import { bubbles, BUBBLESCALE, populateBubbles } from './public/src/bubble.js';
-import { hamburgerGroup, loadHamburgerIcons } from './public/src/hamburger.js';
+import { Hamburger } from './public/src/hamburger.js';
 import { 
   introAnimation, 
   bubbleClickAnimation, 
@@ -33,6 +33,9 @@ let currentHoverIcon = {
 };
 
 const CAMFOV = 60;
+
+// Object classes
+const hamburger = new Hamburger();
 
 // Mobile Safari doesn't open external tabs/windows. Doing a check to see if user is on Safari via mobile device
 const isMobileDevice = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -86,10 +89,10 @@ const init = async () => {
     // Create Models
     await loadStartingText();
     await loadOllie();
-    await loadHamburgerIcons();
+    await hamburger.loadHamburgerIcons();
     await populateBubbles(projects);
     
-    scene.add(textGroup, ollieGroup, table, tableBottom, ...bubbles, hamburgerGroup);
+    scene.add(textGroup, ollieGroup, table, tableBottom, ...bubbles, hamburger.hamburgerGroup);
 
     // Set event listeners
     window.addEventListener('click', onClick);
@@ -99,7 +102,7 @@ const init = async () => {
     // Handles resizing of window
     window.addEventListener('resize', onWindowResize);
 
-    introAnimation();
+    introAnimation(hamburger.hamburgerGroup);
 
   } else {
     const warning = WebGL.getWebGLErrorMessage();
