@@ -7,7 +7,7 @@ import { black, grayDark, gray, red, cream } from './public/src/_colors.js';
 import projects from './public/src/_projects.js';
 import { textGroup, loadStartingText } from './public/src/createText.js';
 import { Ollie } from './public/src/ollie.js';
-import { bubbles, BUBBLESCALE, populateBubbles } from './public/src/bubble.js';
+import { BUBBLESCALE, loadBubble } from './public/src/bubble.js';
 import { Hamburger } from './public/src/hamburger.js';
 import { 
   introAnimation, 
@@ -25,6 +25,7 @@ let scene, renderer, light, controls;
 let raycaster, pointer;
 
 let previousBubble;
+const bubbles = [];
 
 let hoverObject;
 let currentHoverIcon = {
@@ -103,7 +104,7 @@ const init = async () => {
     // Handles resizing of window
     window.addEventListener('resize', onWindowResize);
 
-    introAnimation(hamburger.hamburgerGroup, ollie);
+    introAnimation(hamburger.hamburgerGroup, ollie, bubbles);
 
   } else {
     const warning = WebGL.getWebGLErrorMessage();
@@ -286,6 +287,25 @@ const iconHover = (currentHoverIcon, isHovered, object=undefined) => {
   iconHoverAnimation(currentHoverIcon.object, currentHoverIcon.isHovered);
 
   if(!object) currentHoverIcon.object = object;
+};
+
+const populateBubbles = async projects => {
+  let row = 0;
+  const xConst = 1.5;
+  const yConst = -.55;
+  const numOfBubbles = Object.keys(projects).length;
+
+  for(let i = 0; i < numOfBubbles; i++){
+    if(i === 0) {
+      bubbles.push(await loadBubble(0, 0, projects[Object.keys(projects)[i]]));
+      row++;
+    } else if(i % 2 === 0) {
+      bubbles.push(await loadBubble(row + xConst, row * (row * yConst), projects[Object.keys(projects)[i]]));
+      row++;
+    } else {
+      bubbles.push(await loadBubble(-(row + xConst), row * (row * yConst), projects[Object.keys(projects)[i]]));
+    };
+  };
 };
 
 init(); // Initialize

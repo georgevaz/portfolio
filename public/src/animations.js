@@ -3,7 +3,7 @@ import TWEEN from '@tweenjs/tween.js';
 
 import { black, grayDark, gray, red, cream } from './_colors.js';
 import { STRATOS, h1, h2, textGroup, createText } from './createText.js';
-import { BUBBLESCALE, bubbles } from './bubble.js';
+import { BUBBLESCALE } from './bubble.js';
 import { addMockDiv, removeMockDiv } from './mockUp.js';
 import { 
   onOpacityProp, 
@@ -48,7 +48,7 @@ const applyOpacityTween = (prop, arrayOfObjects, arrayOfGroupedIcons) => {
   });
 };
 
-const introAnimation = (hamburgerGroup, ollie) => {
+const introAnimation = (hamburgerGroup, ollie, bubbles) => {
   tweenObject(textGroup.children[0].material, onOpacityProp, 1000, TWEEN.Easing.Linear.None, 1000)
     .onComplete(
       () => tweenObject(textGroup.children[1].material, onOpacityProp, 1000, TWEEN.Easing.Linear.None, 500)

@@ -248,4 +248,4 @@ const populateBubbles = async projects => {
   };
 };
 
-export { bubbles, BUBBLESCALE, populateBubbles };
+export { bubbles, BUBBLESCALE, loadBubble };
