@@ -3,7 +3,6 @@ import TWEEN from '@tweenjs/tween.js';
 
 import { black, grayDark, gray, red, cream } from './_colors.js';
 import { STRATOS, h1, h2, textGroup, createText } from './createText.js';
-import { BUBBLESCALE } from './bubble.js';
 import { addMockDiv, removeMockDiv } from './mockUp.js';
 import { 
   onOpacityProp, 
@@ -142,7 +141,7 @@ const bubbleClickAnimation = (object, isClicked) => {
 
     if(document.getElementsByClassName('mockContainer').length) removeMockDiv();
 
-    tweenObject(object.scale, bubbleTweenOffScaleProp(BUBBLESCALE), 200, TWEEN.Easing.Back.Out);
+    tweenObject(object.scale, bubbleTweenOffScaleProp(object.originalScale), 200, TWEEN.Easing.Back.Out);
     tweenObject(object.position, object.originalPosition, 200, TWEEN.Easing.Back.Out);
   };
 };

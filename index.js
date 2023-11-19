@@ -7,7 +7,7 @@ import { black, grayDark, gray, red, cream } from './public/src/_colors.js';
 import projects from './public/src/_projects.js';
 import { textGroup, loadStartingText } from './public/src/createText.js';
 import { Ollie } from './public/src/ollie.js';
-import { BUBBLESCALE, loadBubble } from './public/src/bubble.js';
+import { Bubble } from './public/src/bubble.js';
 import { Hamburger } from './public/src/hamburger.js';
 import { 
   introAnimation, 
@@ -295,15 +295,16 @@ const populateBubbles = async projects => {
   const yConst = -.55;
   const numOfBubbles = Object.keys(projects).length;
 
+  const bubble = new Bubble();
   for(let i = 0; i < numOfBubbles; i++){
     if(i === 0) {
-      bubbles.push(await loadBubble(0, 0, projects[Object.keys(projects)[i]]));
+      bubbles.push(await bubble.loadBubble(0, 0, projects[Object.keys(projects)[i]]));
       row++;
     } else if(i % 2 === 0) {
-      bubbles.push(await loadBubble(row + xConst, row * (row * yConst), projects[Object.keys(projects)[i]]));
+      bubbles.push(await bubble.loadBubble(row + xConst, row * (row * yConst), projects[Object.keys(projects)[i]]));
       row++;
     } else {
-      bubbles.push(await loadBubble(-(row + xConst), row * (row * yConst), projects[Object.keys(projects)[i]]));
+      bubbles.push(await bubble.loadBubble(-(row + xConst), row * (row * yConst), projects[Object.keys(projects)[i]]));
     };
   };
 };
