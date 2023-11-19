@@ -1,7 +1,5 @@
 import TWEEN from '@tweenjs/tween.js';
 
-import { BUBBLESCALE } from './bubble.js';
-
 const onOpacityProp = {
   opacity: 1,
 };
@@ -16,10 +14,12 @@ const bubbleTweenOnScaleProp = {
   z: 2,
 };
 
-const bubbleTweenOffScaleProp = {
-  x: BUBBLESCALE[0],
-  y: BUBBLESCALE[1],
-  z: BUBBLESCALE[2],
+const bubbleTweenOffScaleProp = bubbleScale => {
+  return {
+    x: bubbleScale[0],
+    y: bubbleScale[1],
+    z: bubbleScale[2],
+  }
 };
 
 const bubbleTweenOnPositionProp = {

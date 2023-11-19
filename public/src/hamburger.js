@@ -5,7 +5,7 @@ import { resumeIcon, githubIcon, linkedInIcon, dogboneIcon } from './_icons.js';
 import { createIcon, setIcon } from './createIcon.js';
 
 export class Hamburger {
-  constructor(){
+  constructor() {
     // Icon Color
     this.iconColor = black;
     this.hamburgerColor = red;

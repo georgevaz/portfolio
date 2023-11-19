@@ -4,7 +4,7 @@ import { loadGLTF } from './_GLTFLoader.js';
 import { black, grayDark, gray, red, cream } from './_colors.js';
 
 export class Ollie {
-  constructor(){
+  constructor() {
     // Object Colors
     this.tableColor = black;
     this.tableBoxColor = cream; // this has to match the background color of the scene

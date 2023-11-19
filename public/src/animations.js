@@ -142,7 +142,7 @@ const bubbleClickAnimation = (object, isClicked) => {
 
     if(document.getElementsByClassName('mockContainer').length) removeMockDiv();
 
-    tweenObject(object.scale, bubbleTweenOffScaleProp, 200, TWEEN.Easing.Back.Out);
+    tweenObject(object.scale, bubbleTweenOffScaleProp(BUBBLESCALE), 200, TWEEN.Easing.Back.Out);
     tweenObject(object.position, object.originalPosition, 200, TWEEN.Easing.Back.Out);
   };
 };
